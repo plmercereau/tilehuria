@@ -1,2 +1,8 @@
 {
+  "i18n-ally.localesPaths": "src/i18n",
+  "eslint.options": {
+    "parserOptions": {
+      "project": ["${workspaceFolder}/tsconfig.json"]
+    }
+  }
 }
