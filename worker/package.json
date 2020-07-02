@@ -1,0 +1,31 @@
+{
+  "name": "tile-loader",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node src/index.ts",
+    "watch": "ts-node-dev src/index.ts",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "amqplib": "^0.5.6",
+    "aws-sdk": "^2.707.0",
+    "geojson": "^0.5.0",
+    "got": "^11.3.0",
+    "p-queue": "^6.4.0",
+    "sharp": "^0.25.4"
+  },
+  "devDependencies": {
+    "@types/amqplib": "^0.5.13",
+    "@types/node": "^14.0.14",
+    "@types/sharp": "^0.25.0",
+    "ts-node": "^8.10.2",
+    "ts-node-dev": "^1.0.0-pre.49",
+    "typescript": "^3.9.5"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
