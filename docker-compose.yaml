@@ -76,16 +76,15 @@ services:
       RABBITMQ_DEFAULT_USER: '${RABBITMQ_DEFAULT_USER}'
       RABBITMQ_DEFAULT_PASS: '${RABBITMQ_DEFAULT_PASS}'
       HASURA_GRAPHQL_ADMIN_SECRET: '${HASURA_GRAPHQL_ADMIN_SECRET:?HASURA_GRAPHQL_ADMIN_SECRET}'
-      # frontend:
-  #   # build: .
+  # frontend:
+  #   build: .
   #   image: node:14-alpine
   #   command: ['sh', '-c', 'yarn && yarn dev']
   #   working_dir: /app
   #   ports:
   #     - '4000:8080'
   #   volumes:
-  #     - './src:/app/src'
-  #     - /app/.quasar
+  #     - '.:/app'
   #     - /app/node_modules
   minio:
     # image: minio/minio:edge # * not latest: https://github.com/minio/minio/issues/9554
