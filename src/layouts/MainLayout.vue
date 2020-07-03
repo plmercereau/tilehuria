@@ -1,93 +1,43 @@
-<template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="leftDrawerOpen = !leftDrawerOpen"
-        />
-
-        <q-toolbar-title>TileHuria</q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
-      </q-toolbar>
-    </q-header>
-
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered content-class="bg-grey-1">
-      <q-list>
-        <q-item-label header class="text-grey-8">Essential Links</q-item-label>
-        <EssentialLink v-for="link in essentialLinks" :key="link.title" v-bind="link" />
-      </q-list>
-    </q-drawer>
-
-    <q-page-container>
-      <router-view />
-    </q-page-container>
-  </q-layout>
+<template lang="pug">
+q-layout(view="lHh Lpr lFf")
+  q-header(elevated)
+    q-toolbar
+      q-btn(v-if="connected"
+        flat dense round icon="menu" aria-label="Menu"
+        @click="leftDrawerOpen = !leftDrawerOpen")
+      q-toolbar-title TileHuria
+      p-logout(v-if="connected")
+      q-btn(v-else to="/login" round flat icon="login")
+  q-drawer(v-model="leftDrawerOpen" show-if-above bordered content-class="bg-grey-1")
+    q-list
+      q-item-label.text-grey-8(header) Menu
+      p-link(v-for="link in links" :key="link.title" v-bind="link")
+  q-page-container
+    router-view
 </template>
 
 <script>
-import EssentialLink from 'components/EssentialLink.vue';
+import { defineComponent, ref } from '@vue/composition-api'
+import PLogout from 'components/Logout.vue'
+import PLink from 'components/Link.vue'
+import { useConnectionStatus } from 'src/compositions'
 
-export default {
-  name: 'MainLayout',
-
-  components: {
-    EssentialLink
-  },
-
-  data() {
-    return {
-      leftDrawerOpen: false,
-      essentialLinks: [
-        {
-          title: 'Docs',
-          caption: 'quasar.dev',
-          icon: 'school',
-          link: 'https://quasar.dev'
-        },
-        {
-          title: 'Github',
-          caption: 'github.com/quasarframework',
-          icon: 'code',
-          link: 'https://github.com/quasarframework'
-        },
-        {
-          title: 'Discord Chat Channel',
-          caption: 'chat.quasar.dev',
-          icon: 'chat',
-          link: 'https://chat.quasar.dev'
-        },
-        {
-          title: 'Forum',
-          caption: 'forum.quasar.dev',
-          icon: 'record_voice_over',
-          link: 'https://forum.quasar.dev'
-        },
-        {
-          title: 'Twitter',
-          caption: '@quasarframework',
-          icon: 'rss_feed',
-          link: 'https://twitter.quasar.dev'
-        },
-        {
-          title: 'Facebook',
-          caption: '@QuasarFramework',
-          icon: 'public',
-          link: 'https://facebook.quasar.dev'
-        },
-        {
-          title: 'Quasar Awesome',
-          caption: 'Community Quasar projects',
-          icon: 'favorite',
-          link: 'https://awesome.quasar.dev'
-        }
-      ]
-    };
+const links = [
+  {
+    title: 'Areas of interest',
+    caption: 'List the areas of interest',
+    icon: 'layers',
+    to: 'area-of-interest'
   }
-};
+]
+
+export default defineComponent({
+  name: 'MainLayout',
+  components: { PLogout, PLink },
+  setup() {
+    const leftDrawerOpen = ref(false)
+    const connected = useConnectionStatus()
+    return { leftDrawerOpen, connected, links }
+  }
+})
 </script>

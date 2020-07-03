@@ -1,0 +1,27 @@
+<template lang="pug">
+q-btn(@click="logout" round flat icon="exit_to_app")
+</template>
+
+<script lang="ts">
+import { defineComponent, ref } from '@vue/composition-api'
+import { useAuth } from '../compositions'
+import { handleAxiosRequest } from '../utils'
+
+export default defineComponent({
+  name: 'Logout',
+
+  setup(_, { root: { $router } }) {
+    const auth = useAuth()
+    const error = ref('')
+    const logout = async () => {
+      await handleAxiosRequest(() => auth?.logout(true), error)
+      if (!error.value) {
+        try {
+          await $router.push('/')
+        } catch (err) {}
+      }
+    }
+    return { logout, error }
+  }
+})
+</script>

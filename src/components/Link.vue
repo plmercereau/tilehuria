@@ -1,8 +1,5 @@
 <template lang="pug">
-  q-item( clickable
-    tag="a"
-    target="_blank"
-    :href="link")
+  q-item( clickable :to="to")
     q-item-section(v-if="icon"
       avatar)
       q-icon(:name="icon")
@@ -14,7 +11,7 @@
 
 <script>
 export default {
-  name: 'EssentialLink',
+  name: 'Link',
   props: {
     title: {
       type: String,
@@ -26,9 +23,9 @@ export default {
       default: ''
     },
 
-    link: {
+    to: {
       type: String,
-      default: '#'
+      default: ''
     },
 
     icon: {
@@ -36,5 +33,5 @@ export default {
       default: ''
     }
   }
-};
+}
 </script>

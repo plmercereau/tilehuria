@@ -1,0 +1,64 @@
+<template lang="pug">
+validation-observer(v-slot="{ handleSubmit, reset }")
+  form(@submit.prevent="handleSubmit(register)" @reset.prevent="reset(); resetValues()")
+    validation-provider(rules="required|email" name="email" v-slot="{ errors, touched, invalid }")
+      q-input(v-model="email" label="email" autocomplete="username" autofocus
+        :error="touched && invalid" :error-message="errors[0]")
+    validation-provider(rules="required|min:6" name="password" v-slot="{ errors, touched, invalid }")
+      q-input(v-model="password" label="password" type="password" autocomplete="new-password"
+        :error="touched && invalid" :error-message="errors[0]")
+    div.text-negative(v-if="error") {{ error }}
+    q-btn(type="submit") Register
+    q-btn(type="reset") Reset
+</template>
+
+<script lang="ts">
+import { defineComponent, ref } from '@vue/composition-api'
+import { useAuth } from '../compositions'
+import { handleAxiosRequest } from '../utils'
+import { extend } from 'vee-validate'
+import { required, email, min } from 'vee-validate/dist/rules'
+extend('email', {
+  ...email,
+  message: '{_field_} must be an email'
+})
+extend('required', {
+  ...required,
+  message: '{_field_} is required'
+})
+extend('min', {
+  ...min,
+  message: '{_field_} must have at least {length} characters'
+})
+// TODO confirm email
+export default defineComponent({
+  name: 'Register',
+
+  setup(_, { root: { $router } }) {
+    const auth = useAuth()
+    const email = ref('')
+    const password = ref('')
+    const error = ref('')
+    const register = async () => {
+      await handleAxiosRequest(
+        () => auth?.register(email.value, password.value),
+        error
+      )
+      if (!error.value) {
+        try {
+          await auth?.login(email.value, password.value)
+          await $router.push('/')
+        } catch (err) {
+          console.log(err)
+        }
+      }
+    }
+    const resetValues = () => {
+      email.value = ''
+      password.value = ''
+      error.value = ''
+    }
+    return { email, password, register, resetValues, error }
+  }
+})
+</script>

@@ -1,18 +1,15 @@
 <template lang="pug">
-  div(id="q-app")
-    router-view
+  q-page.row.items-center.justify-evenly
+    p-register
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
-import { provideAuth, provideStorage } from 'src/compositions'
-
+import PRegister from 'components/Register.vue'
 export default defineComponent({
-  name: 'App',
-
+  name: 'PageRegistration',
+  components: { PRegister },
   setup() {
-    provideAuth()
-    provideStorage()
     return {}
   }
 })

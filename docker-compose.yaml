@@ -9,6 +9,7 @@ services:
       - ./.docker/postgres/data:/var/lib/postgresql/data # * dev only
       # - db_data:/var/lib/postgresql/data # * prod
   graphql-engine:
+    # TODO load migrations and metadata
     image: hasura/graphql-engine:v1.2.2
     depends_on:
       - postgres

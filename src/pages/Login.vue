@@ -1,18 +1,15 @@
 <template lang="pug">
-  div(id="q-app")
-    router-view
+  q-page.row.items-center.justify-evenly
+    p-login.col-12.q-pa-xl
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
-import { provideAuth, provideStorage } from 'src/compositions'
-
+import PLogin from 'components/Login.vue'
 export default defineComponent({
-  name: 'App',
-
+  name: 'PageLogin',
+  components: { PLogin },
   setup() {
-    provideAuth()
-    provideStorage()
     return {}
   }
 })

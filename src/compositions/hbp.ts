@@ -1,4 +1,10 @@
-import { provide, InjectionKey, inject } from '@vue/composition-api'
+import {
+  provide,
+  InjectionKey,
+  inject,
+  ref,
+  computed
+} from '@vue/composition-api'
 
 import nhost from 'nhost-js-sdk'
 import Auth from 'nhost-js-sdk/dist/Auth'
@@ -22,3 +28,14 @@ export function provideStorage() {
 
 export const useAuth = () => inject(AuthSymbol)
 export const useStorage = () => inject(StorageSymbol)
+
+export const useConnectionStatus = () => {
+  const auth = useAuth()
+  const status = ref(!!auth?.isAuthenticated())
+  if (auth) {
+    auth.onAuthStateChanged(() => {
+      status.value = !!auth.isAuthenticated()
+    })
+  }
+  return computed(() => status.value)
+}
