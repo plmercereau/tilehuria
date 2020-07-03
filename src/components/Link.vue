@@ -1,5 +1,5 @@
 <template lang="pug">
-  q-item( clickable :to="to")
+  q-item(clickable :to="to")
     q-item-section(v-if="icon"
       avatar)
       q-icon(:name="icon")

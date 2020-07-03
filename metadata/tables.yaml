@@ -91,17 +91,21 @@
     name: area_of_interest
   configuration:
     custom_root_fields:
-      insert: insertAreaOfInterest
-      select_aggregate: areaOfInterest_aggregate
-      insert_one: insertOneAreaOfInterest
-      select_by_pk: areaOfInterestByPk
-      select: areaOfInterest
-      delete: deleteAreaOfInterest
-      update: updateAreaOfInterest
-      delete_by_pk: deleteAreaOfInterestByPk
-      update_by_pk: updateAreaOfInterestByPk
+      insert: insertAreasOfInterest
+      select_aggregate: areaOfInterestAggregate
+      insert_one: insertAreaOfInterest
+      select_by_pk: areaOfInterest
+      select: areasOfInterest
+      delete: deleteAreaOfInterests
+      update: updateAreasOfInterest
+      delete_by_pk: deleteAreaOfInterest
+      update_by_pk: updateAreaOfInterest
     custom_column_names:
       xyz_coordinates: xyzCoordinates
+  object_relationships:
+  - name: user
+    using:
+      foreign_key_constraint_on: user_id
   array_relationships:
   - name: tileSets
     using:
@@ -110,15 +114,43 @@
         table:
           schema: public
           name: tile_set
+  insert_permissions:
+  - role: user
+    permission:
+      check: {}
+      set:
+        user_id: x-hasura-user-id
+      columns:
+      - id
+      - name
+      - source
+      backend_only: false
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - id
+      - name
+      - source
+      - user_id
+      - xyz_coordinates
+      filter: {}
+  update_permissions:
+  - role: user
+    permission:
+      columns:
+      - name
+      - source
+      filter: {}
+      check: null
+  delete_permissions:
+  - role: user
+    permission:
+      filter: {}
   event_triggers:
   - name: generate_aoi_coordinates
     definition:
       enable_manual: true
-      insert:
-        columns: '*'
-      update:
-        columns:
-        - source
     retry_conf:
       num_retries: 3
       interval_sec: 10
@@ -129,15 +161,15 @@
     name: tile_provider
   configuration:
     custom_root_fields:
-      insert: insertTileProvider
+      insert: insertTileProviders
       select_aggregate: tileProviderAggregate
-      insert_one: insertOneTileProvider
-      select_by_pk: tileProviderByPk
-      select: tileProvider
-      delete: deleteTileProvider
-      update: updateTileProvider
-      delete_by_pk: deleteTileProviderByPk
-      update_by_pk: updateTileProviderByPk
+      insert_one: insertTileProvider
+      select_by_pk: tileProvider
+      select: tileProviders
+      delete: deleteTileProviders
+      update: updateTileProviders
+      delete_by_pk: deleteTileProvider
+      update_by_pk: updateTileProvider
     custom_column_names: {}
   array_relationships:
   - name: tileSets
@@ -147,20 +179,50 @@
         table:
           schema: public
           name: tile_set
+  insert_permissions:
+  - role: user
+    permission:
+      check: {}
+      columns:
+      - id
+      - slug
+      - url
+      backend_only: false
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - id
+      - slug
+      - url
+      filter: {}
+  update_permissions:
+  - role: user
+    permission:
+      columns:
+      - id
+      - slug
+      - url
+      filter: {}
+      check: null
+  delete_permissions:
+  - role: user
+    permission:
+      filter: {}
 - table:
     schema: public
     name: tile_set
   configuration:
     custom_root_fields:
-      insert: insertTileSet
+      insert: insertTileSets
       select_aggregate: tileSetAggregate
-      insert_one: insertOneTileSet
-      select_by_pk: tileSetByPk
-      select: tileSet
-      delete: deleteTileSet
-      update: updateTileSet
-      delete_by_pk: deleteTileSetByPk
-      update_by_pk: updateTileSetByPk
+      insert_one: insertTileSet
+      select_by_pk: tileSet
+      select: tileSets
+      delete: deleteTileSets
+      update: updateTileSets
+      delete_by_pk: deleteTileSet
+      update_by_pk: updateTileSet
     custom_column_names: {}
   object_relationships:
   - name: areaOfInterest
@@ -169,6 +231,36 @@
   - name: tileProvider
     using:
       foreign_key_constraint_on: tile_provider_id
+  insert_permissions:
+  - role: user
+    permission:
+      check: {}
+      columns:
+      - id
+      - area_of_interest_id
+      - tile_provider_id
+      backend_only: false
+  select_permissions:
+  - role: user
+    permission:
+      columns:
+      - area_of_interest_id
+      - id
+      - tile_provider_id
+      filter: {}
+  update_permissions:
+  - role: user
+    permission:
+      columns:
+      - area_of_interest_id
+      - id
+      - tile_provider_id
+      filter: {}
+      check: {}
+  delete_permissions:
+  - role: user
+    permission:
+      filter: {}
   event_triggers:
   - name: generate_tiles
     definition:

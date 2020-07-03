@@ -1,6 +1,6 @@
 <template lang="pug">
 validation-observer(v-slot="{ handleSubmit, reset }")
-  form(@submit.prevent="handleSubmit(register)" @reset.prevent="reset(); resetValues()")
+  form(@submit.prevent="handleSubmit(register)" @reset.prevent="reset(); resetForm()")
     validation-provider(rules="required|email" name="email" v-slot="{ errors, touched, invalid }")
       q-input(v-model="email" label="email" autocomplete="username" autofocus
         :error="touched && invalid" :error-message="errors[0]")
@@ -41,7 +41,7 @@ export default defineComponent({
     const error = ref('')
     const register = async () => {
       await handleAxiosRequest(
-        () => auth?.register(email.value, password.value),
+        async () => await auth?.register(email.value, password.value),
         error
       )
       if (!error.value) {
@@ -53,12 +53,12 @@ export default defineComponent({
         }
       }
     }
-    const resetValues = () => {
+    const resetForm = () => {
       email.value = ''
       password.value = ''
       error.value = ''
     }
-    return { email, password, register, resetValues, error }
+    return { email, password, register, resetForm, error }
   }
 })
 </script>

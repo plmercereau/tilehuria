@@ -28,5 +28,17 @@ export type EventPayload<T> = {
     name: string
   }
 }
+export type ActionPayload<T> = {
+  action: {
+    name: string
+  }
+  input: T
+  session_variables: {
+    [key: string]: string
+    'x-hasura-user-id': string
+    'x-hasura-role': string
+  }
+}
 
 export type HasuraEventContext<T> = Context<EventPayload<T>>
+export type HasuraActionContext<T> = Context<ActionPayload<T>>

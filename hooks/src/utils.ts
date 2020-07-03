@@ -2,7 +2,7 @@ import cover from '@mapbox/tile-cover'
 import { MAX_ZOOM, MIN_ZOOM } from './config'
 import { GeoJSON } from 'geojson'
 
-export const geojsonToTiles = (geojson: GeoJSON) => {
+export const geojsonToTiles = (geojson?: GeoJSON) => {
   const walkTiles = (geojson: GeoJSON, tiles: number[][] = []) => {
     if (geojson.type === 'FeatureCollection') {
       for (const feature of geojson.features) {
@@ -20,7 +20,7 @@ export const geojsonToTiles = (geojson: GeoJSON) => {
       do {
         tilesCursor = cover.tiles(geojson, {
           min_zoom: 1,
-          max_zoom: maxZoomCursor,
+          max_zoom: maxZoomCursor
         })
         // TODO filter out any tile that is already in the tiles array
         tiles.push(...tilesCursor)
@@ -31,9 +31,10 @@ export const geojsonToTiles = (geojson: GeoJSON) => {
       )
     }
   }
-  const tiles: number[][] = []
   // * Generate the tiles list
-  walkTiles(geojson, tiles)
+  console.log(` [*] Calculating tiles coordinates of the Area of Internet...`)
+  const tiles: number[][] = []
+  if (geojson) walkTiles(geojson, tiles)
   console.log(` [*] Found ${tiles.length} tiles.`)
   return tiles
 }

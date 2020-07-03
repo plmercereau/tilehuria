@@ -4,16 +4,35 @@ schema:
       headers:
         x-hasura-admin-secret: ${HASURA_GRAPHQL_ADMIN_SECRET}
 # documents: '**/src/**/*.graphql'
+# TODO single config for everyone
 generates:
-  hooks/src/generated/graphql.ts:
+  hooks/src/generated/index.ts:
     plugins:
       - 'typescript'
-      # - 'typescript-operations'
-      # - 'typescript-graphql-files-modules'
-      # - 'typescript-document-nodes'
+    config:
+      maybeValue: T | undefined
+      scalars:
+        citext: string
+        uuid: string
+        timestamptz: Date
+        jsonb: '{ [key: string]: any }'
+      namingConvention:
+        typeNames: pascal-case#pascalCase
+        transformUnderscore: true
+  src/generated/index.ts:
+    plugins:
+      - 'typescript'
+    config:
+      maybeValue: T | undefined
+      scalars:
+        citext: string
+        uuid: string
+        timestamptz: Date
+        jsonb: '{ [key: string]: any }'
+      namingConvention:
+        typeNames: pascal-case#pascalCase
+        transformUnderscore: true
+
   ./schema.graphql:
     plugins:
       - schema-ast
-  # ./graphql.schema.json:
-  #   plugins:
-  #     - 'introspection'

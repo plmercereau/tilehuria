@@ -1,6 +1,22 @@
-actions: []
+actions:
+- name: insertAreaOfInterestAction
+  definition:
+    kind: synchronous
+    handler: '{{HOOKS_URL}}/actions/area-of-interest/insert'
+    forward_client_headers: true
+  permissions:
+  - role: user
 custom_types:
   enums: []
   input_objects: []
-  objects: []
+  objects:
+  - name: InsertAreaOfInterestActionOutput
+    relationships:
+    - remote_table:
+        schema: public
+        name: area_of_interest
+      name: areaOfInterest
+      type: object
+      field_mapping:
+        areaOfInterestId: id
   scalars: []

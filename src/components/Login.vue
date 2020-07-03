@@ -36,7 +36,7 @@ export default defineComponent({
     const error = ref('')
     const login = async () => {
       await handleAxiosRequest(
-        () => auth?.login(email.value, password.value),
+        async () => await auth?.login(email.value, password.value),
         error
       )
       if (!error.value) {

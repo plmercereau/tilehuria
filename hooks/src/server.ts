@@ -5,14 +5,16 @@ import json from 'koa-json'
 import bodyParser from 'koa-bodyparser'
 
 import events from './events'
+import actions from './actions'
 import { PORT } from './config'
 
 export const start = () =>
-  new Promise((resolve) => {
+  new Promise(resolve => {
     const app = new Koa()
     const router = new Router()
 
     router.use('/events', events.routes()).use(events.allowedMethods())
+    router.use('/actions', actions.routes()).use(events.allowedMethods())
 
     router.get('/healthz', async (ctx, next) => {
       ctx.body = 'ok'

@@ -14,11 +14,13 @@ export default defineComponent({
     const auth = useAuth()
     const error = ref('')
     const logout = async () => {
-      await handleAxiosRequest(() => auth?.logout(true), error)
-      if (!error.value) {
-        try {
-          await $router.push('/')
-        } catch (err) {}
+      if (auth) {
+        await handleAxiosRequest(() => auth.logout(true), error)
+        if (!error.value) {
+          try {
+            await $router.push('/')
+          } catch (err) {}
+        }
       }
     }
     return { logout, error }

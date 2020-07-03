@@ -19,6 +19,11 @@ input Boolean_comparison_exp {
   _nin: [Boolean!]
 }
 
+type InsertAreaOfInterestActionOutput {
+  areaOfInterest: area_of_interest
+  areaOfInterestId: uuid!
+}
+
 """
 expression to compare columns of type String. All fields are combined with logical 'AND'.
 """
@@ -45,6 +50,7 @@ columns and relationships of "area_of_interest"
 """
 type area_of_interest {
   id: uuid!
+  name: String!
   source(
     """JSON select path"""
     path: String
@@ -85,6 +91,10 @@ type area_of_interest {
     """filter the rows returned"""
     where: tile_set_bool_exp
   ): tile_set_aggregate!
+
+  """An object relationship"""
+  user: users
+  user_id: uuid
   xyzCoordinates(
     """JSON select path"""
     path: String
@@ -139,8 +149,11 @@ input area_of_interest_bool_exp {
   _not: area_of_interest_bool_exp
   _or: [area_of_interest_bool_exp]
   id: uuid_comparison_exp
+  name: String_comparison_exp
   source: jsonb_comparison_exp
   tileSets: tile_set_bool_exp
+  user: users_bool_exp
+  user_id: uuid_comparison_exp
   xyzCoordinates: jsonb_comparison_exp
 }
 
@@ -181,14 +194,19 @@ input type for inserting data into table "area_of_interest"
 """
 input area_of_interest_insert_input {
   id: uuid
+  name: String
   source: jsonb
   tileSets: tile_set_arr_rel_insert_input
+  user: users_obj_rel_insert_input
+  user_id: uuid
   xyzCoordinates: jsonb
 }
 
 """aggregate max on columns"""
 type area_of_interest_max_fields {
   id: uuid
+  name: String
+  user_id: uuid
 }
 
 """
@@ -196,11 +214,15 @@ order by max() on columns of table "area_of_interest"
 """
 input area_of_interest_max_order_by {
   id: order_by
+  name: order_by
+  user_id: order_by
 }
 
 """aggregate min on columns"""
 type area_of_interest_min_fields {
   id: uuid
+  name: String
+  user_id: uuid
 }
 
 """
@@ -208,6 +230,8 @@ order by min() on columns of table "area_of_interest"
 """
 input area_of_interest_min_order_by {
   id: order_by
+  name: order_by
+  user_id: order_by
 }
 
 """
@@ -243,8 +267,11 @@ ordering options when selecting data from "area_of_interest"
 """
 input area_of_interest_order_by {
   id: order_by
+  name: order_by
   source: order_by
   tileSets_aggregate: tile_set_aggregate_order_by
+  user: users_order_by
+  user_id: order_by
   xyzCoordinates: order_by
 }
 
@@ -269,7 +296,13 @@ enum area_of_interest_select_column {
   id
 
   """column name"""
+  name
+
+  """column name"""
   source
+
+  """column name"""
+  user_id
 
   """column name"""
   xyzCoordinates
@@ -280,7 +313,9 @@ input type for updating data in table "area_of_interest"
 """
 input area_of_interest_set_input {
   id: uuid
+  name: String
   source: jsonb
+  user_id: uuid
   xyzCoordinates: jsonb
 }
 
@@ -292,7 +327,13 @@ enum area_of_interest_update_column {
   id
 
   """column name"""
+  name
+
+  """column name"""
   source
+
+  """column name"""
+  user_id
 
   """column name"""
   xyzCoordinates
@@ -1932,6 +1973,8 @@ input citext_comparison_exp {
   _similar: String
 }
 
+scalar json
+
 scalar jsonb
 
 """
@@ -1966,43 +2009,43 @@ input jsonb_comparison_exp {
 """mutation root"""
 type mutation_root {
   """
+  delete single row from the table: "area_of_interest"
+  """
+  deleteAreaOfInterest(id: uuid!): area_of_interest
+
+  """
   delete data from the table: "area_of_interest"
   """
-  deleteAreaOfInterest(
+  deleteAreaOfInterests(
     """filter the rows which have to be deleted"""
     where: area_of_interest_bool_exp!
   ): area_of_interest_mutation_response
 
   """
-  delete single row from the table: "area_of_interest"
+  delete single row from the table: "tile_provider"
   """
-  deleteAreaOfInterestByPk(id: uuid!): area_of_interest
+  deleteTileProvider(id: uuid!): tile_provider
 
   """
   delete data from the table: "tile_provider"
   """
-  deleteTileProvider(
+  deleteTileProviders(
     """filter the rows which have to be deleted"""
     where: tile_provider_bool_exp!
   ): tile_provider_mutation_response
 
   """
-  delete single row from the table: "tile_provider"
+  delete single row from the table: "tile_set"
   """
-  deleteTileProviderByPk(id: uuid!): tile_provider
+  deleteTileSet(id: uuid!): tile_set
 
   """
   delete data from the table: "tile_set"
   """
-  deleteTileSet(
+  deleteTileSets(
     """filter the rows which have to be deleted"""
     where: tile_set_bool_exp!
   ): tile_set_mutation_response
-
-  """
-  delete single row from the table: "tile_set"
-  """
-  deleteTileSetByPk(id: uuid!): tile_set
 
   """
   delete data from the table: "auth.account_providers"
@@ -2096,20 +2139,9 @@ type mutation_root {
   delete_users_by_pk(id: uuid!): users
 
   """
-  insert data into the table: "area_of_interest"
-  """
-  insertAreaOfInterest(
-    """the rows to be inserted"""
-    objects: [area_of_interest_insert_input!]!
-
-    """on conflict condition"""
-    on_conflict: area_of_interest_on_conflict
-  ): area_of_interest_mutation_response
-
-  """
   insert a single row into the table: "area_of_interest"
   """
-  insertOneAreaOfInterest(
+  insertAreaOfInterest(
     """the row to be inserted"""
     object: area_of_interest_insert_input!
 
@@ -2118,9 +2150,25 @@ type mutation_root {
   ): area_of_interest
 
   """
+  perform the action: "insertAreaOfInterestAction"
+  """
+  insertAreaOfInterestAction(id: uuid, name: String!, source: jsonb!): InsertAreaOfInterestActionOutput
+
+  """
+  insert data into the table: "area_of_interest"
+  """
+  insertAreasOfInterest(
+    """the rows to be inserted"""
+    objects: [area_of_interest_insert_input!]!
+
+    """on conflict condition"""
+    on_conflict: area_of_interest_on_conflict
+  ): area_of_interest_mutation_response
+
+  """
   insert a single row into the table: "tile_provider"
   """
-  insertOneTileProvider(
+  insertTileProvider(
     """the row to be inserted"""
     object: tile_provider_insert_input!
 
@@ -2129,20 +2177,9 @@ type mutation_root {
   ): tile_provider
 
   """
-  insert a single row into the table: "tile_set"
-  """
-  insertOneTileSet(
-    """the row to be inserted"""
-    object: tile_set_insert_input!
-
-    """on conflict condition"""
-    on_conflict: tile_set_on_conflict
-  ): tile_set
-
-  """
   insert data into the table: "tile_provider"
   """
-  insertTileProvider(
+  insertTileProviders(
     """the rows to be inserted"""
     objects: [tile_provider_insert_input!]!
 
@@ -2151,9 +2188,20 @@ type mutation_root {
   ): tile_provider_mutation_response
 
   """
-  insert data into the table: "tile_set"
+  insert a single row into the table: "tile_set"
   """
   insertTileSet(
+    """the row to be inserted"""
+    object: tile_set_insert_input!
+
+    """on conflict condition"""
+    on_conflict: tile_set_on_conflict
+  ): tile_set
+
+  """
+  insert data into the table: "tile_set"
+  """
+  insertTileSets(
     """the rows to be inserted"""
     objects: [tile_set_insert_input!]!
 
@@ -2316,9 +2364,39 @@ type mutation_root {
   ): users
 
   """
-  update data of the table: "area_of_interest"
+  update single row of the table: "area_of_interest"
   """
   updateAreaOfInterest(
+    """append existing jsonb value of filtered columns with new jsonb value"""
+    _append: area_of_interest_append_input
+
+    """
+    delete the field or element with specified path (for JSON arrays, negative integers count from the end)
+    """
+    _delete_at_path: area_of_interest_delete_at_path_input
+
+    """
+    delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
+    """
+    _delete_elem: area_of_interest_delete_elem_input
+
+    """
+    delete key/value pair or string element. key/value pairs are matched based on their key value
+    """
+    _delete_key: area_of_interest_delete_key_input
+
+    """prepend existing jsonb value of filtered columns with new jsonb value"""
+    _prepend: area_of_interest_prepend_input
+
+    """sets the columns of the filtered rows to the given values"""
+    _set: area_of_interest_set_input
+    pk_columns: area_of_interest_pk_columns_input!
+  ): area_of_interest
+
+  """
+  update data of the table: "area_of_interest"
+  """
+  updateAreasOfInterest(
     """append existing jsonb value of filtered columns with new jsonb value"""
     _append: area_of_interest_append_input
 
@@ -2348,39 +2426,18 @@ type mutation_root {
   ): area_of_interest_mutation_response
 
   """
-  update single row of the table: "area_of_interest"
+  update single row of the table: "tile_provider"
   """
-  updateAreaOfInterestByPk(
-    """append existing jsonb value of filtered columns with new jsonb value"""
-    _append: area_of_interest_append_input
-
-    """
-    delete the field or element with specified path (for JSON arrays, negative integers count from the end)
-    """
-    _delete_at_path: area_of_interest_delete_at_path_input
-
-    """
-    delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array
-    """
-    _delete_elem: area_of_interest_delete_elem_input
-
-    """
-    delete key/value pair or string element. key/value pairs are matched based on their key value
-    """
-    _delete_key: area_of_interest_delete_key_input
-
-    """prepend existing jsonb value of filtered columns with new jsonb value"""
-    _prepend: area_of_interest_prepend_input
-
+  updateTileProvider(
     """sets the columns of the filtered rows to the given values"""
-    _set: area_of_interest_set_input
-    pk_columns: area_of_interest_pk_columns_input!
-  ): area_of_interest
+    _set: tile_provider_set_input
+    pk_columns: tile_provider_pk_columns_input!
+  ): tile_provider
 
   """
   update data of the table: "tile_provider"
   """
-  updateTileProvider(
+  updateTileProviders(
     """sets the columns of the filtered rows to the given values"""
     _set: tile_provider_set_input
 
@@ -2389,33 +2446,24 @@ type mutation_root {
   ): tile_provider_mutation_response
 
   """
-  update single row of the table: "tile_provider"
+  update single row of the table: "tile_set"
   """
-  updateTileProviderByPk(
+  updateTileSet(
     """sets the columns of the filtered rows to the given values"""
-    _set: tile_provider_set_input
-    pk_columns: tile_provider_pk_columns_input!
-  ): tile_provider
+    _set: tile_set_set_input
+    pk_columns: tile_set_pk_columns_input!
+  ): tile_set
 
   """
   update data of the table: "tile_set"
   """
-  updateTileSet(
+  updateTileSets(
     """sets the columns of the filtered rows to the given values"""
     _set: tile_set_set_input
 
     """filter the rows which have to be updated"""
     where: tile_set_bool_exp!
   ): tile_set_mutation_response
-
-  """
-  update single row of the table: "tile_set"
-  """
-  updateTileSetByPk(
-    """sets the columns of the filtered rows to the given values"""
-    _set: tile_set_set_input
-    pk_columns: tile_set_pk_columns_input!
-  ): tile_set
 
   """
   update data of the table: "auth.account_providers"
@@ -2624,34 +2672,14 @@ enum order_by {
 """query root"""
 type query_root {
   """
-  fetch data from the table: "area_of_interest"
-  """
-  areaOfInterest(
-    """distinct select on columns"""
-    distinct_on: [area_of_interest_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [area_of_interest_order_by!]
-
-    """filter the rows returned"""
-    where: area_of_interest_bool_exp
-  ): [area_of_interest!]!
-
-  """
   fetch data from the table: "area_of_interest" using primary key columns
   """
-  areaOfInterestByPk(id: uuid!): area_of_interest
+  areaOfInterest(id: uuid!): area_of_interest
 
   """
   fetch aggregated fields from the table: "area_of_interest"
   """
-  areaOfInterest_aggregate(
+  areaOfInterestAggregate(
     """distinct select on columns"""
     distinct_on: [area_of_interest_select_column!]
 
@@ -2667,6 +2695,26 @@ type query_root {
     """filter the rows returned"""
     where: area_of_interest_bool_exp
   ): area_of_interest_aggregate!
+
+  """
+  fetch data from the table: "area_of_interest"
+  """
+  areasOfInterest(
+    """distinct select on columns"""
+    distinct_on: [area_of_interest_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [area_of_interest_order_by!]
+
+    """filter the rows returned"""
+    where: area_of_interest_bool_exp
+  ): [area_of_interest!]!
 
   """
   fetch data from the table: "auth.account_providers"
@@ -2932,25 +2980,8 @@ type query_root {
   """fetch data from the table: "auth.roles" using primary key columns"""
   auth_roles_by_pk(role: String!): auth_roles
 
-  """
-  fetch data from the table: "tile_provider"
-  """
-  tileProvider(
-    """distinct select on columns"""
-    distinct_on: [tile_provider_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [tile_provider_order_by!]
-
-    """filter the rows returned"""
-    where: tile_provider_bool_exp
-  ): [tile_provider!]!
+  """fetch data from the table: "tile_provider" using primary key columns"""
+  tileProvider(id: uuid!): tile_provider
 
   """
   fetch aggregated fields from the table: "tile_provider"
@@ -2972,15 +3003,12 @@ type query_root {
     where: tile_provider_bool_exp
   ): tile_provider_aggregate!
 
-  """fetch data from the table: "tile_provider" using primary key columns"""
-  tileProviderByPk(id: uuid!): tile_provider
-
   """
-  fetch data from the table: "tile_set"
+  fetch data from the table: "tile_provider"
   """
-  tileSet(
+  tileProviders(
     """distinct select on columns"""
-    distinct_on: [tile_set_select_column!]
+    distinct_on: [tile_provider_select_column!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -2989,11 +3017,14 @@ type query_root {
     offset: Int
 
     """sort the rows by one or more columns"""
-    order_by: [tile_set_order_by!]
+    order_by: [tile_provider_order_by!]
 
     """filter the rows returned"""
-    where: tile_set_bool_exp
-  ): [tile_set!]!
+    where: tile_provider_bool_exp
+  ): [tile_provider!]!
+
+  """fetch data from the table: "tile_set" using primary key columns"""
+  tileSet(id: uuid!): tile_set
 
   """
   fetch aggregated fields from the table: "tile_set"
@@ -3015,8 +3046,25 @@ type query_root {
     where: tile_set_bool_exp
   ): tile_set_aggregate!
 
-  """fetch data from the table: "tile_set" using primary key columns"""
-  tileSetByPk(id: uuid!): tile_set
+  """
+  fetch data from the table: "tile_set"
+  """
+  tileSets(
+    """distinct select on columns"""
+    distinct_on: [tile_set_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [tile_set_order_by!]
+
+    """filter the rows returned"""
+    where: tile_set_bool_exp
+  ): [tile_set!]!
 
   """
   fetch data from the table: "users"
@@ -3065,34 +3113,14 @@ type query_root {
 """subscription root"""
 type subscription_root {
   """
-  fetch data from the table: "area_of_interest"
-  """
-  areaOfInterest(
-    """distinct select on columns"""
-    distinct_on: [area_of_interest_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [area_of_interest_order_by!]
-
-    """filter the rows returned"""
-    where: area_of_interest_bool_exp
-  ): [area_of_interest!]!
-
-  """
   fetch data from the table: "area_of_interest" using primary key columns
   """
-  areaOfInterestByPk(id: uuid!): area_of_interest
+  areaOfInterest(id: uuid!): area_of_interest
 
   """
   fetch aggregated fields from the table: "area_of_interest"
   """
-  areaOfInterest_aggregate(
+  areaOfInterestAggregate(
     """distinct select on columns"""
     distinct_on: [area_of_interest_select_column!]
 
@@ -3108,6 +3136,26 @@ type subscription_root {
     """filter the rows returned"""
     where: area_of_interest_bool_exp
   ): area_of_interest_aggregate!
+
+  """
+  fetch data from the table: "area_of_interest"
+  """
+  areasOfInterest(
+    """distinct select on columns"""
+    distinct_on: [area_of_interest_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [area_of_interest_order_by!]
+
+    """filter the rows returned"""
+    where: area_of_interest_bool_exp
+  ): [area_of_interest!]!
 
   """
   fetch data from the table: "auth.account_providers"
@@ -3373,25 +3421,8 @@ type subscription_root {
   """fetch data from the table: "auth.roles" using primary key columns"""
   auth_roles_by_pk(role: String!): auth_roles
 
-  """
-  fetch data from the table: "tile_provider"
-  """
-  tileProvider(
-    """distinct select on columns"""
-    distinct_on: [tile_provider_select_column!]
-
-    """limit the number of rows returned"""
-    limit: Int
-
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-
-    """sort the rows by one or more columns"""
-    order_by: [tile_provider_order_by!]
-
-    """filter the rows returned"""
-    where: tile_provider_bool_exp
-  ): [tile_provider!]!
+  """fetch data from the table: "tile_provider" using primary key columns"""
+  tileProvider(id: uuid!): tile_provider
 
   """
   fetch aggregated fields from the table: "tile_provider"
@@ -3413,15 +3444,12 @@ type subscription_root {
     where: tile_provider_bool_exp
   ): tile_provider_aggregate!
 
-  """fetch data from the table: "tile_provider" using primary key columns"""
-  tileProviderByPk(id: uuid!): tile_provider
-
   """
-  fetch data from the table: "tile_set"
+  fetch data from the table: "tile_provider"
   """
-  tileSet(
+  tileProviders(
     """distinct select on columns"""
-    distinct_on: [tile_set_select_column!]
+    distinct_on: [tile_provider_select_column!]
 
     """limit the number of rows returned"""
     limit: Int
@@ -3430,11 +3458,14 @@ type subscription_root {
     offset: Int
 
     """sort the rows by one or more columns"""
-    order_by: [tile_set_order_by!]
+    order_by: [tile_provider_order_by!]
 
     """filter the rows returned"""
-    where: tile_set_bool_exp
-  ): [tile_set!]!
+    where: tile_provider_bool_exp
+  ): [tile_provider!]!
+
+  """fetch data from the table: "tile_set" using primary key columns"""
+  tileSet(id: uuid!): tile_set
 
   """
   fetch aggregated fields from the table: "tile_set"
@@ -3456,8 +3487,25 @@ type subscription_root {
     where: tile_set_bool_exp
   ): tile_set_aggregate!
 
-  """fetch data from the table: "tile_set" using primary key columns"""
-  tileSetByPk(id: uuid!): tile_set
+  """
+  fetch data from the table: "tile_set"
+  """
+  tileSets(
+    """distinct select on columns"""
+    distinct_on: [tile_set_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [tile_set_order_by!]
+
+    """filter the rows returned"""
+    where: tile_set_bool_exp
+  ): [tile_set!]!
 
   """
   fetch data from the table: "users"

@@ -4,13 +4,13 @@ import gql from 'graphql-tag'
 
 import { HasuraEventContext } from '../types'
 import { client } from '../graphql-client'
-import { Area_Of_Interest } from '../generated/graphql'
+import { AreaOfInterest, QueryRoot } from '../generated'
 import { geojsonToTiles } from '../utils'
 // import { TILE_SET_QUEUE } from '../config'
 // import { sendMessage } from '../queue'
 
 export const areaOfInterest: Router.IMiddleware = async (
-  context: HasuraEventContext<Area_Of_Interest>
+  context: HasuraEventContext<AreaOfInterest>
 ) => {
   const id =
     context.request.body?.event.data.new?.id ||
@@ -20,28 +20,36 @@ export const areaOfInterest: Router.IMiddleware = async (
   )
   const query = gql`
     query getAoiSource($id: uuid!) {
-      areaOfInterestByPk(id: $id) {
+      areaOfInterest(id: $id) {
         source
+        name
       }
     }
   `
-  const { areaOfInterestByPk: aoi } = await client.request<{
-    areaOfInterestByPk?: Partial<Area_Of_Interest>
-  }>(query, { id })
-  if (aoi && aoi.source) {
-    const tiles = geojsonToTiles(aoi.source)
+  const { areaOfInterest: aoi } = await client.request<QueryRoot>(query, {
+    id
+  })
+  if (aoi) {
+    const name = aoi.name || aoi.source.name
+    const tiles = aoi.source
+      ? geojsonToTiles(aoi.source as GeoJSON.GeoJSON)
+      : []
     const mutation = gql`
-      mutation update_aoi_coordinates($id: uuid!, $xyz: jsonb!) {
-        updateAreaOfInterestByPk(
+      mutation update_aoi_coordinates(
+        $id: uuid!
+        $tiles: jsonb!
+        $name: String
+      ) {
+        updateAreaOfInterest(
           pk_columns: { id: $id }
-          _set: { xyzCoordinates: $xyz }
+          _set: { xyzCoordinates: $tiles, name: $name }
         ) {
           id
         }
       }
     `
     console.log(` [*] Updating the Area of Internet ${id}...`)
-    await client.request(mutation, { id, xyz: tiles })
+    await client.request(mutation, { id, tiles, name })
     console.log(` [*] Done.`)
     // TODO send message on the existing tileSets to the worker (if update)
   }

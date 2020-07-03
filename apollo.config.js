@@ -2,11 +2,7 @@
 require('dotenv').config()
 module.exports = {
   client: {
-    includes: [
-      './hooks/src/**/*.ts',
-      './worker/src/**/*.ts',
-      './frontend/src/**/*.ts'
-    ],
+    includes: ['./hooks/src/**/*.ts', './worker/src/**/*.ts', './src/**/*'],
     service: {
       name: 'hasura',
       // localSchemaFile: './schema.graphql',

@@ -5,10 +5,10 @@ import { HasuraEventContext } from '../types'
 import { TILE_SET_QUEUE } from '../config'
 import { sendMessage } from '../queue'
 import { client } from '../graphql-client'
-import { Tile_Set } from '../generated/graphql'
+import { TileSet, QueryRoot } from '../generated'
 
 export const tileSet: Router.IMiddleware = async (
-  context: HasuraEventContext<Tile_Set>
+  context: HasuraEventContext<TileSet>
 ) => {
   const id =
     context.request.body?.event.data.new?.id ||
@@ -26,14 +26,12 @@ export const tileSet: Router.IMiddleware = async (
       }
     }
   `
-  const { tileSetByPk: tileSet } = await client.request<{
-    tileSetByPk?: Tile_Set
-  }>(query, { id })
+  const { tileSet } = await client.request<QueryRoot>(query, { id })
 
   if (tileSet) {
     const {
       tileProvider: { url, slug },
-      areaOfInterest: { xyzCoordinates },
+      areaOfInterest: { xyzCoordinates }
     } = tileSet
     sendMessage(TILE_SET_QUEUE, JSON.stringify({ url, slug, xyzCoordinates }))
   }

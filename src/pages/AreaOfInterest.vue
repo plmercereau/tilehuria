@@ -1,0 +1,67 @@
+<template lang="pug">
+  q-page.row.q-pa-md
+    div(v-if="loading") Loading...
+    q-list(v-else)
+      q-field(label="Name" stack-label)
+        template(#control) {{aoi.name}}
+      q-field(label="Type" stack-label)
+        template(#control) {{type}}
+      q-field(label="Tiles" stack-label)
+        template(#control) {{aoi.xyzCoordinates.length}}
+      q-field(label="Tile sets" stack-label)
+        template(#control)
+          q-list(v-for="set of aoi.tileSets" :key="set.id")
+            q-item-tile-set(:tileSet="set")
+</template>
+
+<script lang="ts">
+import { defineComponent, computed } from '@vue/composition-api'
+import gql from 'graphql-tag'
+import { useQuery, useResult } from '@vue/apollo-composable'
+import QItemTileSet from 'components/ItemTileSet.vue'
+import { GeoJSON } from 'GeoJSON'
+import { QueryRoot, AreaOfInterest, Maybe } from '../generated'
+export default defineComponent({
+  name: 'AreaOfInterest',
+  props: {
+    id: {
+      type: String,
+      required: true
+    }
+  },
+  components: {
+    QItemTileSet
+  },
+  setup(props) {
+    const { result, loading } = useQuery<QueryRoot>(
+      gql`
+        query aoi($id: uuid!) {
+          areaOfInterest(id: $id) {
+            id
+            name
+            source
+            xyzCoordinates
+            tileSets {
+              id
+              tileProvider {
+                id
+                slug
+                url
+              }
+            }
+          }
+        }
+      `,
+      { id: props.id }
+    )
+    const aoi = useResult<QueryRoot, undefined, AreaOfInterest | undefined>(
+      result,
+      undefined,
+      data => data.areaOfInterest
+    )
+    const source = computed(() => aoi.value?.source as GeoJSON)
+    const type = computed(() => source.value?.type)
+    return { aoi, loading, type }
+  }
+})
+</script>
