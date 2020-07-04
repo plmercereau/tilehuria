@@ -19,7 +19,7 @@ export const getTileSet = async (
     ` [*] Downloading ${tiles.length} tiles from the ${slug} provider: ${url}.`
   )
   // * Set a Queue with CONCURRENT_DOWNLOADS
-  const queue = new PQueue({ concurrency: CONCURRENT_DOWNLOADS })
+  const pQueue = new PQueue({ concurrency: CONCURRENT_DOWNLOADS })
 
   // TODO mbtiles
   // const mbTiles = new MBTiles(
@@ -33,7 +33,7 @@ export const getTileSet = async (
   for (const [x, y, z] of tiles) {
     console.log(` [*] Download tile`, x, y, z)
     // * Queue the task - will not run more than CONCURRENT_DOWNLOADS promises
-    await queue.add(async () => {
+    await pQueue.add(async () => {
       // * Create a basic image processsing stream
       const sharpStream = sharp({
         failOnError: false
@@ -77,6 +77,6 @@ export const getTileSet = async (
     })
   }
   // * Wait for all the tiles to be processed
-  await queue.onIdle()
+  await pQueue.onIdle()
   console.log(' [*] Done dowloading the tile set.')
 }
