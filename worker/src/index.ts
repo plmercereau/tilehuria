@@ -1,7 +1,8 @@
-import { receiveAoi } from './server'
+import { watchAmqp } from './server'
+
 const main = async () => {
   try {
-    await receiveAoi()
+    await watchAmqp()
     console.log(' [*] Worker service started')
   } catch (error) {
     console.error(error)

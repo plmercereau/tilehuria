@@ -19,4 +19,13 @@ custom_types:
       type: object
       field_mapping:
         areaOfInterestId: id
+  - name: TileSetInfoOutput
+    relationships:
+    - remote_table:
+        schema: public
+        name: tile_set
+      name: tileSet
+      type: object
+      field_mapping:
+        tileSetId: id
   scalars: []

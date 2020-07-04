@@ -10,7 +10,7 @@ services:
       # - db_data:/var/lib/postgresql/data # * prod
   graphql-engine:
     # TODO load migrations and metadata
-    image: hasura/graphql-engine:v1.2.2
+    image: hasura/graphql-engine:v1.3.0-beta.4
     depends_on:
       - postgres
       - hasura-backend-plus
@@ -23,6 +23,7 @@ services:
       HASURA_GRAPHQL_ADMIN_SECRET: '$HASURA_GRAPHQL_ADMIN_SECRET'
       HASURA_GRAPHQL_JWT_SECRET: '{"type": "RS256", "jwk_url": "http://hasura-backend-plus:3000/auth/jwks"}'
       HOOKS_URL: http://hooks:3000
+      HOOKS_REMOTE_SCHEMA: http://hooks:3000/graphql
       EVENT_AOI: http://hooks:3000/events/area-of-interest
       EVENT_TILE_SET: http://hooks:3000/events/tile-set
   hasura-backend-plus:

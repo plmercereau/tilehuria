@@ -215,6 +215,16 @@
   - name: tileProvider
     using:
       foreign_key_constraint_on: tile_provider_id
+  remote_relationships:
+  - definition:
+      remote_field:
+        tileSetInfo:
+          arguments:
+            id: $id
+      hasura_fields:
+      - id
+      remote_schema: HOOKS
+    name: info
   insert_permissions:
   - role: user
     permission:

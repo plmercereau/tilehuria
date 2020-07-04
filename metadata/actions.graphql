@@ -13,3 +13,8 @@ type InsertAreaOfInterestActionOutput {
   areaOfInterestId : uuid!
 }
 
+type TileSetInfoOutput {
+  tileSetId : ID!
+  size : Int
+}
+
