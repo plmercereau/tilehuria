@@ -15,7 +15,7 @@ export const tileSet: Router.IMiddleware = async (
     context.request.body?.event.data.old?.id
   const query = gql`
     query getTileSetProviders($id: uuid!) {
-      tileSetByPk(id: $id) {
+      tileSet(id: $id) {
         tileProvider {
           slug
           url
