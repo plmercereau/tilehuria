@@ -32,7 +32,8 @@ export const insertAreaOfInterest: Router.IMiddleware = async (
           id,
           source,
           xyzCoordinates: geojsonToTiles(source),
-          name: name
+          name: name,
+          userId: context.request.body.session_variables['x-hasura-user-id']
         }
       }
     )

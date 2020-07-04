@@ -15,14 +15,12 @@
 
 <script lang="ts">
 import { defineComponent, ref } from '@vue/composition-api'
-import gql from 'graphql-tag'
 import { useMutation } from '@vue/apollo-composable'
-// import { GeoJSON } from 'GeoJSON'
-// import { QueryRoot, AreaOfInterest, Maybe } from '../generated'
 import { extend } from 'vee-validate'
 import { required, min } from 'vee-validate/dist/rules'
 import { MutationRoot, QueryRoot } from 'src/generated'
-import { AREAS_OF_INTEREST } from 'src/graphql'
+import { AREAS_OF_INTEREST, INSERT_AREA_OF_INTEREST } from 'src/graphql'
+
 extend('min', {
   ...min,
   message: '{_field_} must have at least {length} characters'
@@ -39,21 +37,7 @@ export default defineComponent({
     const source = ref('')
     const error = ref('')
     const { mutate: create, onError, onDone } = useMutation<MutationRoot>(
-      // TODO move to graphql declarations file
-      // TODO don't load all the tiles, but only their number (aggregates) -> would require to save xyzCoordinates as an array
-      gql`
-        mutation insertAoi($name: String!, $source: jsonb!) {
-          insertAreaOfInterestAction(name: $name, source: $source) {
-            areaOfInterestId
-            areaOfInterest {
-              id
-              name
-              source
-              xyzCoordinates
-            }
-          }
-        }
-      `,
+      INSERT_AREA_OF_INTEREST,
       () => ({
         variables: {
           name: name.value,

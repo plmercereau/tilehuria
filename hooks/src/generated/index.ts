@@ -33,6 +33,19 @@ export type InsertAreaOfInterestActionOutput = {
   areaOfInterestId: Scalars['uuid'];
 };
 
+/** expression to compare columns of type Int. All fields are combined with logical 'AND'. */
+export type IntComparisonExp = {
+  _eq?: Maybe<Scalars['Int']>;
+  _gt?: Maybe<Scalars['Int']>;
+  _gte?: Maybe<Scalars['Int']>;
+  _in?: Maybe<Array<Scalars['Int']>>;
+  _is_null?: Maybe<Scalars['Boolean']>;
+  _lt?: Maybe<Scalars['Int']>;
+  _lte?: Maybe<Scalars['Int']>;
+  _neq?: Maybe<Scalars['Int']>;
+  _nin?: Maybe<Array<Scalars['Int']>>;
+};
+
 /** expression to compare columns of type String. All fields are combined with logical 'AND'. */
 export type StringComparisonExp = {
   _eq?: Maybe<Scalars['String']>;
@@ -62,9 +75,10 @@ export type AreaOfInterest = {
   tileSets: Array<TileSet>;
   /** An aggregated array relationship */
   tileSets_aggregate: TileSetAggregate;
+  tilesCount: Scalars['Int'];
   /** An object relationship */
   user?: Maybe<Users>;
-  user_id?: Maybe<Scalars['uuid']>;
+  userId?: Maybe<Scalars['uuid']>;
   xyzCoordinates?: Maybe<Scalars['jsonb']>;
 };
 
@@ -110,9 +124,17 @@ export type AreaOfInterestAggregate = {
 /** aggregate fields of "area_of_interest" */
 export type AreaOfInterestAggregateFields = {
   __typename?: 'area_of_interest_aggregate_fields';
+  avg?: Maybe<AreaOfInterestAvgFields>;
   count?: Maybe<Scalars['Int']>;
   max?: Maybe<AreaOfInterestMaxFields>;
   min?: Maybe<AreaOfInterestMinFields>;
+  stddev?: Maybe<AreaOfInterestStddevFields>;
+  stddev_pop?: Maybe<AreaOfInterestStddevPopFields>;
+  stddev_samp?: Maybe<AreaOfInterestStddevSampFields>;
+  sum?: Maybe<AreaOfInterestSumFields>;
+  var_pop?: Maybe<AreaOfInterestVarPopFields>;
+  var_samp?: Maybe<AreaOfInterestVarSampFields>;
+  variance?: Maybe<AreaOfInterestVarianceFields>;
 };
 
 
@@ -124,9 +146,17 @@ export type AreaOfInterestAggregateFieldsCountArgs = {
 
 /** order by aggregate values of table "area_of_interest" */
 export type AreaOfInterestAggregateOrderBy = {
+  avg?: Maybe<AreaOfInterestAvgOrderBy>;
   count?: Maybe<OrderBy>;
   max?: Maybe<AreaOfInterestMaxOrderBy>;
   min?: Maybe<AreaOfInterestMinOrderBy>;
+  stddev?: Maybe<AreaOfInterestStddevOrderBy>;
+  stddev_pop?: Maybe<AreaOfInterestStddevPopOrderBy>;
+  stddev_samp?: Maybe<AreaOfInterestStddevSampOrderBy>;
+  sum?: Maybe<AreaOfInterestSumOrderBy>;
+  var_pop?: Maybe<AreaOfInterestVarPopOrderBy>;
+  var_samp?: Maybe<AreaOfInterestVarSampOrderBy>;
+  variance?: Maybe<AreaOfInterestVarianceOrderBy>;
 };
 
 /** append existing jsonb value of filtered columns with new jsonb value */
@@ -141,6 +171,17 @@ export type AreaOfInterestArrRelInsertInput = {
   on_conflict?: Maybe<AreaOfInterestOnConflict>;
 };
 
+/** aggregate avg on columns */
+export type AreaOfInterestAvgFields = {
+  __typename?: 'area_of_interest_avg_fields';
+  tilesCount?: Maybe<Scalars['Float']>;
+};
+
+/** order by avg() on columns of table "area_of_interest" */
+export type AreaOfInterestAvgOrderBy = {
+  tilesCount?: Maybe<OrderBy>;
+};
+
 /** Boolean expression to filter rows from the table "area_of_interest". All fields are combined with a logical 'AND'. */
 export type AreaOfInterestBoolExp = {
   _and?: Maybe<Array<Maybe<AreaOfInterestBoolExp>>>;
@@ -150,8 +191,9 @@ export type AreaOfInterestBoolExp = {
   name?: Maybe<StringComparisonExp>;
   source?: Maybe<JsonbComparisonExp>;
   tileSets?: Maybe<TileSetBoolExp>;
+  tilesCount?: Maybe<IntComparisonExp>;
   user?: Maybe<UsersBoolExp>;
-  user_id?: Maybe<UuidComparisonExp>;
+  userId?: Maybe<UuidComparisonExp>;
   xyzCoordinates?: Maybe<JsonbComparisonExp>;
 };
 
@@ -179,14 +221,20 @@ export type AreaOfInterestDeleteKeyInput = {
   xyzCoordinates?: Maybe<Scalars['String']>;
 };
 
+/** input type for incrementing integer column in table "area_of_interest" */
+export type AreaOfInterestIncInput = {
+  tilesCount?: Maybe<Scalars['Int']>;
+};
+
 /** input type for inserting data into table "area_of_interest" */
 export type AreaOfInterestInsertInput = {
   id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
   source?: Maybe<Scalars['jsonb']>;
   tileSets?: Maybe<TileSetArrRelInsertInput>;
+  tilesCount?: Maybe<Scalars['Int']>;
   user?: Maybe<UsersObjRelInsertInput>;
-  user_id?: Maybe<Scalars['uuid']>;
+  userId?: Maybe<Scalars['uuid']>;
   xyzCoordinates?: Maybe<Scalars['jsonb']>;
 };
 
@@ -195,14 +243,16 @@ export type AreaOfInterestMaxFields = {
   __typename?: 'area_of_interest_max_fields';
   id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
-  user_id?: Maybe<Scalars['uuid']>;
+  tilesCount?: Maybe<Scalars['Int']>;
+  userId?: Maybe<Scalars['uuid']>;
 };
 
 /** order by max() on columns of table "area_of_interest" */
 export type AreaOfInterestMaxOrderBy = {
   id?: Maybe<OrderBy>;
   name?: Maybe<OrderBy>;
-  user_id?: Maybe<OrderBy>;
+  tilesCount?: Maybe<OrderBy>;
+  userId?: Maybe<OrderBy>;
 };
 
 /** aggregate min on columns */
@@ -210,14 +260,16 @@ export type AreaOfInterestMinFields = {
   __typename?: 'area_of_interest_min_fields';
   id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
-  user_id?: Maybe<Scalars['uuid']>;
+  tilesCount?: Maybe<Scalars['Int']>;
+  userId?: Maybe<Scalars['uuid']>;
 };
 
 /** order by min() on columns of table "area_of_interest" */
 export type AreaOfInterestMinOrderBy = {
   id?: Maybe<OrderBy>;
   name?: Maybe<OrderBy>;
-  user_id?: Maybe<OrderBy>;
+  tilesCount?: Maybe<OrderBy>;
+  userId?: Maybe<OrderBy>;
 };
 
 /** response of any mutation on the table "area_of_interest" */
@@ -248,8 +300,9 @@ export type AreaOfInterestOrderBy = {
   name?: Maybe<OrderBy>;
   source?: Maybe<OrderBy>;
   tileSets_aggregate?: Maybe<TileSetAggregateOrderBy>;
+  tilesCount?: Maybe<OrderBy>;
   user?: Maybe<UsersOrderBy>;
-  user_id?: Maybe<OrderBy>;
+  userId?: Maybe<OrderBy>;
   xyzCoordinates?: Maybe<OrderBy>;
 };
 
@@ -273,7 +326,9 @@ export enum AreaOfInterestSelectColumn {
   /** column name */
   Source = 'source',
   /** column name */
-  UserId = 'user_id',
+  TilesCount = 'tilesCount',
+  /** column name */
+  UserId = 'userId',
   /** column name */
   XyzCoordinates = 'xyzCoordinates'
 }
@@ -283,8 +338,53 @@ export type AreaOfInterestSetInput = {
   id?: Maybe<Scalars['uuid']>;
   name?: Maybe<Scalars['String']>;
   source?: Maybe<Scalars['jsonb']>;
-  user_id?: Maybe<Scalars['uuid']>;
+  tilesCount?: Maybe<Scalars['Int']>;
+  userId?: Maybe<Scalars['uuid']>;
   xyzCoordinates?: Maybe<Scalars['jsonb']>;
+};
+
+/** aggregate stddev on columns */
+export type AreaOfInterestStddevFields = {
+  __typename?: 'area_of_interest_stddev_fields';
+  tilesCount?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev() on columns of table "area_of_interest" */
+export type AreaOfInterestStddevOrderBy = {
+  tilesCount?: Maybe<OrderBy>;
+};
+
+/** aggregate stddev_pop on columns */
+export type AreaOfInterestStddevPopFields = {
+  __typename?: 'area_of_interest_stddev_pop_fields';
+  tilesCount?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_pop() on columns of table "area_of_interest" */
+export type AreaOfInterestStddevPopOrderBy = {
+  tilesCount?: Maybe<OrderBy>;
+};
+
+/** aggregate stddev_samp on columns */
+export type AreaOfInterestStddevSampFields = {
+  __typename?: 'area_of_interest_stddev_samp_fields';
+  tilesCount?: Maybe<Scalars['Float']>;
+};
+
+/** order by stddev_samp() on columns of table "area_of_interest" */
+export type AreaOfInterestStddevSampOrderBy = {
+  tilesCount?: Maybe<OrderBy>;
+};
+
+/** aggregate sum on columns */
+export type AreaOfInterestSumFields = {
+  __typename?: 'area_of_interest_sum_fields';
+  tilesCount?: Maybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "area_of_interest" */
+export type AreaOfInterestSumOrderBy = {
+  tilesCount?: Maybe<OrderBy>;
 };
 
 /** update columns of table "area_of_interest" */
@@ -296,10 +396,45 @@ export enum AreaOfInterestUpdateColumn {
   /** column name */
   Source = 'source',
   /** column name */
-  UserId = 'user_id',
+  TilesCount = 'tilesCount',
+  /** column name */
+  UserId = 'userId',
   /** column name */
   XyzCoordinates = 'xyzCoordinates'
 }
+
+/** aggregate var_pop on columns */
+export type AreaOfInterestVarPopFields = {
+  __typename?: 'area_of_interest_var_pop_fields';
+  tilesCount?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_pop() on columns of table "area_of_interest" */
+export type AreaOfInterestVarPopOrderBy = {
+  tilesCount?: Maybe<OrderBy>;
+};
+
+/** aggregate var_samp on columns */
+export type AreaOfInterestVarSampFields = {
+  __typename?: 'area_of_interest_var_samp_fields';
+  tilesCount?: Maybe<Scalars['Float']>;
+};
+
+/** order by var_samp() on columns of table "area_of_interest" */
+export type AreaOfInterestVarSampOrderBy = {
+  tilesCount?: Maybe<OrderBy>;
+};
+
+/** aggregate variance on columns */
+export type AreaOfInterestVarianceFields = {
+  __typename?: 'area_of_interest_variance_fields';
+  tilesCount?: Maybe<Scalars['Float']>;
+};
+
+/** order by variance() on columns of table "area_of_interest" */
+export type AreaOfInterestVarianceOrderBy = {
+  tilesCount?: Maybe<OrderBy>;
+};
 
 /** columns and relationships of "auth.account_providers" */
 export type AuthAccountProviders = {
@@ -2083,6 +2218,7 @@ export type MutationRootUpdateAreaOfInterestArgs = {
   _delete_at_path?: Maybe<AreaOfInterestDeleteAtPathInput>;
   _delete_elem?: Maybe<AreaOfInterestDeleteElemInput>;
   _delete_key?: Maybe<AreaOfInterestDeleteKeyInput>;
+  _inc?: Maybe<AreaOfInterestIncInput>;
   _prepend?: Maybe<AreaOfInterestPrependInput>;
   _set?: Maybe<AreaOfInterestSetInput>;
   pk_columns: AreaOfInterestPkColumnsInput;
@@ -2095,6 +2231,7 @@ export type MutationRootUpdateAreasOfInterestArgs = {
   _delete_at_path?: Maybe<AreaOfInterestDeleteAtPathInput>;
   _delete_elem?: Maybe<AreaOfInterestDeleteElemInput>;
   _delete_key?: Maybe<AreaOfInterestDeleteKeyInput>;
+  _inc?: Maybe<AreaOfInterestIncInput>;
   _prepend?: Maybe<AreaOfInterestPrependInput>;
   _set?: Maybe<AreaOfInterestSetInput>;
   where: AreaOfInterestBoolExp;

@@ -25,6 +25,21 @@ type InsertAreaOfInterestActionOutput {
 }
 
 """
+expression to compare columns of type Int. All fields are combined with logical 'AND'.
+"""
+input Int_comparison_exp {
+  _eq: Int
+  _gt: Int
+  _gte: Int
+  _in: [Int!]
+  _is_null: Boolean
+  _lt: Int
+  _lte: Int
+  _neq: Int
+  _nin: [Int!]
+}
+
+"""
 expression to compare columns of type String. All fields are combined with logical 'AND'.
 """
 input String_comparison_exp {
@@ -91,10 +106,11 @@ type area_of_interest {
     """filter the rows returned"""
     where: tile_set_bool_exp
   ): tile_set_aggregate!
+  tilesCount: Int!
 
   """An object relationship"""
   user: users
-  user_id: uuid
+  userId: uuid
   xyzCoordinates(
     """JSON select path"""
     path: String
@@ -113,18 +129,34 @@ type area_of_interest_aggregate {
 aggregate fields of "area_of_interest"
 """
 type area_of_interest_aggregate_fields {
+  avg: area_of_interest_avg_fields
   count(columns: [area_of_interest_select_column!], distinct: Boolean): Int
   max: area_of_interest_max_fields
   min: area_of_interest_min_fields
+  stddev: area_of_interest_stddev_fields
+  stddev_pop: area_of_interest_stddev_pop_fields
+  stddev_samp: area_of_interest_stddev_samp_fields
+  sum: area_of_interest_sum_fields
+  var_pop: area_of_interest_var_pop_fields
+  var_samp: area_of_interest_var_samp_fields
+  variance: area_of_interest_variance_fields
 }
 
 """
 order by aggregate values of table "area_of_interest"
 """
 input area_of_interest_aggregate_order_by {
+  avg: area_of_interest_avg_order_by
   count: order_by
   max: area_of_interest_max_order_by
   min: area_of_interest_min_order_by
+  stddev: area_of_interest_stddev_order_by
+  stddev_pop: area_of_interest_stddev_pop_order_by
+  stddev_samp: area_of_interest_stddev_samp_order_by
+  sum: area_of_interest_sum_order_by
+  var_pop: area_of_interest_var_pop_order_by
+  var_samp: area_of_interest_var_samp_order_by
+  variance: area_of_interest_variance_order_by
 }
 
 """append existing jsonb value of filtered columns with new jsonb value"""
@@ -141,6 +173,18 @@ input area_of_interest_arr_rel_insert_input {
   on_conflict: area_of_interest_on_conflict
 }
 
+"""aggregate avg on columns"""
+type area_of_interest_avg_fields {
+  tilesCount: Float
+}
+
+"""
+order by avg() on columns of table "area_of_interest"
+"""
+input area_of_interest_avg_order_by {
+  tilesCount: order_by
+}
+
 """
 Boolean expression to filter rows from the table "area_of_interest". All fields are combined with a logical 'AND'.
 """
@@ -152,8 +196,9 @@ input area_of_interest_bool_exp {
   name: String_comparison_exp
   source: jsonb_comparison_exp
   tileSets: tile_set_bool_exp
+  tilesCount: Int_comparison_exp
   user: users_bool_exp
-  user_id: uuid_comparison_exp
+  userId: uuid_comparison_exp
   xyzCoordinates: jsonb_comparison_exp
 }
 
@@ -190,6 +235,13 @@ input area_of_interest_delete_key_input {
 }
 
 """
+input type for incrementing integer column in table "area_of_interest"
+"""
+input area_of_interest_inc_input {
+  tilesCount: Int
+}
+
+"""
 input type for inserting data into table "area_of_interest"
 """
 input area_of_interest_insert_input {
@@ -197,8 +249,9 @@ input area_of_interest_insert_input {
   name: String
   source: jsonb
   tileSets: tile_set_arr_rel_insert_input
+  tilesCount: Int
   user: users_obj_rel_insert_input
-  user_id: uuid
+  userId: uuid
   xyzCoordinates: jsonb
 }
 
@@ -206,7 +259,8 @@ input area_of_interest_insert_input {
 type area_of_interest_max_fields {
   id: uuid
   name: String
-  user_id: uuid
+  tilesCount: Int
+  userId: uuid
 }
 
 """
@@ -215,14 +269,16 @@ order by max() on columns of table "area_of_interest"
 input area_of_interest_max_order_by {
   id: order_by
   name: order_by
-  user_id: order_by
+  tilesCount: order_by
+  userId: order_by
 }
 
 """aggregate min on columns"""
 type area_of_interest_min_fields {
   id: uuid
   name: String
-  user_id: uuid
+  tilesCount: Int
+  userId: uuid
 }
 
 """
@@ -231,7 +287,8 @@ order by min() on columns of table "area_of_interest"
 input area_of_interest_min_order_by {
   id: order_by
   name: order_by
-  user_id: order_by
+  tilesCount: order_by
+  userId: order_by
 }
 
 """
@@ -270,8 +327,9 @@ input area_of_interest_order_by {
   name: order_by
   source: order_by
   tileSets_aggregate: tile_set_aggregate_order_by
+  tilesCount: order_by
   user: users_order_by
-  user_id: order_by
+  userId: order_by
   xyzCoordinates: order_by
 }
 
@@ -302,7 +360,10 @@ enum area_of_interest_select_column {
   source
 
   """column name"""
-  user_id
+  tilesCount
+
+  """column name"""
+  userId
 
   """column name"""
   xyzCoordinates
@@ -315,8 +376,57 @@ input area_of_interest_set_input {
   id: uuid
   name: String
   source: jsonb
-  user_id: uuid
+  tilesCount: Int
+  userId: uuid
   xyzCoordinates: jsonb
+}
+
+"""aggregate stddev on columns"""
+type area_of_interest_stddev_fields {
+  tilesCount: Float
+}
+
+"""
+order by stddev() on columns of table "area_of_interest"
+"""
+input area_of_interest_stddev_order_by {
+  tilesCount: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type area_of_interest_stddev_pop_fields {
+  tilesCount: Float
+}
+
+"""
+order by stddev_pop() on columns of table "area_of_interest"
+"""
+input area_of_interest_stddev_pop_order_by {
+  tilesCount: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type area_of_interest_stddev_samp_fields {
+  tilesCount: Float
+}
+
+"""
+order by stddev_samp() on columns of table "area_of_interest"
+"""
+input area_of_interest_stddev_samp_order_by {
+  tilesCount: order_by
+}
+
+"""aggregate sum on columns"""
+type area_of_interest_sum_fields {
+  tilesCount: Int
+}
+
+"""
+order by sum() on columns of table "area_of_interest"
+"""
+input area_of_interest_sum_order_by {
+  tilesCount: order_by
 }
 
 """
@@ -333,10 +443,49 @@ enum area_of_interest_update_column {
   source
 
   """column name"""
-  user_id
+  tilesCount
+
+  """column name"""
+  userId
 
   """column name"""
   xyzCoordinates
+}
+
+"""aggregate var_pop on columns"""
+type area_of_interest_var_pop_fields {
+  tilesCount: Float
+}
+
+"""
+order by var_pop() on columns of table "area_of_interest"
+"""
+input area_of_interest_var_pop_order_by {
+  tilesCount: order_by
+}
+
+"""aggregate var_samp on columns"""
+type area_of_interest_var_samp_fields {
+  tilesCount: Float
+}
+
+"""
+order by var_samp() on columns of table "area_of_interest"
+"""
+input area_of_interest_var_samp_order_by {
+  tilesCount: order_by
+}
+
+"""aggregate variance on columns"""
+type area_of_interest_variance_fields {
+  tilesCount: Float
+}
+
+"""
+order by variance() on columns of table "area_of_interest"
+"""
+input area_of_interest_variance_order_by {
+  tilesCount: order_by
 }
 
 """
@@ -2385,6 +2534,9 @@ type mutation_root {
     """
     _delete_key: area_of_interest_delete_key_input
 
+    """increments the integer columns with given value of the filtered values"""
+    _inc: area_of_interest_inc_input
+
     """prepend existing jsonb value of filtered columns with new jsonb value"""
     _prepend: area_of_interest_prepend_input
 
@@ -2414,6 +2566,9 @@ type mutation_root {
     delete key/value pair or string element. key/value pairs are matched based on their key value
     """
     _delete_key: area_of_interest_delete_key_input
+
+    """increments the integer columns with given value of the filtered values"""
+    _inc: area_of_interest_inc_input
 
     """prepend existing jsonb value of filtered columns with new jsonb value"""
     _prepend: area_of_interest_prepend_input

@@ -7,7 +7,7 @@
       q-field(label="Type" stack-label)
         template(#control) {{type}}
       q-field(label="Tiles" stack-label)
-        template(#control) {{aoi.xyzCoordinates.length}}
+        template(#control) {{aoi.tilesCount}}
       q-field(label="Tile sets" stack-label)
         template(#control)
           q-list(v-for="set of aoi.tileSets" :key="set.id")
@@ -16,11 +16,12 @@
 
 <script lang="ts">
 import { defineComponent, computed } from '@vue/composition-api'
-import gql from 'graphql-tag'
 import { useQuery, useResult } from '@vue/apollo-composable'
 import QItemTileSet from 'components/ItemTileSet.vue'
 import { GeoJSON } from 'GeoJSON'
 import { QueryRoot, AreaOfInterest, Maybe } from '../generated'
+import { SELECT_AREA_OF_INTEREST } from 'src/graphql'
+
 export default defineComponent({
   name: 'AreaOfInterest',
   props: {
@@ -33,27 +34,9 @@ export default defineComponent({
     QItemTileSet
   },
   setup(props) {
-    const { result, loading } = useQuery<QueryRoot>(
-      gql`
-        query aoi($id: uuid!) {
-          areaOfInterest(id: $id) {
-            id
-            name
-            source
-            xyzCoordinates
-            tileSets {
-              id
-              tileProvider {
-                id
-                slug
-                url
-              }
-            }
-          }
-        }
-      `,
-      { id: props.id }
-    )
+    const { result, loading } = useQuery<QueryRoot>(SELECT_AREA_OF_INTEREST, {
+      id: props.id
+    })
     const aoi = useResult<QueryRoot, undefined, AreaOfInterest | undefined>(
       result,
       undefined,
