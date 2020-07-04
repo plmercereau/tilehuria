@@ -19,7 +19,7 @@ const setCoordinates = (url: string, [x, y, z]: number[]) => {
   }
   return url.replace(
     /(\{x\}|\{y\}|\{z\}|\{zoom\}|\{-y\}|\{quadkey\})/gi,
-    (matched: string) => mapCoordinates[matched].toString()
+    (matched: string) => mapCoordinates[matched]()
   )
 }
 

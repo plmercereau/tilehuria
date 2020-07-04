@@ -14,9 +14,12 @@ export const getTileSet = async (
   tiles: number[][],
   template: string,
   slug: string
+  // TODO min Zoom
+  // TODO compression
+  // TODO format jpg/png
 ) => {
   console.log(
-    ` [*] Downloading ${tiles.length} tiles from the ${slug} provider: ${url}.`
+    ` [*] Loading ${tiles.length} tiles from the ${slug} provider: ${template}.`
   )
   // * Set a Queue with CONCURRENT_DOWNLOADS
   const pQueue = new PQueue({ concurrency: CONCURRENT_DOWNLOADS })
@@ -29,9 +32,14 @@ export const getTileSet = async (
   //   }
   // )
   // TODO progress - via a rabbitmq fanout?
+  // TODO 1.a. check if the tile has been dowloaded already
+  // TODO 1.b. else download save the file 'as-is' (png)
+  // TODO 2. compress then in the mbtiles if required
   // * Loop in the tiles
   for (const [x, y, z] of tiles) {
-    console.log(` [*] Download tile`, x, y, z)
+    // * get the right url from the template and the coordinates
+    const url = tileUrl(template, [x, y, z])
+    console.log(` [*] Download tile ${url}`)
     // * Queue the task - will not run more than CONCURRENT_DOWNLOADS promises
     await pQueue.add(async () => {
       // * Create a basic image processsing stream
@@ -65,8 +73,6 @@ export const getTileSet = async (
             )
           })
       )
-      // * get the right url from the template and the coordinates
-      const url = tileUrl(template, [x, y, z])
       // * Download from the HTTP tile server, and pipe to the above stream
       got.stream(url).pipe(sharpStream)
       // * Wait for the image processing to be done
