@@ -4,7 +4,7 @@ import {
   S3_ACCESS_KEY_ID,
   S3_SECRET_ACCESS_KEY,
   S3_ENDPOINT,
-  S3_SSL_ENABLED,
+  S3_SSL_ENABLED
 } from './config'
 
 const s3 = new AWS.S3({
@@ -13,7 +13,7 @@ const s3 = new AWS.S3({
   endpoint: S3_ENDPOINT,
   s3ForcePathStyle: true,
   signatureVersion: 'v4',
-  sslEnabled: S3_SSL_ENABLED,
+  sslEnabled: S3_SSL_ENABLED
 })
 
 export { s3 }
