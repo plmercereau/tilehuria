@@ -1,9 +1,9 @@
 import { start } from './server'
-import { connect } from './queue'
+import { connectQueues } from './queue'
 
 const main = async () => {
   try {
-    await connect()
+    await connectQueues()
     await start()
   } catch (error) {
     console.error(error)

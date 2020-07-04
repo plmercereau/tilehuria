@@ -1,5 +1,5 @@
-import { s3 } from './s3'
-import { S3_BUCKET, CONCURRENT_DOWNLOADS, JPEG_QUALITY } from './config'
+import { s3 } from '../utils'
+import { S3_BUCKET, CONCURRENT_DOWNLOADS, JPEG_QUALITY } from '../config'
 import PQueue from 'p-queue'
 import got from 'got'
 import sharp from 'sharp'
@@ -10,7 +10,7 @@ import sharp from 'sharp'
 /**
  * @param source the S3 object key, prefixed by the bucket name e.g. bucketname/
  */
-export const downloadTiles = async (
+export const getTileSet = async (
   tiles: number[][],
   url: string,
   slug: string
@@ -36,7 +36,7 @@ export const downloadTiles = async (
     await queue.add(async () => {
       // * Create a basic image processsing stream
       const sharpStream = sharp({
-        failOnError: false,
+        failOnError: false
       })
       // * Prepare the image processing stream
       const imageProcessing = new Promise((resolve, reject) =>
@@ -52,7 +52,7 @@ export const downloadTiles = async (
               {
                 Bucket: S3_BUCKET,
                 Key: `tile/${slug}/${z}/${x}/${y}.jpg`, // ? tile/provider/{z}/${x}/${y}.{jpg,png}
-                Body: data,
+                Body: data
               },
               (err, status) => {
                 if (err) {

@@ -1,6 +1,6 @@
 import { Channel } from 'amqplib'
 import { TILE_SET_QUEUE } from '../config'
-import { downloadTiles } from '../download-tiles'
+import { getTileSet } from '../tiles'
 import { startQueue } from '../utils'
 
 export const tileSetQueue = async (channel: Channel) => {
@@ -14,6 +14,6 @@ export const tileSetQueue = async (channel: Channel) => {
       slug: string
       xyzCoordinates: number[][]
     } = JSON.parse(message)
-    await downloadTiles(xyzCoordinates, url, slug)
+    await getTileSet(xyzCoordinates, url, slug)
   })
 }

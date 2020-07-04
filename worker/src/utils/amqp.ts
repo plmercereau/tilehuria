@@ -1,8 +1,7 @@
 import { Channel, connect } from 'amqplib'
-import { RABBITMQ_URL } from './config'
 
-export const createChannel = async () => {
-  const connection = await connect(RABBITMQ_URL)
+export const createChannel = async (url: string) => {
+  const connection = await connect(url)
   return await connection.createChannel()
 }
 
