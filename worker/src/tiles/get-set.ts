@@ -1,4 +1,4 @@
-import { s3 } from '../utils'
+import { s3, tileUrl } from '../utils'
 import { S3_BUCKET, CONCURRENT_DOWNLOADS, JPEG_QUALITY } from '../config'
 import PQueue from 'p-queue'
 import got from 'got'
@@ -12,7 +12,7 @@ import sharp from 'sharp'
  */
 export const getTileSet = async (
   tiles: number[][],
-  url: string,
+  template: string,
   slug: string
 ) => {
   console.log(
@@ -65,13 +65,10 @@ export const getTileSet = async (
             )
           })
       )
+      // * get the right url from the template and the coordinates
+      const url = tileUrl(template, [x, y, z])
       // * Download from the HTTP tile server, and pipe to the above stream
-      // TODO parse server url
-      // TODO Note that in the TMS tiling scheme, the Y axis is reversed from the "XYZ" coordinate system commonly used in the URLs to request individual tiles, so the tile commonly referred to as 11/327/791 is inserted as zoom_level 11, tile_column 327, and tile_row 1256, since 1256 is 2^11 - 1 - 791.
-      // TODO switch https://{switch:a,b,c}.tile.openstreetmap.org/{zoom}/{x}/{y}.png
-      got
-        .stream(`https://b.tile.openstreetmap.org/${z}/${x}/${y}.png`)
-        .pipe(sharpStream)
+      got.stream(url).pipe(sharpStream)
       // * Wait for the image processing to be done
       await imageProcessing
     })

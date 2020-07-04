@@ -51,7 +51,7 @@ export const areaOfInterest: Router.IMiddleware = async (
     console.log(` [*] Updating the Area of Internet ${id}...`)
     await client.request(mutation, { id, tiles, name })
     console.log(` [*] Done.`)
-    // TODO send message on the existing tileSets to the worker (if update)
+    // TODO send messages on the existing tileSets to the worker (if any)
   }
   context.status = 200
 }
