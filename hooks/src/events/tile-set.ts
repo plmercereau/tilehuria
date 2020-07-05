@@ -23,6 +23,8 @@ export const tileSet: Router.IMiddleware = async (
           url
         }
         areaOfInterest {
+          name
+          userId
           xyzCoordinates
         }
       }
@@ -35,11 +37,20 @@ export const tileSet: Router.IMiddleware = async (
       format,
       quality,
       tileProvider: { url, slug },
-      areaOfInterest: { xyzCoordinates }
+      areaOfInterest: { name, userId, xyzCoordinates }
     } = tileSet
+    console.log('---', userId)
     sendMessage(
       TILE_SET_QUEUE,
-      JSON.stringify({ url, slug, format, quality, xyzCoordinates })
+      JSON.stringify({
+        name,
+        userId,
+        url,
+        slug,
+        format,
+        quality,
+        xyzCoordinates
+      })
     )
   }
   context.status = 200
