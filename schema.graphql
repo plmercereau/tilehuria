@@ -39,6 +39,11 @@ input Int_comparison_exp {
   _nin: [Int!]
 }
 
+type Query {
+  hello: String
+  tileSetInfo(id: uuid!): TileSetInfo
+}
+
 """
 expression to compare columns of type String. All fields are combined with logical 'AND'.
 """
@@ -58,6 +63,16 @@ input String_comparison_exp {
   _nlike: String
   _nsimilar: String
   _similar: String
+}
+
+type TileSetInfo {
+  size: Int
+}
+
+type TileSetInfoOutput {
+  size: Int
+  tileSet: tile_set
+  tileSetId: ID!
 }
 
 """
@@ -2604,6 +2619,9 @@ type mutation_root {
   update single row of the table: "tile_set"
   """
   updateTileSet(
+    """increments the integer columns with given value of the filtered values"""
+    _inc: tile_set_inc_input
+
     """sets the columns of the filtered rows to the given values"""
     _set: tile_set_set_input
     pk_columns: tile_set_pk_columns_input!
@@ -2613,6 +2631,9 @@ type mutation_root {
   update data of the table: "tile_set"
   """
   updateTileSets(
+    """increments the integer columns with given value of the filtered values"""
+    _inc: tile_set_inc_input
+
     """sets the columns of the filtered rows to the given values"""
     _set: tile_set_set_input
 
@@ -3134,6 +3155,7 @@ type query_root {
 
   """fetch data from the table: "auth.roles" using primary key columns"""
   auth_roles_by_pk(role: String!): auth_roles
+  hello: String
 
   """fetch data from the table: "tile_provider" using primary key columns"""
   tileProvider(id: uuid!): tile_provider
@@ -3200,6 +3222,7 @@ type query_root {
     """filter the rows returned"""
     where: tile_set_bool_exp
   ): tile_set_aggregate!
+  tileSetInfo(id: uuid!): TileSetInfo
 
   """
   fetch data from the table: "tile_set"
@@ -3263,6 +3286,23 @@ type query_root {
 
   """fetch data from the table: "users" using primary key columns"""
   users_by_pk(id: uuid!): users
+}
+
+scalar smallint
+
+"""
+expression to compare columns of type smallint. All fields are combined with logical 'AND'.
+"""
+input smallint_comparison_exp {
+  _eq: smallint
+  _gt: smallint
+  _gte: smallint
+  _in: [smallint!]
+  _is_null: Boolean
+  _lt: smallint
+  _lte: smallint
+  _neq: smallint
+  _nin: [smallint!]
 }
 
 """subscription root"""
@@ -3937,7 +3977,12 @@ type tile_set {
   """An object relationship"""
   areaOfInterest: area_of_interest!
   area_of_interest_id: uuid!
+  format: String!
   id: uuid!
+
+  """Remote relationship field"""
+  info: TileSetInfo
+  quality: smallint
 
   """An object relationship"""
   tileProvider: tile_provider!
@@ -3956,18 +4001,34 @@ type tile_set_aggregate {
 aggregate fields of "tile_set"
 """
 type tile_set_aggregate_fields {
+  avg: tile_set_avg_fields
   count(columns: [tile_set_select_column!], distinct: Boolean): Int
   max: tile_set_max_fields
   min: tile_set_min_fields
+  stddev: tile_set_stddev_fields
+  stddev_pop: tile_set_stddev_pop_fields
+  stddev_samp: tile_set_stddev_samp_fields
+  sum: tile_set_sum_fields
+  var_pop: tile_set_var_pop_fields
+  var_samp: tile_set_var_samp_fields
+  variance: tile_set_variance_fields
 }
 
 """
 order by aggregate values of table "tile_set"
 """
 input tile_set_aggregate_order_by {
+  avg: tile_set_avg_order_by
   count: order_by
   max: tile_set_max_order_by
   min: tile_set_min_order_by
+  stddev: tile_set_stddev_order_by
+  stddev_pop: tile_set_stddev_pop_order_by
+  stddev_samp: tile_set_stddev_samp_order_by
+  sum: tile_set_sum_order_by
+  var_pop: tile_set_var_pop_order_by
+  var_samp: tile_set_var_samp_order_by
+  variance: tile_set_variance_order_by
 }
 
 """
@@ -3976,6 +4037,18 @@ input type for inserting array relation for remote table "tile_set"
 input tile_set_arr_rel_insert_input {
   data: [tile_set_insert_input!]!
   on_conflict: tile_set_on_conflict
+}
+
+"""aggregate avg on columns"""
+type tile_set_avg_fields {
+  quality: Float
+}
+
+"""
+order by avg() on columns of table "tile_set"
+"""
+input tile_set_avg_order_by {
+  quality: order_by
 }
 
 """
@@ -3987,7 +4060,9 @@ input tile_set_bool_exp {
   _or: [tile_set_bool_exp]
   areaOfInterest: area_of_interest_bool_exp
   area_of_interest_id: uuid_comparison_exp
+  format: String_comparison_exp
   id: uuid_comparison_exp
+  quality: smallint_comparison_exp
   tileProvider: tile_provider_bool_exp
   tile_provider_id: uuid_comparison_exp
 }
@@ -4001,12 +4076,21 @@ enum tile_set_constraint {
 }
 
 """
+input type for incrementing integer column in table "tile_set"
+"""
+input tile_set_inc_input {
+  quality: smallint
+}
+
+"""
 input type for inserting data into table "tile_set"
 """
 input tile_set_insert_input {
   areaOfInterest: area_of_interest_obj_rel_insert_input
   area_of_interest_id: uuid
+  format: String
   id: uuid
+  quality: smallint
   tileProvider: tile_provider_obj_rel_insert_input
   tile_provider_id: uuid
 }
@@ -4014,7 +4098,9 @@ input tile_set_insert_input {
 """aggregate max on columns"""
 type tile_set_max_fields {
   area_of_interest_id: uuid
+  format: String
   id: uuid
+  quality: smallint
   tile_provider_id: uuid
 }
 
@@ -4023,14 +4109,18 @@ order by max() on columns of table "tile_set"
 """
 input tile_set_max_order_by {
   area_of_interest_id: order_by
+  format: order_by
   id: order_by
+  quality: order_by
   tile_provider_id: order_by
 }
 
 """aggregate min on columns"""
 type tile_set_min_fields {
   area_of_interest_id: uuid
+  format: String
   id: uuid
+  quality: smallint
   tile_provider_id: uuid
 }
 
@@ -4039,7 +4129,9 @@ order by min() on columns of table "tile_set"
 """
 input tile_set_min_order_by {
   area_of_interest_id: order_by
+  format: order_by
   id: order_by
+  quality: order_by
   tile_provider_id: order_by
 }
 
@@ -4077,7 +4169,9 @@ ordering options when selecting data from "tile_set"
 input tile_set_order_by {
   areaOfInterest: area_of_interest_order_by
   area_of_interest_id: order_by
+  format: order_by
   id: order_by
+  quality: order_by
   tileProvider: tile_provider_order_by
   tile_provider_id: order_by
 }
@@ -4097,7 +4191,13 @@ enum tile_set_select_column {
   area_of_interest_id
 
   """column name"""
+  format
+
+  """column name"""
   id
+
+  """column name"""
+  quality
 
   """column name"""
   tile_provider_id
@@ -4108,8 +4208,58 @@ input type for updating data in table "tile_set"
 """
 input tile_set_set_input {
   area_of_interest_id: uuid
+  format: String
   id: uuid
+  quality: smallint
   tile_provider_id: uuid
+}
+
+"""aggregate stddev on columns"""
+type tile_set_stddev_fields {
+  quality: Float
+}
+
+"""
+order by stddev() on columns of table "tile_set"
+"""
+input tile_set_stddev_order_by {
+  quality: order_by
+}
+
+"""aggregate stddev_pop on columns"""
+type tile_set_stddev_pop_fields {
+  quality: Float
+}
+
+"""
+order by stddev_pop() on columns of table "tile_set"
+"""
+input tile_set_stddev_pop_order_by {
+  quality: order_by
+}
+
+"""aggregate stddev_samp on columns"""
+type tile_set_stddev_samp_fields {
+  quality: Float
+}
+
+"""
+order by stddev_samp() on columns of table "tile_set"
+"""
+input tile_set_stddev_samp_order_by {
+  quality: order_by
+}
+
+"""aggregate sum on columns"""
+type tile_set_sum_fields {
+  quality: smallint
+}
+
+"""
+order by sum() on columns of table "tile_set"
+"""
+input tile_set_sum_order_by {
+  quality: order_by
 }
 
 """
@@ -4120,10 +4270,52 @@ enum tile_set_update_column {
   area_of_interest_id
 
   """column name"""
+  format
+
+  """column name"""
   id
 
   """column name"""
+  quality
+
+  """column name"""
   tile_provider_id
+}
+
+"""aggregate var_pop on columns"""
+type tile_set_var_pop_fields {
+  quality: Float
+}
+
+"""
+order by var_pop() on columns of table "tile_set"
+"""
+input tile_set_var_pop_order_by {
+  quality: order_by
+}
+
+"""aggregate var_samp on columns"""
+type tile_set_var_samp_fields {
+  quality: Float
+}
+
+"""
+order by var_samp() on columns of table "tile_set"
+"""
+input tile_set_var_samp_order_by {
+  quality: order_by
+}
+
+"""aggregate variance on columns"""
+type tile_set_variance_fields {
+  quality: Float
+}
+
+"""
+order by variance() on columns of table "tile_set"
+"""
+input tile_set_variance_order_by {
+  quality: order_by
 }
 
 scalar timestamptz

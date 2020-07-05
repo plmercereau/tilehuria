@@ -6,7 +6,7 @@ const castBooleanEnv = (envVar: string, defaultValue = false): boolean =>
 export const {
   S3_ACCESS_KEY_ID,
   S3_SECRET_ACCESS_KEY,
-  S3_ENDPOINT,
+  S3_ENDPOINT
 } = process.env
 export const S3_BUCKET = process.env.S3_BUCKET || 'tilehuria'
 export const S3_SSL_ENABLED = castBooleanEnv('S3_SSL_ENABLED')
@@ -24,3 +24,4 @@ export const MIN_ZOOM = 1
 export const MAX_ZOOM = 19
 export const CONCURRENT_DOWNLOADS = 10
 export const JPEG_QUALITY = 80
+export const PNG_QUALITY = 100

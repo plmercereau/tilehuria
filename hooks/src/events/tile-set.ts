@@ -16,6 +16,8 @@ export const tileSet: Router.IMiddleware = async (
   const query = gql`
     query getTileSetProviders($id: uuid!) {
       tileSet(id: $id) {
+        format
+        quality
         tileProvider {
           slug
           url
@@ -30,10 +32,15 @@ export const tileSet: Router.IMiddleware = async (
 
   if (tileSet) {
     const {
+      format,
+      quality,
       tileProvider: { url, slug },
       areaOfInterest: { xyzCoordinates }
     } = tileSet
-    sendMessage(TILE_SET_QUEUE, JSON.stringify({ url, slug, xyzCoordinates }))
+    sendMessage(
+      TILE_SET_QUEUE,
+      JSON.stringify({ url, slug, format, quality, xyzCoordinates })
+    )
   }
   context.status = 200
 }
