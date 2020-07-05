@@ -230,8 +230,10 @@
     permission:
       check: {}
       columns:
-      - id
       - area_of_interest_id
+      - format
+      - id
+      - quality
       - tile_provider_id
       backend_only: false
   select_permissions:
@@ -239,16 +241,17 @@
     permission:
       columns:
       - area_of_interest_id
+      - format
       - id
+      - quality
       - tile_provider_id
       filter: {}
   update_permissions:
   - role: user
     permission:
       columns:
-      - area_of_interest_id
-      - id
-      - tile_provider_id
+      - format
+      - quality
       filter: {}
       check: {}
   delete_permissions:

@@ -19,7 +19,7 @@ import { defineComponent, computed } from '@vue/composition-api'
 import { useQuery, useResult } from '@vue/apollo-composable'
 import QItemTileSet from 'components/ItemTileSet.vue'
 import { GeoJSON } from 'GeoJSON'
-import { QueryRoot, AreaOfInterest, Maybe } from '../generated'
+import { QueryRoot, AreaOfInterest } from '../generated'
 import { SELECT_AREA_OF_INTEREST } from 'src/graphql'
 
 export default defineComponent({
