@@ -12,11 +12,13 @@ validation-observer(v-slot="{ handleSubmit }")
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from '@vue/composition-api'
-import { useAuth } from '../compositions'
+import { defineComponent, ref, provide } from '@vue/composition-api'
+import { useAuth, createApolloClient } from '../compositions'
 import { handleAxiosRequest } from '../utils'
 import { extend } from 'vee-validate'
 import { required, email } from 'vee-validate/dist/rules'
+import { useApolloClient } from '@vue/apollo-composable'
+
 extend('email', {
   ...email,
   message: '{_field_} must be an email'
@@ -34,12 +36,16 @@ export default defineComponent({
     const email = ref('')
     const password = ref('')
     const error = ref('')
+    const apolloClient = useApolloClient()
     const login = async () => {
       await handleAxiosRequest(
         async () => await auth?.login(email.value, password.value),
         error
       )
       if (!error.value) {
+        apolloClient.client.stop()
+        // apolloClient.client.
+
         await $router.push('/')
       }
     }

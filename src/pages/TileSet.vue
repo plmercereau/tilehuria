@@ -1,11 +1,15 @@
 <template lang="pug">
   q-page.row.q-pa-md
     div(v-if="loading") Loading...
-    q-list(v-else)
+    q-list.col-12(v-else)
       q-field(label="Area of Interest" stack-label)
         template(#control) {{tileSet.areaOfInterest.name}}
       q-field(label="Provider" stack-label)
         template(#control) {{tileSet.tileProvider.slug}}
+      q-field(label="Progress" stack-label)
+        template(#control) {{tileSet.progress}}
+      q-field(label="Size" stack-label)
+        template(#control) {{tileSet.size}}
       q-field(label="Format" stack-label)
         template(#control) {{tileSet.format}}
       q-field(label="Quality" stack-label)
@@ -13,10 +17,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from '@vue/composition-api'
+import { defineComponent } from '@vue/composition-api'
 import { useQuery, useResult } from '@vue/apollo-composable'
 import QItemTileSet from 'components/ItemTileSet.vue'
-import { GeoJSON } from 'GeoJSON'
 import { QueryRoot, TileSet } from '../generated'
 import { SELECT_TILE_SET } from 'src/graphql'
 

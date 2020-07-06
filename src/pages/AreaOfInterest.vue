@@ -16,10 +16,10 @@
 
 <script lang="ts">
 import { defineComponent, computed } from '@vue/composition-api'
-import { useQuery, useResult } from '@vue/apollo-composable'
+import { useSubscription, useResult } from '@vue/apollo-composable'
 import QItemTileSet from 'components/ItemTileSet.vue'
 import { GeoJSON } from 'GeoJSON'
-import { QueryRoot, AreaOfInterest } from '../generated'
+import { SubscriptionRoot, AreaOfInterest } from '../generated'
 import { SELECT_AREA_OF_INTEREST } from 'src/graphql'
 
 export default defineComponent({
@@ -34,14 +34,17 @@ export default defineComponent({
     QItemTileSet
   },
   setup(props) {
-    const { result, loading } = useQuery<QueryRoot>(SELECT_AREA_OF_INTEREST, {
-      id: props.id
-    })
-    const aoi = useResult<QueryRoot, undefined, AreaOfInterest | undefined>(
-      result,
-      undefined,
-      data => data.areaOfInterest
+    const { result, loading } = useSubscription<SubscriptionRoot>(
+      SELECT_AREA_OF_INTEREST,
+      {
+        id: props.id
+      }
     )
+    const aoi = useResult<
+      SubscriptionRoot,
+      undefined,
+      AreaOfInterest | undefined
+    >(result, undefined, data => data.areaOfInterest)
     const source = computed(() => aoi.value?.source as GeoJSON)
     const type = computed(() => source.value?.type)
     return { aoi, loading, type }

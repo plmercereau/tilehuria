@@ -2,8 +2,11 @@
   q-item(clickable :to="'/tile-sets/'+tileSet.id")
     q-item-section
       q-item-label {{ label }}
+    q-item-section(side v-if="tileSet.size")
+      q-badge {{tileSet.size}}
     q-item-section(side)
-      q-badge 3MB
+      div {{tileSet.progress}}
+      q-linear-progress(:value="tileSet.progress" class="q-mt-md")
 </template>
 
 <script lang="ts">

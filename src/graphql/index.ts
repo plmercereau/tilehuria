@@ -11,7 +11,7 @@ export const AREAS_OF_INTEREST = gql`
 `
 
 export const SELECT_AREA_OF_INTEREST = gql`
-  query selectOneAreaOfInterest($id: uuid!) {
+  subscription selectOneAreaOfInterest($id: uuid!) {
     areaOfInterest(id: $id) {
       id
       name
@@ -19,6 +19,8 @@ export const SELECT_AREA_OF_INTEREST = gql`
       tilesCount
       tileSets {
         id
+        progress
+        size
         tileProvider {
           id
           slug
@@ -35,6 +37,8 @@ export const SELECT_TILE_SET = gql`
       id
       quality
       format
+      progress
+      size
       areaOfInterest {
         name
       }
@@ -54,7 +58,6 @@ export const INSERT_AREA_OF_INTEREST = gql`
       areaOfInterest {
         id
         name
-        source
         tilesCount
       }
     }
