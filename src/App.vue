@@ -5,11 +5,15 @@
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
-import { provideAuth, provideStorage, useAuth } from 'src/compositions'
+import {
+  provideAuth,
+  provideStorage,
+  useAuth,
+  createApolloClient
+} from 'src/compositions'
 import { provide } from '@vue/composition-api'
-import { HASURA_ENDPOINT } from './config'
+import { HASURA_WS_ENDPOINT } from './config'
 import { DefaultApolloClient } from '@vue/apollo-composable'
-import ApolloClient from 'apollo-boost'
 
 export default defineComponent({
   name: 'App',
@@ -18,18 +22,11 @@ export default defineComponent({
     provideAuth()
     provideStorage()
     const auth = useAuth()
-    const apolloClient = new ApolloClient({
-      uri: HASURA_ENDPOINT,
-      request: operation => {
-        const token = auth?.getJWTToken()
-        operation.setContext({
-          headers: {
-            authorization: token ? `Bearer ${token}` : ''
-          }
-        })
-      }
-    })
-    provide(DefaultApolloClient, apolloClient)
+
+    provide(
+      DefaultApolloClient,
+      createApolloClient(() => auth?.getJWTToken())
+    )
   }
 })
 </script>
