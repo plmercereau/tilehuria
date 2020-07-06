@@ -1,13 +1,14 @@
-import Auth from 'nhost-js-sdk/dist/Auth'
-import { HASURA_WS_ENDPOINT } from 'src/config'
 import ApolloClient from 'apollo-client'
 import { WebSocketLink } from 'apollo-link-ws'
 import { InMemoryCache } from 'apollo-cache-inmemory'
-import { SubscriptionClient, Operations } from 'subscriptions-transport-ws'
+import { SubscriptionClient } from 'subscriptions-transport-ws'
 import { onError } from 'apollo-link-error'
-import MessageTypes from 'subscriptions-transport-ws/dist/message-types'
+// import MessageTypes from 'subscriptions-transport-ws/dist/message-types'
 
-export const createApolloClient = (getToken: () => string | undefined) => {
+export const createApolloClient = (
+  uri: string,
+  getToken: () => string | undefined
+) => {
   const getHeaders = () => {
     const headers: Record<string, string> = {}
     const token = getToken()
@@ -17,7 +18,7 @@ export const createApolloClient = (getToken: () => string | undefined) => {
     return headers
   }
 
-  const wsClient = new SubscriptionClient(HASURA_WS_ENDPOINT, {
+  const wsClient = new SubscriptionClient(uri, {
     reconnect: true,
     connectionParams: () => {
       return { headers: getHeaders() }
@@ -35,18 +36,18 @@ export const createApolloClient = (getToken: () => string | undefined) => {
       if (token) {
         // TODO weird TS error
         // const operations: Operations = {...wsClient.operations}
-        const operations = (wsClient.operations as unknown) as Operations
+        // const operations = (wsClient.operations as unknown) as Operations
         if (wsClient) {
           wsClient.close()
           // .connect()
         }
-        Object.keys(operations).forEach(id => {
-          ;(wsClient as any).sendMessage(
-            id,
-            MessageTypes.GQL_START,
-            operations[id].options
-          )
-        })
+        // Object.keys(operations).forEach(id => {
+        //   ;(wsClient as any).sendMessage(
+        //     id,
+        //     MessageTypes.GQL_START,
+        //     operations[id].options
+        //   )
+        // })
         return forward(operation)
       } else {
         console.log('error')

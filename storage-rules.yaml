@@ -13,5 +13,5 @@ paths:
   #   write: 'isOwner(userId)'
   /tile/:provider/*:
     read: 'true'
-  /mbtiles/:userId/:fileId:
+  /mbtiles/:userId/:providerSlug/:fileId:
     read: 'isOwner(userId) || validToken()'

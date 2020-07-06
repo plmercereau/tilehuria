@@ -169,6 +169,7 @@
       check: {}
       columns:
       - id
+      - name
       - slug
       - url
       backend_only: false
@@ -177,6 +178,7 @@
     permission:
       columns:
       - id
+      - name
       - slug
       - url
       filter: {}
@@ -185,6 +187,7 @@
     permission:
       columns:
       - id
+      - name
       - slug
       - url
       filter: {}

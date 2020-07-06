@@ -24,6 +24,7 @@
     "quasar": "^1.0.0",
     "subscriptions-transport-ws": "^0.9.16",
     "vee-validate": "^3.3.7",
+    "vue-filter-pretty-bytes": "^0.1.5",
     "vue-i18n": "^8.0.0"
   },
   "devDependencies": {

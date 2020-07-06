@@ -1,7 +1,6 @@
 <template lang="pug">
-  q-item(clickable :to="'/areas-of-interest/'+aoi.id")
-    q-item-section
-      q-item-label {{ title }}
+  q-item(clickable :to="'/areas-of-interest/'+aoi.id" v-ripple)
+    q-item-section {{ title }}
 </template>
 
 <script lang="ts">

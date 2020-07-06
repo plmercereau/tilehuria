@@ -54,11 +54,6 @@ input Int_comparison_exp {
   _nin: [Int!]
 }
 
-type Query {
-  hello: String
-  tileSetInfo(id: uuid!): TileSetInfo
-}
-
 """
 expression to compare columns of type String. All fields are combined with logical 'AND'.
 """
@@ -78,10 +73,6 @@ input String_comparison_exp {
   _nlike: String
   _nsimilar: String
   _similar: String
-}
-
-type TileSetInfo {
-  size: Int
 }
 
 type TileSetInfoOutput {
@@ -3170,7 +3161,6 @@ type query_root {
 
   """fetch data from the table: "auth.roles" using primary key columns"""
   auth_roles_by_pk(role: String!): auth_roles
-  hello: String
 
   """fetch data from the table: "tile_provider" using primary key columns"""
   tileProvider(id: uuid!): tile_provider
@@ -3237,7 +3227,6 @@ type query_root {
     """filter the rows returned"""
     where: tile_set_bool_exp
   ): tile_set_aggregate!
-  tileSetInfo(id: uuid!): TileSetInfo
 
   """
   fetch data from the table: "tile_set"
@@ -3766,6 +3755,7 @@ columns and relationships of "tile_provider"
 """
 type tile_provider {
   id: uuid!
+  name: String!
   slug: String!
 
   """An array relationship"""
@@ -3848,6 +3838,7 @@ input tile_provider_bool_exp {
   _not: tile_provider_bool_exp
   _or: [tile_provider_bool_exp]
   id: uuid_comparison_exp
+  name: String_comparison_exp
   slug: String_comparison_exp
   tileSets: tile_set_bool_exp
   url: String_comparison_exp
@@ -3858,7 +3849,13 @@ unique or primary key constraints on table "tile_provider"
 """
 enum tile_provider_constraint {
   """unique or primary key constraint"""
+  tile_provider_name_key
+
+  """unique or primary key constraint"""
   tile_provider_pkey
+
+  """unique or primary key constraint"""
+  tile_provider_slug_key
 }
 
 """
@@ -3866,6 +3863,7 @@ input type for inserting data into table "tile_provider"
 """
 input tile_provider_insert_input {
   id: uuid
+  name: String
   slug: String
   tileSets: tile_set_arr_rel_insert_input
   url: String
@@ -3874,6 +3872,7 @@ input tile_provider_insert_input {
 """aggregate max on columns"""
 type tile_provider_max_fields {
   id: uuid
+  name: String
   slug: String
   url: String
 }
@@ -3883,6 +3882,7 @@ order by max() on columns of table "tile_provider"
 """
 input tile_provider_max_order_by {
   id: order_by
+  name: order_by
   slug: order_by
   url: order_by
 }
@@ -3890,6 +3890,7 @@ input tile_provider_max_order_by {
 """aggregate min on columns"""
 type tile_provider_min_fields {
   id: uuid
+  name: String
   slug: String
   url: String
 }
@@ -3899,6 +3900,7 @@ order by min() on columns of table "tile_provider"
 """
 input tile_provider_min_order_by {
   id: order_by
+  name: order_by
   slug: order_by
   url: order_by
 }
@@ -3936,6 +3938,7 @@ ordering options when selecting data from "tile_provider"
 """
 input tile_provider_order_by {
   id: order_by
+  name: order_by
   slug: order_by
   tileSets_aggregate: tile_set_aggregate_order_by
   url: order_by
@@ -3956,6 +3959,9 @@ enum tile_provider_select_column {
   id
 
   """column name"""
+  name
+
+  """column name"""
   slug
 
   """column name"""
@@ -3967,6 +3973,7 @@ input type for updating data in table "tile_provider"
 """
 input tile_provider_set_input {
   id: uuid
+  name: String
   slug: String
   url: String
 }
@@ -3977,6 +3984,9 @@ update columns of table "tile_provider"
 enum tile_provider_update_column {
   """column name"""
   id
+
+  """column name"""
+  name
 
   """column name"""
   slug
@@ -3994,9 +4004,6 @@ type tile_set {
   area_of_interest_id: uuid!
   format: String!
   id: uuid!
-
-  """Remote relationship field"""
-  info: TileSetInfo
   progress: Float
   quality: smallint
   size: Int

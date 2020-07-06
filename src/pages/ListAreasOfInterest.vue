@@ -1,10 +1,10 @@
 <template lang="pug">
   q-page.row.q-pa-md
     div(v-if="loading") Loading...
-    q-list(v-else)
+    q-list.col-12(v-else bordered separator)
       q-item-area(v-for="aoi of areas" :key="aoi.id" :aoi="aoi")
     q-page-sticky(position="bottom-right" :offset="[18, 18]")
-      q-btn(fab icon="add" to="/areas-of-interest/new")
+      q-btn(fab icon="add" color="primary" to="/areas-of-interest/new")
 </template>
 
 <script lang="ts">

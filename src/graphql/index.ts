@@ -10,6 +10,15 @@ export const AREAS_OF_INTEREST = gql`
   }
 `
 
+export const PROVIDERS = gql`
+  query listAllTileProviders {
+    tileProviders {
+      id
+      name
+    }
+  }
+`
+
 export const SELECT_AREA_OF_INTEREST = gql`
   subscription selectOneAreaOfInterest($id: uuid!) {
     areaOfInterest(id: $id) {
@@ -23,6 +32,7 @@ export const SELECT_AREA_OF_INTEREST = gql`
         size
         tileProvider {
           id
+          name
           slug
           url
         }
@@ -41,9 +51,11 @@ export const SELECT_TILE_SET = gql`
       size
       areaOfInterest {
         name
+        userId
       }
       tileProvider {
         id
+        name
         slug
         url
       }

@@ -8,7 +8,21 @@ const TILE_SET_PROGRESS = gql`
     }
   }
 `
+const TILE_SET_COMPLETE = gql`
+  mutation updateTileSetProgres($id: uuid!, $size: Int!) {
+    updateTileSet(
+      pk_columns: { id: $id }
+      _set: { progress: 1.0, size: $size }
+    ) {
+      id
+    }
+  }
+`
 
-export const updateProgress = async (id: string, progress: number) => {
+export const updateTileProgress = async (id: string, progress: number) => {
   await hasuraClient.request(TILE_SET_PROGRESS, { id, progress })
+}
+
+export const completeTileProgress = async (id: string, size: number) => {
+  await hasuraClient.request(TILE_SET_COMPLETE, { id, size })
 }

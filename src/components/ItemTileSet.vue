@@ -2,17 +2,17 @@
   q-item(clickable :to="'/tile-sets/'+tileSet.id")
     q-item-section
       q-item-label {{ label }}
+      q-item-label
+        q-linear-progress.q-mt-md(v-if="tileSet.progress !== 1" :value="tileSet.progress")
     q-item-section(side v-if="tileSet.size")
-      q-badge {{tileSet.size}}
-    q-item-section(side)
-      div {{tileSet.progress}}
-      q-linear-progress(:value="tileSet.progress" class="q-mt-md")
+      q-badge {{tileSet.size | prettyBytes}}
+      
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType, computed } from '@vue/composition-api'
 import { TileSet } from '../generated'
-
+import '../filters/pretty-bytes'
 export default defineComponent({
   name: 'ItemTileSet',
   props: {
@@ -29,9 +29,7 @@ export default defineComponent({
     const label = computed(() => {
       return props.title === 'areaOfInterest'
         ? props.tileSet.areaOfInterest.name
-        : props.tileSet.tileProvider.slug +
-            ' - ' +
-            props.tileSet.tileProvider.url
+        : props.tileSet.tileProvider.name
     })
     return { label }
   }

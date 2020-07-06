@@ -25,7 +25,7 @@ export default defineComponent({
 
     provide(
       DefaultApolloClient,
-      createApolloClient(() => auth?.getJWTToken())
+      createApolloClient(HASURA_WS_ENDPOINT, () => auth?.getJWTToken())
     )
   }
 })

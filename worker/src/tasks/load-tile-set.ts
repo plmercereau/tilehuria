@@ -11,7 +11,7 @@ import {
   S3_BUCKET
 } from '../config'
 import { MbTiles, s3 } from '../utils'
-import { updateProgress } from '../graphql'
+import { updateTileProgress, completeTileProgress } from '../graphql'
 
 import { getOneTile } from './get-one-tile'
 
@@ -39,12 +39,12 @@ export const loadTileSet = async ({
   )
   let progress = 0.01
   const progressIncrement = 1.0 / xyzCoordinates.length
-  await updateProgress(id, progress)
+  await updateTileProgress(id, progress)
 
   let lastProgress = 0.01
   const progressInterval = setInterval(() => {
     if (progress >= lastProgress + 0.01) {
-      updateProgress(id, progress).then(() => {
+      updateTileProgress(id, progress).then(() => {
         lastProgress = progress
       })
     }
@@ -93,6 +93,7 @@ export const loadTileSet = async ({
   await mbTiles.stopWriting()
   await new Promise((resolve, reject) => {
     fs.readFile(tmpFileName, (err, data) => {
+      data.length
       if (err) return reject()
       s3.putObject(
         {
@@ -111,8 +112,8 @@ export const loadTileSet = async ({
       )
     })
   })
-  fs.unlinkSync(tmpFileName)
   clearInterval(progressInterval)
-  await updateProgress(id, 1.0)
+  await completeTileProgress(id, fs.statSync(tmpFileName).size)
+  fs.unlinkSync(tmpFileName)
   console.log(' [*] Done downloading the tile set.')
 }

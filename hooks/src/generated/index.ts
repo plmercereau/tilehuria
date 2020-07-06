@@ -60,17 +60,6 @@ export type IntComparisonExp = {
   _nin?: Maybe<Array<Scalars['Int']>>;
 };
 
-export type Query = {
-  __typename?: 'Query';
-  hello?: Maybe<Scalars['String']>;
-  tileSetInfo?: Maybe<TileSetInfo>;
-};
-
-
-export type QueryTileSetInfoArgs = {
-  id: Scalars['uuid'];
-};
-
 /** expression to compare columns of type String. All fields are combined with logical 'AND'. */
 export type StringComparisonExp = {
   _eq?: Maybe<Scalars['String']>;
@@ -88,11 +77,6 @@ export type StringComparisonExp = {
   _nlike?: Maybe<Scalars['String']>;
   _nsimilar?: Maybe<Scalars['String']>;
   _similar?: Maybe<Scalars['String']>;
-};
-
-export type TileSetInfo = {
-  __typename?: 'TileSetInfo';
-  size?: Maybe<Scalars['Int']>;
 };
 
 export type TileSetInfoOutput = {
@@ -2473,7 +2457,6 @@ export type QueryRoot = {
   auth_roles_aggregate: AuthRolesAggregate;
   /** fetch data from the table: "auth.roles" using primary key columns */
   auth_roles_by_pk?: Maybe<AuthRoles>;
-  hello?: Maybe<Scalars['String']>;
   /** fetch data from the table: "tile_provider" using primary key columns */
   tileProvider?: Maybe<TileProvider>;
   /** fetch aggregated fields from the table: "tile_provider" */
@@ -2484,7 +2467,6 @@ export type QueryRoot = {
   tileSet?: Maybe<TileSet>;
   /** fetch aggregated fields from the table: "tile_set" */
   tileSetAggregate: TileSetAggregate;
-  tileSetInfo?: Maybe<TileSetInfo>;
   /** fetch data from the table: "tile_set" */
   tileSets: Array<TileSet>;
   /** fetch data from the table: "users" */
@@ -2717,12 +2699,6 @@ export type QueryRootTileSetAggregateArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<TileSetOrderBy>>;
   where?: Maybe<TileSetBoolExp>;
-};
-
-
-/** query root */
-export type QueryRootTileSetInfoArgs = {
-  id: Scalars['uuid'];
 };
 
 
@@ -3104,6 +3080,7 @@ export type SubscriptionRootUsersByPkArgs = {
 export type TileProvider = {
   __typename?: 'tile_provider';
   id: Scalars['uuid'];
+  name: Scalars['String'];
   slug: Scalars['String'];
   /** An array relationship */
   tileSets: Array<TileSet>;
@@ -3173,6 +3150,7 @@ export type TileProviderBoolExp = {
   _not?: Maybe<TileProviderBoolExp>;
   _or?: Maybe<Array<Maybe<TileProviderBoolExp>>>;
   id?: Maybe<UuidComparisonExp>;
+  name?: Maybe<StringComparisonExp>;
   slug?: Maybe<StringComparisonExp>;
   tileSets?: Maybe<TileSetBoolExp>;
   url?: Maybe<StringComparisonExp>;
@@ -3181,12 +3159,17 @@ export type TileProviderBoolExp = {
 /** unique or primary key constraints on table "tile_provider" */
 export enum TileProviderConstraint {
   /** unique or primary key constraint */
-  TileProviderPkey = 'tile_provider_pkey'
+  TileProviderNameKey = 'tile_provider_name_key',
+  /** unique or primary key constraint */
+  TileProviderPkey = 'tile_provider_pkey',
+  /** unique or primary key constraint */
+  TileProviderSlugKey = 'tile_provider_slug_key'
 }
 
 /** input type for inserting data into table "tile_provider" */
 export type TileProviderInsertInput = {
   id?: Maybe<Scalars['uuid']>;
+  name?: Maybe<Scalars['String']>;
   slug?: Maybe<Scalars['String']>;
   tileSets?: Maybe<TileSetArrRelInsertInput>;
   url?: Maybe<Scalars['String']>;
@@ -3196,6 +3179,7 @@ export type TileProviderInsertInput = {
 export type TileProviderMaxFields = {
   __typename?: 'tile_provider_max_fields';
   id?: Maybe<Scalars['uuid']>;
+  name?: Maybe<Scalars['String']>;
   slug?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
 };
@@ -3203,6 +3187,7 @@ export type TileProviderMaxFields = {
 /** order by max() on columns of table "tile_provider" */
 export type TileProviderMaxOrderBy = {
   id?: Maybe<OrderBy>;
+  name?: Maybe<OrderBy>;
   slug?: Maybe<OrderBy>;
   url?: Maybe<OrderBy>;
 };
@@ -3211,6 +3196,7 @@ export type TileProviderMaxOrderBy = {
 export type TileProviderMinFields = {
   __typename?: 'tile_provider_min_fields';
   id?: Maybe<Scalars['uuid']>;
+  name?: Maybe<Scalars['String']>;
   slug?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
 };
@@ -3218,6 +3204,7 @@ export type TileProviderMinFields = {
 /** order by min() on columns of table "tile_provider" */
 export type TileProviderMinOrderBy = {
   id?: Maybe<OrderBy>;
+  name?: Maybe<OrderBy>;
   slug?: Maybe<OrderBy>;
   url?: Maybe<OrderBy>;
 };
@@ -3247,6 +3234,7 @@ export type TileProviderOnConflict = {
 /** ordering options when selecting data from "tile_provider" */
 export type TileProviderOrderBy = {
   id?: Maybe<OrderBy>;
+  name?: Maybe<OrderBy>;
   slug?: Maybe<OrderBy>;
   tileSets_aggregate?: Maybe<TileSetAggregateOrderBy>;
   url?: Maybe<OrderBy>;
@@ -3262,6 +3250,8 @@ export enum TileProviderSelectColumn {
   /** column name */
   Id = 'id',
   /** column name */
+  Name = 'name',
+  /** column name */
   Slug = 'slug',
   /** column name */
   Url = 'url'
@@ -3270,6 +3260,7 @@ export enum TileProviderSelectColumn {
 /** input type for updating data in table "tile_provider" */
 export type TileProviderSetInput = {
   id?: Maybe<Scalars['uuid']>;
+  name?: Maybe<Scalars['String']>;
   slug?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
 };
@@ -3278,6 +3269,8 @@ export type TileProviderSetInput = {
 export enum TileProviderUpdateColumn {
   /** column name */
   Id = 'id',
+  /** column name */
+  Name = 'name',
   /** column name */
   Slug = 'slug',
   /** column name */
@@ -3292,8 +3285,6 @@ export type TileSet = {
   area_of_interest_id: Scalars['uuid'];
   format: Scalars['String'];
   id: Scalars['uuid'];
-  /** Remote relationship field */
-  info?: Maybe<TileSetInfo>;
   progress?: Maybe<Scalars['Float']>;
   quality?: Maybe<Scalars['smallint']>;
   size?: Maybe<Scalars['Int']>;

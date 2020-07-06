@@ -12,8 +12,8 @@ validation-observer(v-slot="{ handleSubmit }")
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, provide } from '@vue/composition-api'
-import { useAuth, createApolloClient } from '../compositions'
+import { defineComponent, ref } from '@vue/composition-api'
+import { useAuth } from '../compositions'
 import { handleAxiosRequest } from '../utils'
 import { extend } from 'vee-validate'
 import { required, email } from 'vee-validate/dist/rules'
