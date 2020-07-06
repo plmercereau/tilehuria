@@ -1,13 +1,11 @@
 import Router from 'koa-router'
 import gql from 'graphql-tag'
-// TODO 'src/' import won't work!!
+// ! Remove this file
 
 import { HasuraEventContext } from '../types'
-import { client } from '../graphql-client'
 import { AreaOfInterest, QueryRoot } from '../generated'
-import { geojsonToTiles } from '../utils'
-// import { TILE_SET_QUEUE } from '../config'
-// import { sendMessage } from '../queue'
+import { geojsonToTiles, hasuraClient } from '../utils'
+import { MIN_ZOOM, MAX_ZOOM } from '../config'
 
 export const areaOfInterest: Router.IMiddleware = async (
   context: HasuraEventContext<AreaOfInterest>
@@ -26,13 +24,13 @@ export const areaOfInterest: Router.IMiddleware = async (
       }
     }
   `
-  const { areaOfInterest: aoi } = await client.request<QueryRoot>(query, {
+  const { areaOfInterest: aoi } = await hasuraClient.request<QueryRoot>(query, {
     id
   })
   if (aoi) {
     const name = aoi.name || aoi.source.name
     const tiles = aoi.source
-      ? geojsonToTiles(aoi.source as GeoJSON.GeoJSON)
+      ? geojsonToTiles(aoi.source as GeoJSON.GeoJSON, MIN_ZOOM, MAX_ZOOM)
       : []
     const mutation = gql`
       mutation update_aoi_coordinates(
@@ -49,7 +47,7 @@ export const areaOfInterest: Router.IMiddleware = async (
       }
     `
     console.log(` [*] Updating the Area of Internet ${id}...`)
-    await client.request(mutation, { id, tiles, name })
+    await hasuraClient.request(mutation, { id, tiles, name })
     console.log(` [*] Done.`)
     // TODO send messages on the existing tileSets to the worker (if any)
   }

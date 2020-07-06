@@ -1,8 +1,7 @@
 import cover from '@mapbox/tile-cover'
-import { MAX_ZOOM, MIN_ZOOM } from './config'
 import { GeoJSON } from 'geojson'
 
-export const geojsonToTiles = (geojson?: GeoJSON) => {
+export const geojsonToTiles = (geojson: GeoJSON, minZoom = 1, maxZoom = 19) => {
   const walkTiles = (geojson: GeoJSON, tiles: number[][] = []) => {
     if (geojson.type === 'FeatureCollection') {
       for (const feature of geojson.features) {
@@ -15,7 +14,7 @@ export const geojsonToTiles = (geojson?: GeoJSON) => {
         walkTiles(geometry, tiles)
       }
     } else {
-      let maxZoomCursor = MAX_ZOOM
+      let maxZoomCursor = maxZoom
       let tilesCursor: number[][] = []
       do {
         tilesCursor = cover.tiles(geojson, {
@@ -27,7 +26,7 @@ export const geojsonToTiles = (geojson?: GeoJSON) => {
         maxZoomCursor--
       } while (
         (tilesCursor.length > 1 || geojson.type === 'Point') &&
-        maxZoomCursor > MIN_ZOOM
+        maxZoomCursor > minZoom
       )
     }
   }

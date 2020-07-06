@@ -3,9 +3,9 @@ import gql from 'graphql-tag'
 // TODO 'src/' import won't work!!
 
 import { HasuraActionContext } from '../../types'
-import { client } from '../../graphql-client'
-import { geojsonToTiles } from '../../utils'
+import { geojsonToTiles, hasuraClient } from '../../utils'
 import { MutationRoot } from '../../generated'
+import { MIN_ZOOM, MAX_ZOOM } from '../../config'
 
 const mutation = gql`
   mutation insert_aoi_coordinates($object: area_of_interest_insert_input!) {
@@ -15,23 +15,24 @@ const mutation = gql`
   }
 `
 
+// TODO get zooms
 export const insertAreaOfInterest: Router.IMiddleware = async (
   context: HasuraActionContext<{
     id?: string
-    source?: GeoJSON.GeoJSON
+    source: GeoJSON.GeoJSON
     name: string
   }>
 ) => {
   if (!context.request.body) throw Error('no body')
   try {
     const { id, source, name } = context.request.body.input
-    const { insertAreaOfInterest } = await client.request<MutationRoot>(
+    const { insertAreaOfInterest } = await hasuraClient.request<MutationRoot>(
       mutation,
       {
         object: {
           id,
           source,
-          xyzCoordinates: geojsonToTiles(source),
+          xyzCoordinates: geojsonToTiles(source, MIN_ZOOM, MAX_ZOOM),
           name: name,
           userId: context.request.body.session_variables['x-hasura-user-id']
         }

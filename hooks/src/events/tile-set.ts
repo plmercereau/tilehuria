@@ -4,7 +4,7 @@ import gql from 'graphql-tag'
 import { HasuraEventContext } from '../types'
 import { TILE_SET_QUEUE } from '../config'
 import { sendMessage } from '../queue'
-import { client } from '../graphql-client'
+import { hasuraClient } from '../utils'
 import { TileSet, QueryRoot } from '../generated'
 
 export const tileSet: Router.IMiddleware = async (
@@ -30,7 +30,7 @@ export const tileSet: Router.IMiddleware = async (
       }
     }
   `
-  const { tileSet } = await client.request<QueryRoot>(query, { id })
+  const { tileSet } = await hasuraClient.request<QueryRoot>(query, { id })
 
   if (tileSet) {
     const {
@@ -43,6 +43,7 @@ export const tileSet: Router.IMiddleware = async (
     sendMessage(
       TILE_SET_QUEUE,
       JSON.stringify({
+        id,
         name,
         userId,
         url,

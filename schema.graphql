@@ -19,6 +19,21 @@ input Boolean_comparison_exp {
   _nin: [Boolean!]
 }
 
+"""
+expression to compare columns of type Float. All fields are combined with logical 'AND'.
+"""
+input Float_comparison_exp {
+  _eq: Float
+  _gt: Float
+  _gte: Float
+  _in: [Float!]
+  _is_null: Boolean
+  _lt: Float
+  _lte: Float
+  _neq: Float
+  _nin: [Float!]
+}
+
 type InsertAreaOfInterestActionOutput {
   areaOfInterest: area_of_interest
   areaOfInterestId: uuid!
@@ -3982,7 +3997,9 @@ type tile_set {
 
   """Remote relationship field"""
   info: TileSetInfo
+  progress: Float
   quality: smallint
+  size: Int
 
   """An object relationship"""
   tileProvider: tile_provider!
@@ -4041,14 +4058,18 @@ input tile_set_arr_rel_insert_input {
 
 """aggregate avg on columns"""
 type tile_set_avg_fields {
+  progress: Float
   quality: Float
+  size: Float
 }
 
 """
 order by avg() on columns of table "tile_set"
 """
 input tile_set_avg_order_by {
+  progress: order_by
   quality: order_by
+  size: order_by
 }
 
 """
@@ -4062,7 +4083,9 @@ input tile_set_bool_exp {
   area_of_interest_id: uuid_comparison_exp
   format: String_comparison_exp
   id: uuid_comparison_exp
+  progress: Float_comparison_exp
   quality: smallint_comparison_exp
+  size: Int_comparison_exp
   tileProvider: tile_provider_bool_exp
   tile_provider_id: uuid_comparison_exp
 }
@@ -4079,7 +4102,9 @@ enum tile_set_constraint {
 input type for incrementing integer column in table "tile_set"
 """
 input tile_set_inc_input {
+  progress: Float
   quality: smallint
+  size: Int
 }
 
 """
@@ -4090,7 +4115,9 @@ input tile_set_insert_input {
   area_of_interest_id: uuid
   format: String
   id: uuid
+  progress: Float
   quality: smallint
+  size: Int
   tileProvider: tile_provider_obj_rel_insert_input
   tile_provider_id: uuid
 }
@@ -4100,7 +4127,9 @@ type tile_set_max_fields {
   area_of_interest_id: uuid
   format: String
   id: uuid
+  progress: Float
   quality: smallint
+  size: Int
   tile_provider_id: uuid
 }
 
@@ -4111,7 +4140,9 @@ input tile_set_max_order_by {
   area_of_interest_id: order_by
   format: order_by
   id: order_by
+  progress: order_by
   quality: order_by
+  size: order_by
   tile_provider_id: order_by
 }
 
@@ -4120,7 +4151,9 @@ type tile_set_min_fields {
   area_of_interest_id: uuid
   format: String
   id: uuid
+  progress: Float
   quality: smallint
+  size: Int
   tile_provider_id: uuid
 }
 
@@ -4131,7 +4164,9 @@ input tile_set_min_order_by {
   area_of_interest_id: order_by
   format: order_by
   id: order_by
+  progress: order_by
   quality: order_by
+  size: order_by
   tile_provider_id: order_by
 }
 
@@ -4171,7 +4206,9 @@ input tile_set_order_by {
   area_of_interest_id: order_by
   format: order_by
   id: order_by
+  progress: order_by
   quality: order_by
+  size: order_by
   tileProvider: tile_provider_order_by
   tile_provider_id: order_by
 }
@@ -4197,7 +4234,13 @@ enum tile_set_select_column {
   id
 
   """column name"""
+  progress
+
+  """column name"""
   quality
+
+  """column name"""
+  size
 
   """column name"""
   tile_provider_id
@@ -4210,56 +4253,74 @@ input tile_set_set_input {
   area_of_interest_id: uuid
   format: String
   id: uuid
+  progress: Float
   quality: smallint
+  size: Int
   tile_provider_id: uuid
 }
 
 """aggregate stddev on columns"""
 type tile_set_stddev_fields {
+  progress: Float
   quality: Float
+  size: Float
 }
 
 """
 order by stddev() on columns of table "tile_set"
 """
 input tile_set_stddev_order_by {
+  progress: order_by
   quality: order_by
+  size: order_by
 }
 
 """aggregate stddev_pop on columns"""
 type tile_set_stddev_pop_fields {
+  progress: Float
   quality: Float
+  size: Float
 }
 
 """
 order by stddev_pop() on columns of table "tile_set"
 """
 input tile_set_stddev_pop_order_by {
+  progress: order_by
   quality: order_by
+  size: order_by
 }
 
 """aggregate stddev_samp on columns"""
 type tile_set_stddev_samp_fields {
+  progress: Float
   quality: Float
+  size: Float
 }
 
 """
 order by stddev_samp() on columns of table "tile_set"
 """
 input tile_set_stddev_samp_order_by {
+  progress: order_by
   quality: order_by
+  size: order_by
 }
 
 """aggregate sum on columns"""
 type tile_set_sum_fields {
+  progress: Float
   quality: smallint
+  size: Int
 }
 
 """
 order by sum() on columns of table "tile_set"
 """
 input tile_set_sum_order_by {
+  progress: order_by
   quality: order_by
+  size: order_by
 }
 
 """
@@ -4276,7 +4337,13 @@ enum tile_set_update_column {
   id
 
   """column name"""
+  progress
+
+  """column name"""
   quality
+
+  """column name"""
+  size
 
   """column name"""
   tile_provider_id
@@ -4284,38 +4351,50 @@ enum tile_set_update_column {
 
 """aggregate var_pop on columns"""
 type tile_set_var_pop_fields {
+  progress: Float
   quality: Float
+  size: Float
 }
 
 """
 order by var_pop() on columns of table "tile_set"
 """
 input tile_set_var_pop_order_by {
+  progress: order_by
   quality: order_by
+  size: order_by
 }
 
 """aggregate var_samp on columns"""
 type tile_set_var_samp_fields {
+  progress: Float
   quality: Float
+  size: Float
 }
 
 """
 order by var_samp() on columns of table "tile_set"
 """
 input tile_set_var_samp_order_by {
+  progress: order_by
   quality: order_by
+  size: order_by
 }
 
 """aggregate variance on columns"""
 type tile_set_variance_fields {
+  progress: Float
   quality: Float
+  size: Float
 }
 
 """
 order by variance() on columns of table "tile_set"
 """
 input tile_set_variance_order_by {
+  progress: order_by
   quality: order_by
+  size: order_by
 }
 
 scalar timestamptz

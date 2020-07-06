@@ -17,7 +17,7 @@ export default defineComponent({
   name: 'ListProviders',
   setup() {
     const { result, loading } = useQuery<QueryRoot>(gql`
-      query list {
+      query listAllTileProviders {
         tileProviders {
           id
           slug

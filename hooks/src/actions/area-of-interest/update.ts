@@ -3,8 +3,8 @@ import gql from 'graphql-tag'
 // TODO 'src/' import won't work!!
 
 import { HasuraActionContext } from '../../types'
-import { client } from '../../graphql-client'
-import { geojsonToTiles } from '../../utils'
+import { geojsonToTiles, hasuraClient } from '../../utils'
+import { MIN_ZOOM, MAX_ZOOM } from '../../config'
 
 const updateSourceMutation = gql`
   mutation update_aoi_source(
@@ -29,6 +29,7 @@ const updateName = gql`
   }
 `
 
+// TODO get zooms
 export const updateAreaOfInterest: Router.IMiddleware = async (
   context: HasuraActionContext<{
     id: string
@@ -40,14 +41,14 @@ export const updateAreaOfInterest: Router.IMiddleware = async (
   const { id, source, name } = context.request.body.input
 
   if (source)
-    await client.request(updateSourceMutation, {
+    await hasuraClient.request(updateSourceMutation, {
       id,
       source,
-      xyzCoordinates: geojsonToTiles(source)
+      xyzCoordinates: geojsonToTiles(source, MIN_ZOOM, MAX_ZOOM)
     })
 
   if (name)
-    await client.request(updateName, {
+    await hasuraClient.request(updateName, {
       id,
       name
     })

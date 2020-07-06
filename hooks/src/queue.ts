@@ -11,7 +11,9 @@ export const createQueue = (queue: string) => {
 
 export const sendMessage = (queue: string, message: string) => {
   channel.sendToQueue(queue, Buffer.from(message))
-  console.log(`[*] Sent "${message}" to the queue ${queue}.`)
+  console.log(
+    `[*] Sent message with length ${message.length} to the queue ${queue}.`
+  )
 }
 
 export const connectQueues = async () => {

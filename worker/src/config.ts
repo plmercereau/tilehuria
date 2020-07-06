@@ -22,6 +22,6 @@ export const TILE_SET_QUEUE = 'tile_set_queue'
 
 export const MIN_ZOOM = 1
 export const MAX_ZOOM = 19
-export const CONCURRENT_DOWNLOADS = 10
+export const CONCURRENT_DOWNLOADS = 30
 export const JPEG_QUALITY = 80
 export const PNG_QUALITY = 100

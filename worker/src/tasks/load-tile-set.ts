@@ -1,20 +1,22 @@
 import PQueue from 'p-queue'
 import sharp from 'sharp'
+import tempDirectory from 'temp-dir'
+import path from 'path'
+import fs from 'fs'
+
 import {
   CONCURRENT_DOWNLOADS,
   JPEG_QUALITY,
   PNG_QUALITY,
   S3_BUCKET
 } from '../config'
-import { getOneTile } from './get-one-tile'
 import { MbTiles, s3 } from '../utils'
-import tempDirectory from 'temp-dir'
-import path from 'path'
-import fs from 'fs'
-/**
- * @param source the S3 object key, prefixed by the bucket name e.g. bucketname/
- */
+import { updateProgress } from '../graphql'
+
+import { getOneTile } from './get-one-tile'
+
 export const loadTileSet = async ({
+  id,
   name,
   userId,
   url,
@@ -23,6 +25,7 @@ export const loadTileSet = async ({
   format = 'png',
   quality
 }: {
+  id: string
   name: string
   userId: string
   url: string
@@ -32,8 +35,21 @@ export const loadTileSet = async ({
   quality?: number
 }) => {
   console.log(
-    ` [*] Loading ${xyzCoordinates.length} tiles from the ${slug} provider: ${xyzCoordinates}.`
+    ` [*] Loading ${xyzCoordinates.length} tiles from the ${slug} provider...`
   )
+  let progress = 0.01
+  const progressIncrement = 1.0 / xyzCoordinates.length
+  await updateProgress(id, progress)
+
+  let lastProgress = 0.01
+  const progressInterval = setInterval(() => {
+    if (progress >= lastProgress + 0.01) {
+      updateProgress(id, progress).then(() => {
+        lastProgress = progress
+      })
+    }
+  }, 1000)
+
   // * Set a Queue with CONCURRENT_DOWNLOADS
   const pQueue = new PQueue({ concurrency: CONCURRENT_DOWNLOADS })
 
@@ -47,7 +63,7 @@ export const loadTileSet = async ({
   // * Loop in the tiles
   for (const [x, y, z] of xyzCoordinates) {
     // * Queue the task - will not run more than CONCURRENT_DOWNLOADS promises
-    await pQueue.add(async () => {
+    pQueue.add(async () => {
       const tileStream = await getOneTile([x, y, z], url, slug)
       // * Create a basic image processsing stream
       const sharpStream = sharp({
@@ -69,6 +85,7 @@ export const loadTileSet = async ({
       // * Wait for the image processing to be done
       await imageProcessing
       tileStream.destroy()
+      progress += progressIncrement
     })
   }
   // * Wait for all the tiles to be processed
@@ -95,5 +112,7 @@ export const loadTileSet = async ({
     })
   })
   fs.unlinkSync(tmpFileName)
+  clearInterval(progressInterval)
+  await updateProgress(id, 1.0)
   console.log(' [*] Done downloading the tile set.')
 }

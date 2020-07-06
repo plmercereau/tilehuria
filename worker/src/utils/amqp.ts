@@ -19,7 +19,9 @@ export const startQueue = async (
     msg => {
       if (msg) {
         const strMessage = msg.content.toString()
-        console.log(` [*] [${q.queue}] Received message ${strMessage}`)
+        console.log(
+          ` [*] [${q.queue}] Received message with length ${strMessage.length}`
+        )
         handler(strMessage)
       }
     },

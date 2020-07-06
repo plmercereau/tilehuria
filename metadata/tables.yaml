@@ -132,11 +132,11 @@
     permission:
       filter: {}
   event_triggers:
-  - name: generate_aoi_coordinates
+  - name: calculate_aoi_coordinates
     definition:
       enable_manual: true
     retry_conf:
-      num_retries: 3
+      num_retries: 0
       interval_sec: 10
       timeout_sec: 60
     webhook_from_env: EVENT_AOI
@@ -243,7 +243,9 @@
       - area_of_interest_id
       - format
       - id
+      - progress
       - quality
+      - size
       - tile_provider_id
       filter: {}
   update_permissions:

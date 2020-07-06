@@ -1,7 +1,9 @@
-import { s3, tileUrl } from '../utils'
-import { S3_BUCKET } from '../config'
 import got from 'got'
 import { Readable, PassThrough } from 'stream'
+
+import { s3, tileUrl } from '../utils'
+import { S3_BUCKET } from '../config'
+
 export const getOneTile = async (
   [x, y, z]: number[],
   template: string,
@@ -11,9 +13,10 @@ export const getOneTile = async (
     Bucket: S3_BUCKET,
     Key: `tile/${slug}/${z}/${x}/${y}.png`
   }
-  const meta = await s3.headObject(params).promise()
-  if (meta) return s3.getObject(params).createReadStream()
-  else {
+  try {
+    await s3.headObject(params).promise()
+    return s3.getObject(params).createReadStream()
+  } catch (error) {
     const url = tileUrl([x, y, z], template)
     console.log(` [*] Download tile ${url}`)
     function uploadFromStream() {

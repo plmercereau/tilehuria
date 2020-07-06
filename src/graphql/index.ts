@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 export const AREAS_OF_INTEREST = gql`
-  query list {
+  query listAllAreasOfInterest {
     areasOfInterest(order_by: { name: asc }) {
       id
       name
@@ -11,7 +11,7 @@ export const AREAS_OF_INTEREST = gql`
 `
 
 export const SELECT_AREA_OF_INTEREST = gql`
-  query aoi($id: uuid!) {
+  query selectOneAreaOfInterest($id: uuid!) {
     areaOfInterest(id: $id) {
       id
       name
@@ -30,7 +30,7 @@ export const SELECT_AREA_OF_INTEREST = gql`
 `
 
 export const SELECT_TILE_SET = gql`
-  query aoi($id: uuid!) {
+  query selectOneTileSet($id: uuid!) {
     tileSet(id: $id) {
       id
       quality
