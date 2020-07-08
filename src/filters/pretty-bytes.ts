@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-Vue.filter('prettyBytes', function(num: any) {
+Vue.filter('prettyBytes', function(num: number) {
   // jacked from: https://github.com/sindresorhus/pretty-bytes
   if (typeof num !== 'number' || isNaN(num)) {
     throw new TypeError('Expected a number')
@@ -21,7 +21,7 @@ Vue.filter('prettyBytes', function(num: any) {
     Math.floor(Math.log(num) / Math.log(1000)),
     units.length - 1
   )
-  num = (num / Math.pow(1000, exponent)).toFixed(2)
+  const res = (num / Math.pow(1000, exponent)).toFixed(2)
 
-  return (neg ? '-' : '') + String(num) + ' ' + units[exponent]
+  return (neg ? '-' : '') + res + ' ' + units[exponent]
 })

@@ -15,10 +15,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from '@vue/composition-api'
+import { defineComponent } from '@vue/composition-api'
 import { useSubscription, useResult } from '@vue/apollo-composable'
 import QItemTileSet from 'components/ItemTileSet.vue'
-import { GeoJSON } from 'GeoJSON'
+// import { GeoJSON } from 'GeoJSON'
 import { SubscriptionRoot, AreaOfInterest } from '../generated'
 import { SELECT_AREA_OF_INTEREST } from 'src/graphql'
 
