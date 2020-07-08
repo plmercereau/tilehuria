@@ -4,7 +4,7 @@
     q-list.col-12.q-px-md.q-py-xs(v-else bordered)
       q-field(label="Name" stack-label)
         template(#control) {{aoi.name}}
-      q-field(label="Type" stack-label)
+      //- q-field(label="Type" stack-label)
         template(#control) {{type}}
       q-field(label="Tiles" stack-label)
         template(#control) {{aoi.tilesCount}}
@@ -48,9 +48,9 @@ export default defineComponent({
       undefined,
       AreaOfInterest | undefined
     >(result, undefined, data => data.areaOfInterest)
-    const source = computed(() => aoi.value?.source as GeoJSON)
-    const type = computed(() => source.value?.type)
-    return { aoi, loading, type }
+    // const source = computed(() => aoi.value?.source as GeoJSON)
+    // const type = computed(() => source.value?.type)
+    return { aoi, loading }
   }
 })
 </script>
