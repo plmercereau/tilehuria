@@ -25,6 +25,7 @@ jobs:
           service_account_key: ${{ secrets.GCE_SA_KEY }}
           project_id: ${{ secrets.GCE_PROJECT }}
       - name: Build and publish frontend to Docker Hub
+        # ? Kind of optional if static deployment
         uses: docker/build-push-action@v1
         with:
           repository: platyplus/tilehuria
@@ -50,7 +51,14 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           tag_with_ref: true
           tag_with_sha: true
-          # Configure Docker to use the gcloud command-line tool as a credential
+        # TODO build/deploy Hasura-migration image?
+        # TODO build + deploy static file
+        # TODO dns static file
+        # TODO dns hbp
+        # TODO terraform: gcp compute and dns/namecheap and S3 and others?
+        # TODO deploy containers to gcp compute VMs
+        # TODO deploy S3
+        # Configure Docker to use the gcloud command-line tool as a credential
       # helper for authentication
       #   - run: |-
       #       gcloud --quiet auth configure-docker
