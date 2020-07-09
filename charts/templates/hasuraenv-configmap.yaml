@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hasura-env-vars
+  namespace: {{ .Release.Namespace }}
+data:
+  SPECIAL_LEVEL: very
+  SPECIAL_TYPE: charm

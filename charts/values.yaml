@@ -50,8 +50,8 @@ tolerations: []
 affinity: {}
 
 # enable or disable the postgresql dependency
-postgresql:
-  enabled: true # * already in HGE chart
+# postgresql:
+#   enabled: true # * already in HGE chart
 
 global:
   minio:
@@ -59,9 +59,11 @@ global:
     secretKey: <minio-secret-key> # TODO secret
   postgresql:
     postgresqlDatabase: tilehuria
-    postgresqlUsername: postgres # * already in HGE chart
-    postgresqlPassword: <secret-postgresql-password> # TODO secret
-    servicePort: 5432 #* already in postgres chart
+    postgresqlUsername: postgres
+    postgresqlPassword: secret-postgresql-password
+    servicePort: 5432
+  hasura:
+    adminSecret: parent-blahhhhhhh # TODO do not set here but ask as required - and eventually use a kubernetes secret
 
 minio:
   enabled: true
@@ -73,3 +75,19 @@ rabbitmq:
     username: user
     password: <secret-rabbitmq-password> # TODO secret
 
+# enable or disable the postgresql dependency
+postgresql:
+  enabled: true
+  image:
+    tag: 12.3.0
+
+hasura:
+  enabled: true
+  env:
+    HASURA_GRAPHQL_JWT_SECRET: '{"type": "RS256", "jwk_url": "http://{{ .Release.Name }}-hasura-backend-plus:3000/auth/jwks"}'
+    HOOKS_URL: "http://{{ .Release.Name }}-hooks:3000"
+    HOOKS_REMOTE_SCHEMA: "http://{{ .Release.Name }}-hooks:3000/graphql"
+    EVENT_AOI: "http://{{ .Release.Name }}-hooks:3000/events/area-of-interest"
+    EVENT_TILE_SET:  "http://{{ .Release.Name }}-hooks:3000/events/tile-set"
+  
+  

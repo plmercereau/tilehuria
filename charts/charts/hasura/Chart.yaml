@@ -1,6 +1,6 @@
 apiVersion: v2
-name: graphql-engine
-description: A Helm chart for Kubernetes
+name: hasura
+description: Hasura GraphQl engine
 
 # A chart can be either an 'application' or a 'library' chart.
 #
@@ -20,4 +20,4 @@ version: 0.1.0
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application. Versions are not expected to
 # follow Semantic Versioning. They should reflect the version the application is using.
-appVersion: 1.16.0
+appVersion: v1.3.0-beta.4

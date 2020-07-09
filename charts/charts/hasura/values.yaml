@@ -1,14 +1,14 @@
-# Default values for graphql-engine.
+# Default values for hasura.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
 
 image:
-  repository: nginx
+  repository: hasura/graphql-engine
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ''
+  # tag: ''
 
 imagePullSecrets: []
 nameOverride: ''
@@ -82,14 +82,3 @@ tolerations: []
 
 affinity: {}
 
-# enable or disable the postgresql dependency
-postgresql:
-  enabled: true
-  image:
-    tag: 12.3.0
-
-global:
-  postgresql:
-    postgresqlDatabase: postgres
-    postgresqlUsername: postgres
-    servicePort: 5432
