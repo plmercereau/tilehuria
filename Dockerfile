@@ -1,4 +1,6 @@
 FROM node:14-alpine AS builder
+ARG HOSTNAME=localhost
+# TODO ARG HOSTNAME=tilehuria.platyplus.io
 WORKDIR /app
 COPY package.json yarn.lock ./
 RUN yarn install

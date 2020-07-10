@@ -8,7 +8,7 @@
 /* eslint-env node */
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { configure } = require('quasar/wrappers')
-
+const HOSTNAME = process.env.HOSTNAME || 'tilehuria.platyplus.io'
 module.exports = configure(function(ctx) {
   return {
     // https://quasar.dev/quasar-cli/supporting-ts
@@ -45,8 +45,15 @@ module.exports = configure(function(ctx) {
 
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
+      // TODO history and nginx
       vueRouterMode: 'hash', // available values: 'hash', 'history'
 
+      env: {
+        HASURA: ctx.dev
+          ? 'ws://localhost:8080/v1/graphql'
+          : `wss://hasura.${HOSTNAME}`,
+        HBP: ctx.dev ? 'http://localhost:3000' : `https://hbp.${HOSTNAME}`
+      },
       // transpile: false,
 
       // Add dependencies for transpiling with Babel (Array of string/regex)
