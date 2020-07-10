@@ -33,7 +33,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           tag_with_ref: true
           tag_with_sha: true
-      - name: Build and publish Worker to Docker Hub
+      - name: Build and publish Hasura to Docker Hub
         uses: docker/build-push-action@v1
         with:
           path: ./hasura
@@ -42,7 +42,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           tag_with_ref: true
           tag_with_sha: true
-      - name: Build and publish Hasura to Docker Hub
+      - name: Build and publish Worker to Docker Hub
         uses: docker/build-push-action@v1
         with:
           path: ./worker
@@ -60,13 +60,10 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           tag_with_ref: true
           tag_with_sha: true
-        # TODO build/deploy Hasura-migration image?
-        # TODO build + deploy static file
-        # TODO dns static file
-        # TODO dns hbp
-        # TODO terraform: gcp compute and dns/namecheap and S3 and others?
-        # TODO deploy containers to gcp compute VMs
-        # TODO deploy S3
+        # TODO build + deploy static file + traefik
+        # TODO terraform: big bunch of containers in k8s
+        # TODO helm chart secrets (& config map?)
+        # TODO terraform/gh actions: k8s, s3, dns/namecheap, static files
         # Configure Docker to use the gcloud command-line tool as a credential
       # helper for authentication
       #   - run: |-
