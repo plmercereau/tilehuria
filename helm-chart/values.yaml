@@ -57,6 +57,7 @@ global:
   minio:
     accessKey: <minio-access-key> # ? secret
     secretKey: <minio-secret-key> # TODO secret
+    defaultBuckets: tilehuria # TODO duplicate - couldn't find a workaround
   postgresql:
     postgresqlDatabase: tilehuria
     postgresqlUsername: postgres
@@ -73,7 +74,7 @@ rabbitmq:
   enabled: true
   auth:
     username: user
-    password: <secret-rabbitmq-password> # TODO secret
+    password: <secret-rabbitmq-password>
 
 # enable or disable the postgresql dependency
 postgresql:
@@ -82,12 +83,35 @@ postgresql:
     tag: 12.3.0
 
 hasura:
-  enabled: true
+  enabled: false
+  image:
+    tag: v1.3.0-beta.4
+    # TODO convert to object
   env:
-    HASURA_GRAPHQL_JWT_SECRET: '{"type": "RS256", "jwk_url": "http://{{ .Release.Name }}-hasura-backend-plus:3000/auth/jwks"}'
-    HOOKS_URL: "http://{{ .Release.Name }}-hooks:3000"
-    HOOKS_REMOTE_SCHEMA: "http://{{ .Release.Name }}-hooks:3000/graphql"
-    EVENT_AOI: "http://{{ .Release.Name }}-hooks:3000/events/area-of-interest"
-    EVENT_TILE_SET:  "http://{{ .Release.Name }}-hooks:3000/events/tile-set"
+    HASURA_GRAPHQL_JWT_SECRET: "{\"type\": \"RS256\", \"jwk_url\": \"http://{{ .Release.Name }}-hasura-backend-plus:3000/auth/jwks\"}"
+    HOOKS_URL: "http://{{ .Release.Name }}-hooks"
+    HOOKS_REMOTE_SCHEMA: "http://{{ .Release.Name }}-hooks/graphql"
+    EVENT_AOI: "http://{{ .Release.Name }}-hooks/events/area-of-interest"
+    EVENT_TILE_SET: "http://{{ .Release.Name }}-hooks/events/tile-set"
   
+hasura-backend-plus:
+  enabled: false
+  image:
+    tag: latest
+  env: 
+    SERVER_URL: http://localhost:3000
+    JWT_ALGORITHM: RS256
+    AUTO_MIGRATE: "true"
+    HIBP_ENABLE: "false" # * default
+    JWT_CUSTOM_FIELDS: "" # * default
+
+hooks:
+  enabled: true
+  image:
+    tag: latest
+
+worker:
+  enabled: true
+  image:
+    tag: latest
   

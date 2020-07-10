@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "hasura.fullname" . }}
+  name: {{ include "hooks.fullname" . }}
   labels:
-    {{- include "hasura.labels" . | nindent 4 }}
+    {{- include "hooks.labels" . | nindent 4 }}
 spec:
 {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
 {{- end }}
   selector:
     matchLabels:
-      {{- include "hasura.selectorLabels" . | nindent 6 }}
+      {{- include "hooks.selectorLabels" . | nindent 6 }}
   template:
     metadata:
     {{- with .Values.podAnnotations }}
@@ -18,13 +18,13 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       labels:
-        {{- include "hasura.selectorLabels" . | nindent 8 }}
+        {{- include "hooks.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "hasura.serviceAccountName" . }}
+      serviceAccountName: {{ include "hooks.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -35,9 +35,16 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 8080
+              containerPort: 80
               protocol: TCP
-          # livenessProbe: # TODO
+          env:
+            - name: RABBITMQ_DEFAULT_USER
+              value: "{{ .Values.global.rabbitmq.username }}"
+            - name: RABBITMQ_DEFAULT_PASS
+              value: "{{ .Values.global.rabbitmq.password }}"
+            - name: HASURA_GRAPHQL_ADMIN_SECRET
+              value: "{{ .Values.global.hasura.adminSecret }}"
+          # livenessProbe:
           #   httpGet:
           #     path: /
           #     port: http
@@ -45,15 +52,6 @@ spec:
           #   httpGet:
           #     path: /
           #     port: http
-          env:
-            - name: HASURA_GRAPHQL_DATABASE_URL
-              value: "postgres://{{ .Values.global.postgresql.postgresqlUsername }}:{{ .Values.global.postgresql.postgresqlPassword }}@{{ .Release.Name }}-postgresql:{{ .Values.global.postgresql.servicePort }}/{{ .Values.global.postgresql.postgresqlDatabase }}"
-            - name: HASURA_GRAPHQL_ADMIN_SECRET
-              value: "{{ .Values.global.hasura.adminSecret }}"
-            {{- range $key, $value := .Values.env }}
-            - name: {{ $key }}
-              value: {{- printf " %s" (tpl $value $ | toJson) }}
-            {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

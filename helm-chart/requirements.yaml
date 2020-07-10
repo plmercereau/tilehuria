@@ -7,6 +7,9 @@ dependencies:
     version: '7.4.5'
     repository: 'https://charts.bitnami.com/bitnami'
     condition: rabbitmq.enabled
+    import-values:
+      - child: auth
+        parent: global.rabbitmq        
   - name: postgresql
     version: '8.10.13'
     repository: 'https://charts.bitnami.com/bitnami'
