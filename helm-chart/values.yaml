@@ -1,8 +1,10 @@
 
+# TODO comment required values, and set 'required': https://helm.sh/docs/howto/charts_tips_and_tricks/#know-your-template-functions
+# TODO traefik: redirect http to https when tls is enabled
 global:
   hostname: localhost
   minio:
-    accessKey: <minio-access-key> # ? secret
+    accessKey: <minio-access-key> # TODO secret
     secretKey: <minio-secret-key> # TODO secret
     defaultBuckets: tilehuria # TODO duplicate - couldn't find a workaround
   postgresql:
@@ -11,8 +13,16 @@ global:
     postgresqlPassword: secret-postgresql-password
     servicePort: 5432
   hasura:
-    adminSecret: parent-blahhhhhhh # TODO do not set here but ask as required - and eventually use a kubernetes secret
+    adminSecret: parent-blahhhhhhh # TODO kubernetes secret
     jwtAlgorithm: RS256
+
+frontend:
+  enabled: true
+  image:
+    tag: latest
+    pullPolicy: Always
+  ingress:
+    tls: true
 
 minio:
   enabled: true
@@ -22,7 +32,7 @@ rabbitmq:
   enabled: true
   auth:
     username: user
-    password: <secret-rabbitmq-password>
+    password: <secret-rabbitmq-password> # TODO secret
 
 postgresql:
   enabled: true
@@ -35,7 +45,6 @@ hasura:
     tag: latest
     pullPolicy: Always
   ingress:
-    enabled: true
     tls: true
   env:
     HASURA_GRAPHQL_JWT_SECRET: 
@@ -51,16 +60,15 @@ hasura-backend-plus:
   image:
     tag: latest
   ingress:
-    enabled: true
     tls: true
   env: 
-  # TODO tls is enabled
+  # TODO tls is enabled http/https
   # TODO hard code this variable in the deployment template
     SERVER_URL: "http://{{ .Values.global.hostname }}"
     JWT_ALGORITHM: "{{ .Values.global.hasura.jwtAlgorithm }}"
     AUTO_MIGRATE: "false"
-    HIBP_ENABLE: "false" # * default
-    JWT_CUSTOM_FIELDS: "" # * default
+    HIBP_ENABLE: "false"
+    JWT_CUSTOM_FIELDS: ""
 
 hooks:
   enabled: true
