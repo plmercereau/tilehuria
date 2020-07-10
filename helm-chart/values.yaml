@@ -32,7 +32,8 @@ postgresql:
 hasura:
   enabled: true
   image:
-    tag: v1.3.0-beta.4
+    tag: latest
+    pullPolicy: Always
   ingress:
     enabled: true
     tls: true
