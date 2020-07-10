@@ -101,7 +101,7 @@ hasura-backend-plus:
   env: 
     SERVER_URL: http://localhost:3000
     JWT_ALGORITHM: RS256
-    AUTO_MIGRATE: "true"
+    AUTO_MIGRATE: "false"
     HIBP_ENABLE: "false" # * default
     JWT_CUSTOM_FIELDS: "" # * default
 
@@ -109,9 +109,11 @@ hooks:
   enabled: true
   image:
     tag: latest
+    pullPolicy: Always
 
 worker:
   enabled: true
   image:
     tag: latest
+    pullPolicy: Always
   

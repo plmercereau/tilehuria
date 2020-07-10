@@ -38,6 +38,8 @@ spec:
               containerPort: 80
               protocol: TCP
           env:
+            - name: RABBITMQ_HOST
+              value: "{{ .Release.Name }}-rabbitmq"
             - name: RABBITMQ_DEFAULT_USER
               value: "{{ .Values.global.rabbitmq.username }}"
             - name: RABBITMQ_DEFAULT_PASS
