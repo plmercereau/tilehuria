@@ -1,4 +1,4 @@
-version: '3.6'
+version: "3.6"
 services:
   postgres:
     image: postgres:12 # TODO PostGIS - who knows
@@ -16,11 +16,11 @@ services:
       - hasura-backend-plus
       - hooks
     ports:
-      - '8080:8080'
+      - "8080:8080"
     restart: always
     environment:
       HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:postgrespassword@postgres:5432/postgres
-      HASURA_GRAPHQL_ADMIN_SECRET: '$HASURA_GRAPHQL_ADMIN_SECRET'
+      HASURA_GRAPHQL_ADMIN_SECRET: "$HASURA_GRAPHQL_ADMIN_SECRET"
       HASURA_GRAPHQL_JWT_SECRET: '{"type": "RS256", "jwk_url": "http://hasura-backend-plus:3000/auth/jwks"}'
       HOOKS_URL: http://hooks:3000
       HOOKS_REMOTE_SCHEMA: http://hooks:3000/graphql
@@ -29,57 +29,58 @@ services:
   hasura-backend-plus:
     image: nhost/hasura-backend-plus:latest
     ports:
-      - '3000:3000'
+      - "3000:3000"
     environment:
       SERVER_URL: http://localhost:3000
       HASURA_ENDPOINT: http://graphql-engine:8080/v1/graphql
-      HASURA_GRAPHQL_ADMIN_SECRET: '$HASURA_GRAPHQL_ADMIN_SECRET'
+      HASURA_GRAPHQL_ADMIN_SECRET: "$HASURA_GRAPHQL_ADMIN_SECRET"
       JWT_ALGORITHM: RS256
       S3_ENDPOINT: http://minio:9000
-      S3_BUCKET: '${S3_BUCKET:-tilehuria}'
-      S3_ACCESS_KEY_ID: '${S3_ACCESS_KEY_ID:?S3_ACCESS_KEY_ID}'
-      S3_SECRET_ACCESS_KEY: '${S3_SECRET_ACCESS_KEY:?S3_SECRET_ACCESS_KEY}'
-      AUTO_MIGRATE: 'true'
-      HIBP_ENABLE: 'false' # * default
-      JWT_CUSTOM_FIELDS: '' # * default
+      S3_BUCKET: "${S3_BUCKET:-tilehuria}"
+      S3_ACCESS_KEY_ID: "${S3_ACCESS_KEY_ID:?S3_ACCESS_KEY_ID}"
+      S3_SECRET_ACCESS_KEY: "${S3_SECRET_ACCESS_KEY:?S3_SECRET_ACCESS_KEY}"
+      AUTO_MIGRATE: "true"
+      HIBP_ENABLE: "false" # * default
+      JWT_CUSTOM_FIELDS: "" # * default
     volumes:
-      - './storage-rules.yaml:/app/custom/storage-rules/rules.yaml'
+      - "./storage-rules.yaml:/app/custom/storage-rules/rules.yaml"
   worker:
     restart: always
     build: ./worker
     image: node:14-alpine
-    command: ['sh', '-c', 'yarn && yarn watch']
+    command: ["sh", "-c", "yarn && yarn watch"]
     working_dir: /app
     volumes:
-      - './worker:/app/'
+      - "./worker:/app/"
       - /app/node_modules
     depends_on:
       - rabbitmq
     environment:
       S3_ENDPOINT: http://minio:9000
-      S3_BUCKET: '${S3_BUCKET:-tilehuria}'
-      S3_ACCESS_KEY_ID: '${S3_ACCESS_KEY_ID:?S3_ACCESS_KEY_ID}'
-      S3_SECRET_ACCESS_KEY: '${S3_SECRET_ACCESS_KEY:?S3_SECRET_ACCESS_KEY}'
-      RABBITMQ_DEFAULT_USER: '${RABBITMQ_DEFAULT_USER}'
-      RABBITMQ_DEFAULT_PASS: '${RABBITMQ_DEFAULT_PASS}'
-      HASURA_GRAPHQL_ADMIN_SECRET: '${HASURA_GRAPHQL_ADMIN_SECRET:?HASURA_GRAPHQL_ADMIN_SECRET}'
+      S3_BUCKET: "${S3_BUCKET:-tilehuria}"
+      S3_ACCESS_KEY_ID: "${S3_ACCESS_KEY_ID:?S3_ACCESS_KEY_ID}"
+      S3_SECRET_ACCESS_KEY: "${S3_SECRET_ACCESS_KEY:?S3_SECRET_ACCESS_KEY}"
+      RABBITMQ_HOST: "rabbitmq"
+      RABBITMQ_DEFAULT_USER: "${RABBITMQ_DEFAULT_USER}"
+      RABBITMQ_DEFAULT_PASS: "${RABBITMQ_DEFAULT_PASS}"
+      HASURA_GRAPHQL_ADMIN_SECRET: "${HASURA_GRAPHQL_ADMIN_SECRET:?HASURA_GRAPHQL_ADMIN_SECRET}"
   hooks:
     restart: always
     ports:
       - 3001:3000 # * dev
     build: ./hooks
     image: node:14-alpine
-    command: ['sh', '-c', 'yarn && yarn watch']
+    command: ["sh", "-c", "yarn && yarn watch"]
     working_dir: /app
     volumes:
-      - './hooks:/app/'
+      - "./hooks:/app/"
       - /app/node_modules
     depends_on:
       - rabbitmq
     environment:
-      RABBITMQ_DEFAULT_USER: '${RABBITMQ_DEFAULT_USER}'
-      RABBITMQ_DEFAULT_PASS: '${RABBITMQ_DEFAULT_PASS}'
-      HASURA_GRAPHQL_ADMIN_SECRET: '${HASURA_GRAPHQL_ADMIN_SECRET:?HASURA_GRAPHQL_ADMIN_SECRET}'
+      RABBITMQ_DEFAULT_USER: "${RABBITMQ_DEFAULT_USER}"
+      RABBITMQ_DEFAULT_PASS: "${RABBITMQ_DEFAULT_PASS}"
+      HASURA_GRAPHQL_ADMIN_SECRET: "${HASURA_GRAPHQL_ADMIN_SECRET:?HASURA_GRAPHQL_ADMIN_SECRET}"
   # frontend:
   #   build: .
   #   image: node:14-alpine
@@ -98,13 +99,13 @@ services:
       - rabbitmq
     # command: server /data
     environment:
-      MINIO_ACCESS_KEY: '${S3_ACCESS_KEY_ID:?S3_ACCESS_KEY_ID}'
-      MINIO_SECRET_KEY: '${S3_SECRET_ACCESS_KEY:?S3_SECRET_ACCESS_KEY}' ## min 8 character
-      MINIO_DEFAULT_BUCKETS: '${S3_BUCKET:-tilehuria}'
+      MINIO_ACCESS_KEY: "${S3_ACCESS_KEY_ID:?S3_ACCESS_KEY_ID}"
+      MINIO_SECRET_KEY: "${S3_SECRET_ACCESS_KEY:?S3_SECRET_ACCESS_KEY}" ## min 8 character
+      MINIO_DEFAULT_BUCKETS: "${S3_BUCKET:-tilehuria}"
       # MINIO_NOTIFY_AMQP_ENABLE: 'on'
       # MINIO_NOTIFY_AMQP_URL: amqp://${RABBITMQ_DEFAULT_USER}:${RABBITMQ_DEFAULT_PASS}@rabbitmq:5672
     volumes:
-      - './.docker/minio/data:/data' # *dev only
+      - "./.docker/minio/data:/data" # *dev only
       # - 'minio_data:/data' # * prod
     ports:
       - 3002:9000 # Do not use port 9000 in the host machine as developpers using portainer might already use it

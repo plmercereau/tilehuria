@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "hasura-backend-plus.fullname" . }}
+  labels:
+    {{- include "hasura-backend-plus.labels" . | nindent 4 }}
+spec:
+{{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      {{- include "hasura-backend-plus.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        {{- include "hasura-backend-plus.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "hasura-backend-plus.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          env:
+            - name: HASURA_ENDPOINT
+              value: "http://{{ .Release.Name }}-hasura/v1/graphql"
+            - name: HASURA_GRAPHQL_ADMIN_SECRET
+              value: "{{ .Values.global.hasura.adminSecret }}"
+            - name: S3_ENDPOINT
+              value: "http://{{ .Release.Name }}-minio:9000"
+            - name: S3_BUCKET
+              value: "{{ .Values.global.defaultBuckets }}"
+            - name: S3_ACCESS_KEY_ID
+              value: "{{ .Values.global.minio.accessKey }}"
+            - name: S3_SECRET_ACCESS_KEY
+              value: "{{ .Values.global.minio.secretKey }}"              
+            {{- range $key, $value := .Values.env }}
+            - name: {{ $key }}
+              value: {{- printf " %s" (tpl $value $ | toJson) }}
+            {{- end }}
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
