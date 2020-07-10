@@ -1,0 +1,34 @@
+{{- if .Values.ingress.enabled -}}
+{{- $fullName := include "hasura.fullname" . -}}
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: hasura
+spec:
+  entryPoints:
+    - web
+  routes:
+    - kind: Rule
+      match: "Host(`hasura.{{ .Values.global.hostname }}`) && PathPrefix(`/`)"
+      services:
+        - name: {{ $fullName }}
+          port: 80
+{{- if .Values.ingress.tls }}
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: hasura-tls
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - kind: Rule
+      match: "Host(`hasura.{{ .Values.global.hostname }}`) && PathPrefix(`/`)"
+      services:
+        - name: {{ $fullName }}
+          port: 80
+  tls:
+    certResolver: le
+{{- end }}
+{{- end }}

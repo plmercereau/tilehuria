@@ -1,59 +1,6 @@
-# Default values for charts.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
-replicaCount: 1
-
-image:
-  repository: nginx
-  tag: stable
-  pullPolicy: IfNotPresent
-
-nameOverride: ''
-fullnameOverride: ''
-
-service:
-  type: ClusterIP
-  port: 80
-
-ingress:
-  enabled: false
-  annotations:
-    {}
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
-  path: /
-  hosts:
-    - chart-example.local
-  tls: []
-  #  - secretName: chart-example-tls
-  #    hosts:
-  #      - chart-example.local
-
-resources:
-  {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #  cpu: 100m
-  #  memory: 128Mi
-  # requests:
-  #  cpu: 100m
-  #  memory: 128Mi
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
-
-# enable or disable the postgresql dependency
-# postgresql:
-#   enabled: true # * already in HGE chart
 
 global:
+  hostname: localhost
   minio:
     accessKey: <minio-access-key> # ? secret
     secretKey: <minio-secret-key> # TODO secret
@@ -65,6 +12,7 @@ global:
     servicePort: 5432
   hasura:
     adminSecret: parent-blahhhhhhh # TODO do not set here but ask as required - and eventually use a kubernetes secret
+    jwtAlgorithm: RS256
 
 minio:
   enabled: true
@@ -76,31 +24,39 @@ rabbitmq:
     username: user
     password: <secret-rabbitmq-password>
 
-# enable or disable the postgresql dependency
 postgresql:
   enabled: true
   image:
     tag: 12.3.0
 
 hasura:
-  enabled: false
+  enabled: true
   image:
     tag: v1.3.0-beta.4
-    # TODO convert to object
+  ingress:
+    enabled: true
+    tls: true
   env:
-    HASURA_GRAPHQL_JWT_SECRET: "{\"type\": \"RS256\", \"jwk_url\": \"http://{{ .Release.Name }}-hasura-backend-plus:3000/auth/jwks\"}"
+    HASURA_GRAPHQL_JWT_SECRET: 
+      type: "{{ .Values.global.hasura.jwtAlgorithm }}"
+      jwk_url: "http://{{ .Release.Name }}-hasura-backend-plus/auth/jwks"
     HOOKS_URL: "http://{{ .Release.Name }}-hooks"
     HOOKS_REMOTE_SCHEMA: "http://{{ .Release.Name }}-hooks/graphql"
     EVENT_AOI: "http://{{ .Release.Name }}-hooks/events/area-of-interest"
     EVENT_TILE_SET: "http://{{ .Release.Name }}-hooks/events/tile-set"
   
 hasura-backend-plus:
-  enabled: false
+  enabled: true
   image:
     tag: latest
+  ingress:
+    enabled: true
+    tls: true
   env: 
-    SERVER_URL: http://localhost:3000
-    JWT_ALGORITHM: RS256
+  # TODO tls is enabled
+  # TODO hard code this variable in the deployment template
+    SERVER_URL: "http://{{ .Values.global.hostname }}"
+    JWT_ALGORITHM: "{{ .Values.global.hasura.jwtAlgorithm }}"
     AUTO_MIGRATE: "false"
     HIBP_ENABLE: "false" # * default
     JWT_CUSTOM_FIELDS: "" # * default
@@ -117,3 +73,5 @@ worker:
     tag: latest
     pullPolicy: Always
   
+traefik:
+  enabled: true

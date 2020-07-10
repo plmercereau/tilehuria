@@ -37,14 +37,14 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
-          # livenessProbe: # TODO
-          #   httpGet:
-          #     path: /
-          #     port: http
-          # readinessProbe:
-          #   httpGet:
-          #     path: /
-          #     port: http
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
           env:
             - name: HASURA_GRAPHQL_DATABASE_URL
               value: "postgres://{{ .Values.global.postgresql.postgresqlUsername }}:{{ .Values.global.postgresql.postgresqlPassword }}@{{ .Release.Name }}-postgresql:{{ .Values.global.postgresql.servicePort }}/{{ .Values.global.postgresql.postgresqlDatabase }}"
@@ -52,7 +52,11 @@ spec:
               value: "{{ .Values.global.hasura.adminSecret }}"
             {{- range $key, $value := .Values.env }}
             - name: {{ $key }}
-              value: {{- printf " %s" (tpl $value $ | toJson) }}
+            {{- if kindIs "string" $value }}
+              value: {{- printf " %s" (tpl $value $) }}
+            {{- else }}
+              value: {{- printf " %s" (tpl ($value | toJson) $ | toJson) }}
+            {{- end }}
             {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
