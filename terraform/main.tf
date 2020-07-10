@@ -1,21 +1,21 @@
 # https://github.com/kubernetes-digitalocean-terraform/kubernetes-digitalocean-terraform
 provider "digitalocean" {
-  token = "${var.do_token}"
+  token = var.do_token
 }
 
 # TODO https://github.com/adamdecaf/terraform-provider-namecheap
 # TODO keep the third-party plugin in the repo, of download in pipeline?
-provider "namecheap" {
-}
+# provider "namecheap" {
+# }
 
-# Create a DNS A Record for a domain you own
-resource "namecheap_record" "tilehuria-platyplus-io" {
-  name    = "tilehuria"
-  domain  = "platyplus.io"
-  address = "127.0.0.1" # TODO
-  mx_pref = 10
-  type    = "A"
-}
+# # Create a DNS A Record for a domain you own
+# resource "namecheap_record" "tilehuria-platyplus-io" {
+#   name    = "tilehuria"
+#   domain  = "platyplus.io"
+#   address = "127.0.0.1" # TODO
+#   mx_pref = 10
+#   type    = "A"
+# }
 
 resource "digitalocean_kubernetes_cluster" "tilehuria" {
   name   = "tilehuria"

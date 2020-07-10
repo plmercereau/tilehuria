@@ -29,6 +29,7 @@ jobs:
         uses: docker/build-push-action@v1
         with:
           repository: platyplus/tilehuria
+          build_args: HOSTNAME=${{ secrets.HOSTNAME }}
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           tag_with_ref: true
