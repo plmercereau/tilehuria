@@ -51,7 +51,7 @@ module.exports = configure(function(ctx) {
       env: {
         HASURA: ctx.dev
           ? 'ws://localhost:8080/v1/graphql'
-          : `wss://hasura.${HOSTNAME}`,
+          : `wss://hasura.${HOSTNAME}/v1/graphql`,
         HBP: ctx.dev ? 'http://localhost:3000' : `https://hbp.${HOSTNAME}`
       },
       // transpile: false,
