@@ -1,0 +1,16 @@
+{{- if .Values.ingress.tls }}
+{{- $fullName := include "hasura-backend-plus.fullname" . -}}
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: {{ $fullName }}-cert
+  namespace: default
+spec:
+  commonName: hbp.{{ .Values.global.hostname }}
+  secretName: {{ $fullName }}-cert
+  dnsNames:
+    - hbp.{{ .Values.global.hostname }}
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
+{{- end }}

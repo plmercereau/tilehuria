@@ -1,0 +1,14 @@
+{{- $fullName := include "frontend.fullname" . -}}
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: {{ $fullName }}-cert
+  namespace: default
+spec:
+  commonName: {{ .Values.global.hostname }}
+  secretName: {{ $fullName }}-cert
+  dnsNames:
+    - {{ .Values.global.hostname }}
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer

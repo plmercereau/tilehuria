@@ -1,8 +1,10 @@
 
+email: pilou@platyplus.io
+
 # TODO comment required values, and set 'required': https://helm.sh/docs/howto/charts_tips_and_tricks/#know-your-template-functions
 # TODO traefik: redirect http to https when tls is enabled
 global:
-  hostname: localhost
+  hostname: tilehuria.platyplus.io
   minio:
     accessKey: <minio-access-key> # TODO secret
     secretKey: <minio-secret-key> # TODO secret
@@ -22,7 +24,7 @@ frontend:
     tag: latest
     pullPolicy: Always
   ingress:
-    tls: true
+    enabled: true
 
 minio:
   enabled: true
@@ -45,7 +47,7 @@ hasura:
     tag: latest
     pullPolicy: Always
   ingress:
-    tls: true
+    enabled: true
   env:
     HASURA_GRAPHQL_JWT_SECRET: 
       type: "{{ .Values.global.hasura.jwtAlgorithm }}"
@@ -60,11 +62,11 @@ hasura-backend-plus:
   image:
     tag: latest
   ingress:
-    tls: true
+    enabled: true
   env: 
   # TODO tls is enabled http/https
   # TODO hard code this variable in the deployment template
-    SERVER_URL: "http://{{ .Values.global.hostname }}"
+    SERVER_URL: "https://{{ .Values.global.hostname }}"
     JWT_ALGORITHM: "{{ .Values.global.hasura.jwtAlgorithm }}"
     AUTO_MIGRATE: "false"
     HIBP_ENABLE: "false"
@@ -82,5 +84,3 @@ worker:
     tag: latest
     pullPolicy: Always
   
-traefik:
-  enabled: true

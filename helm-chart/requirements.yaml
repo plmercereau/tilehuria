@@ -14,12 +14,3 @@ dependencies:
     version: '8.10.13'
     repository: 'https://charts.bitnami.com/bitnami'
     condition: postgresql.enabled
-  - name: traefik
-    version: '8.9.0'
-    repository: 'https://containous.github.io/traefik-helm-chart'
-    condition: traefik.enabled
-    # ? separate cert-manager chart? / set in the pipeline?
-  # - name: cert-manager
-  #   version: '0.15.2'
-  #   repository: 'https://charts.jetstack.io'
-  #   condition: cert-manager.enabled

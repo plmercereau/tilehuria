@@ -4,6 +4,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: frontend
+  namespace: default
 spec:
   entryPoints:
     - web
@@ -13,12 +14,12 @@ spec:
       services:
         - name: {{ $fullName }}
           port: 80
-{{- if .Values.ingress.tls }}
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: frontend-tls
+  namespace: default
 spec:
   entryPoints:
     - websecure
@@ -29,6 +30,5 @@ spec:
         - name: {{ $fullName }}
           port: 80
   tls:
-    certResolver: le
-{{- end }}
+    secretName: {{ $fullName }}-cert
 {{- end }}
