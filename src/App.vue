@@ -23,10 +23,7 @@ export default defineComponent({
     provideStorage()
     const auth = useAuth()
 
-    provide(
-      DefaultApolloClient,
-      createApolloClient(HASURA_WS_ENDPOINT, () => auth?.getJWTToken())
-    )
+    provide(DefaultApolloClient, createApolloClient(HASURA_WS_ENDPOINT, auth))
   }
 })
 </script>

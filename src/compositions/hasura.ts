@@ -3,15 +3,15 @@ import { WebSocketLink } from 'apollo-link-ws'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
 import { onError } from 'apollo-link-error'
+import Auth from 'nhost-js-sdk/dist/Auth'
 // import MessageTypes from 'subscriptions-transport-ws/dist/message-types'
 
-export const createApolloClient = (
-  uri: string,
-  getToken: () => string | undefined
-) => {
+export const createApolloClient = (uri: string, auth: Auth | undefined) => {
   const getHeaders = () => {
+    console.log('get Headers')
     const headers: Record<string, string> = {}
-    const token = getToken()
+    const token = auth?.getJWTToken()
+    console.log(token)
     if (token) {
       headers.authorization = `Bearer ${token}`
     }
@@ -30,9 +30,10 @@ export const createApolloClient = (
     if (
       networkError?.message?.includes(
         'Missing Authorization header in JWT authentication mode'
-      )
+      ) ||
+      networkError?.message?.includes('JWSInvalidSignature')
     ) {
-      const token = getToken()
+      const token = auth?.getJWTToken()
       if (token) {
         // TODO weird TS error
         // const operations: Operations = {...wsClient.operations}
@@ -55,7 +56,12 @@ export const createApolloClient = (
       }
     }
   })
-
+  auth?.onAuthStateChanged(() => {
+    console.log('auth state changed!!!')
+    console.log(wsClient.status)
+    wsClient.close()
+    console.log(wsClient.status)
+  })
   const apolloClient = new ApolloClient({
     link: errorLink.concat(link),
     cache: new InMemoryCache({
