@@ -48,12 +48,6 @@ module.exports = configure(function(ctx) {
       // TODO history and nginx
       vueRouterMode: 'hash', // available values: 'hash', 'history'
 
-      env: {
-        HASURA: ctx.dev
-          ? 'ws://localhost:8080/v1/graphql'
-          : `wss://hasura.${HOSTNAME}/v1/graphql`,
-        HBP: ctx.dev ? 'http://localhost:3000' : `https://hbp.${HOSTNAME}`
-      },
       // transpile: false,
 
       // Add dependencies for transpiling with Babel (Array of string/regex)

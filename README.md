@@ -12,8 +12,6 @@ TileHuria - a map tiles proxy
 
 ## Production
 
-TODO: the hasura and HBP endpoints are hardcoded to \*.tilehuria.platyplus.io at build time. Change this so it can be changed at run time. Otherwise the following instructions won't work.
-
 ### Requirements
 
 - A domain name
