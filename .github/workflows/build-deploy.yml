@@ -60,17 +60,17 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           tag_with_ref: true
           tag_with_sha: true
-      - name: Connect to Digital Ocean
-        uses: digitalocean/action-doctl@master
-        with:
-          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-      - name: Save DigitalOcean kubeconfig
-        run: doctl kubernetes cluster kubeconfig save tilehuria
-        # TODO build + deploy static file + traefik
-        # TODO terraform: big bunch of containers in k8s
-        # TODO helm chart secrets (& config map?)
-        # TODO terraform/gh actions: k8s, s3, dns/namecheap, static files
-        # Configure Docker to use the gcloud command-line tool as a credential
+      # - name: Connect to Digital Ocean
+      #   uses: digitalocean/action-doctl@master
+      #   with:
+      #     token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      # - name: Save DigitalOcean kubeconfig
+      #   run: doctl kubernetes cluster kubeconfig save tilehuria
+      # TODO build + deploy static file + traefik
+      # TODO terraform: big bunch of containers in k8s
+      # TODO helm chart secrets (& config map?)
+      # TODO terraform/gh actions: k8s, s3, dns/namecheap, static files
+      # Configure Docker to use the gcloud command-line tool as a credential
       # helper for authentication
       #   - run: |-
       #       gcloud --quiet auth configure-docker

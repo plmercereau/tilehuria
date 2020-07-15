@@ -16,7 +16,8 @@ global:
     servicePort: 5432
   hasura:
     adminSecret: parent-blahhhhhhh # TODO kubernetes secret
-    jwtAlgorithm: RS256
+    jwtAlgorithm: HS256
+    jwtKey: 2FK6FD+o0+c7tzabcdefghNDi2yARAAKzQlk9876543214nF7EdAh8s3TwpHwrdWT6R
 
 frontend:
   enabled: true
@@ -51,7 +52,8 @@ hasura:
   env:
     HASURA_GRAPHQL_JWT_SECRET: 
       type: "{{ .Values.global.hasura.jwtAlgorithm }}"
-      jwk_url: "http://{{ .Release.Name }}-hasura-backend-plus/auth/jwks"
+      key: "{{ .Values.global.hasura.jwtKey }}"
+      # jwk_url: "http://{{ .Release.Name }}-hasura-backend-plus/auth/jwks"
     HOOKS_URL: "http://{{ .Release.Name }}-hooks"
     HOOKS_REMOTE_SCHEMA: "http://{{ .Release.Name }}-hooks/graphql"
     EVENT_AOI: "http://{{ .Release.Name }}-hooks/events/area-of-interest"
@@ -68,6 +70,7 @@ hasura-backend-plus:
   # TODO hard code this variable in the deployment template
     SERVER_URL: "https://{{ .Values.global.hostname }}"
     JWT_ALGORITHM: "{{ .Values.global.hasura.jwtAlgorithm }}"
+    JWT_KEY: "{{ .Values.global.hasura.jwtKey }}"
     AUTO_MIGRATE: "false"
     HIBP_ENABLE: "false"
     JWT_CUSTOM_FIELDS: ""

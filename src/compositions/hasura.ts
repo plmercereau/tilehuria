@@ -11,10 +11,10 @@ export const createApolloClient = (uri: string, auth: Auth | undefined) => {
     console.log('get Headers')
     const headers: Record<string, string> = {}
     const token = auth?.getJWTToken()
-    console.log(token)
     if (token) {
       headers.authorization = `Bearer ${token}`
     }
+    console.log(headers)
     return headers
   }
 

@@ -6,7 +6,8 @@ import { GraphQLClient } from 'graphql-request'
 const HASURA_GRAPHQL_ADMIN_SECRET = process.env
   .HASURA_GRAPHQL_ADMIN_SECRET as string
 
-const HASURA_ENDPOINT = 'http://graphql-engine:8080/v1/graphql'
+const HASURA_ENDPOINT =
+  process.env.HASURA_ENDPOINT || 'http://graphql-engine:8080/v1/graphql'
 
 class Client extends GraphQLClient {
   constructor() {

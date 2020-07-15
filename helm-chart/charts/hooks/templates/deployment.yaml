@@ -44,6 +44,8 @@ spec:
               value: "{{ .Values.global.rabbitmq.username }}"
             - name: RABBITMQ_DEFAULT_PASS
               value: "{{ .Values.global.rabbitmq.password }}"
+            - name: HASURA_ENDPOINT
+              value: "http://{{ .Release.Name }}-hasura/v1/graphql"
             - name: HASURA_GRAPHQL_ADMIN_SECRET
               value: "{{ .Values.global.hasura.adminSecret }}"
           # livenessProbe:
