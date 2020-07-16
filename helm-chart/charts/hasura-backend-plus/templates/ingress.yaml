@@ -30,5 +30,5 @@ spec:
         - name: {{ $fullName }}
           port: 80
   tls:
-    secretName: {{ $fullName }}-cert
+    secretName: {{ .Release.Name }}-cert
 {{- end }}

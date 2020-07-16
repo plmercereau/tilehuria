@@ -1,13 +1,9 @@
-
-# TODO comment required values, and set 'required': https://helm.sh/docs/howto/charts_tips_and_tricks/#know-your-template-functions
-# TODO traefik: redirect http to https when tls is enabled
-
-email: pilou@platyplus.io
+# email: pilou@platyplus.io
+# digitalOceanToken: <digital ocean token>
+# letsencrypt: production # staging or production
 
 global:
-  # TODO configmap?
-  letsencrypt: production # staging or production
-  hostname: tilehuria.platyplus.io    
+  # hostname: tilehuria.platyplus.io    
 
 frontend:
   enabled: true
@@ -20,24 +16,23 @@ frontend:
 minio:
   enabled: true
   defaultBuckets: tilehuria
-  accessKey: 
-    password: <minio-access-key>
-  secretKey:
-    password: <minio-secret-key>
+  # accessKey: 
+  #   password: <minio-access-key>
+  # secretKey:
+  #   password: <minio-secret-key>
 
 rabbitmq:
   enabled: true
-  auth:
-    username: user
-    password: <secret-rabbitmq-password>
+  # auth:
+  #   username: user
+  #   password: <secret-rabbitmq-password>
 
 postgresql:
   enabled: true
   image:
     tag: 12.3.0
   postgresqlDatabase: tilehuria
-  postgresqlUsername: postgres
-  postgresqlPassword: secret-postgresql-password
+  # postgresqlPassword: <secret-postgresql-password>
   servicePort: 5432
 
 hasura:
@@ -47,10 +42,10 @@ hasura:
     pullPolicy: Always
   ingress:
     enabled: true
-  hasuraAdminSecret: parent-blahhhhhhh
-  jwt:
+  # hasuraAdminSecret: <long complicated admin key>
+  jwt: 
     algorithm: HS256
-    key: 2FK6FD+o0+c7tzabcdefghNDi2yARAAKzQlk9876543214nF7EdAh8s3TwpHwrdWT6R
+    # key: <long complicated jwt key>
   env:
     HOOKS_URL: "http://{{ .Release.Name }}-hooks"
     HOOKS_REMOTE_SCHEMA: "http://{{ .Release.Name }}-hooks/graphql"

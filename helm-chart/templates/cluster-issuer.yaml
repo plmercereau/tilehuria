@@ -12,15 +12,13 @@ spec:
     privateKeySecretRef:
       # Secret resource used to store the account's private key.
       name: issuer-account-key-staging
-    # Add a single challenge solver, HTTP01 using nginx
-    # dnsChallenge:
-    #   provider: digitalocean
-    #   delayBeforeCheck: 10
-    #   DO_AUTH_TOKEN_FILE: /run/secrets/traefik_do-auth-token
     solvers:
-      - http01:
-          ingress:
-            class: traefik-cert-manager
+      - dns01:
+          digitalocean:
+            tokenSecretRef:
+              name: digitalocean-dns
+              key: digitalOceanToken
+      
 ---
 apiVersion: cert-manager.io/v1alpha2
 kind: ClusterIssuer
@@ -38,6 +36,8 @@ spec:
       name: issuer-account-key
     # Add a single challenge solver, HTTP01 using nginx
     solvers:
-      - http01:
-          ingress:
-            class: traefik-cert-manager
+      - dns01:
+          digitalocean:
+            tokenSecretRef:
+              name: digitalocean-dns
+              key: access-token

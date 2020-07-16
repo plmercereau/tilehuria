@@ -1,0 +1,19 @@
+email:
+digitalOceanToken:
+
+global:
+  hostname:
+
+minio:
+  accessKey:
+    password:
+  secretKey:
+    password:
+
+postgresql:
+  postgresqlPassword:
+
+hasura:
+  hasuraAdminSecret:
+  jwt:
+    key:

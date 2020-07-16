@@ -4,4 +4,4 @@ metadata:
   name: {{ .Release.Name }}
   namespace: default
 data:
-  serverUrl: "https://{{ .Values.global.hostname }}"
+  serverUrl: "https://{{ required ".Values.global.hostname is required" .Values.global.hostname }}"
