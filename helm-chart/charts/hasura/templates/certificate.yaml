@@ -1,4 +1,3 @@
-{{- if .Values.ingress.tls }}
 {{- $fullName := include "hasura.fullname" . -}}
 apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
@@ -11,6 +10,5 @@ spec:
   dnsNames:
     - hasura.{{ .Values.global.hostname }}
   issuerRef:
-    name: letsencrypt-production
+    name: "letsencrypt-{{ .Values.global.letsencrypt }}"
     kind: ClusterIssuer
-{{- end }}

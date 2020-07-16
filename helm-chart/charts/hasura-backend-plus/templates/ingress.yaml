@@ -4,6 +4,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: hasura-backend-plus
+  namespace: default
 spec:
   entryPoints:
     - web
@@ -18,6 +19,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
   name: hasura-backend-plus-tls
+  namespace: default
 spec:
   entryPoints:
     - websecure

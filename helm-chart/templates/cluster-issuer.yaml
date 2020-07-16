@@ -13,6 +13,10 @@ spec:
       # Secret resource used to store the account's private key.
       name: issuer-account-key-staging
     # Add a single challenge solver, HTTP01 using nginx
+    # dnsChallenge:
+    #   provider: digitalocean
+    #   delayBeforeCheck: 10
+    #   DO_AUTH_TOKEN_FILE: /run/secrets/traefik_do-auth-token
     solvers:
       - http01:
           ingress:

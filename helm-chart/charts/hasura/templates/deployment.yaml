@@ -47,9 +47,20 @@ spec:
               port: http
           env:
             - name: HASURA_GRAPHQL_DATABASE_URL
-              value: "postgres://{{ .Values.global.postgresql.postgresqlUsername }}:{{ .Values.global.postgresql.postgresqlPassword }}@{{ .Release.Name }}-postgresql:{{ .Values.global.postgresql.servicePort }}/{{ .Values.global.postgresql.postgresqlDatabase }}"
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: databaseUrl
             - name: HASURA_GRAPHQL_ADMIN_SECRET
-              value: "{{ .Values.global.hasura.adminSecret }}"
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: hasuraAdminSecret
+            - name: HASURA_GRAPHQL_JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: jwtSecret
             {{- range $key, $value := .Values.env }}
             - name: {{ $key }}
             {{- if kindIs "string" $value }}

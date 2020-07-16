@@ -1,5 +1,47 @@
 variable "do_token" {}
 
+variable "project_name" {
+  type        = string
+  default     = "tilehuria"
+  description = "The name of the project"
+}
+
+variable "environment" {
+  type        = string
+  default     = "staging"
+  description = "Environment to deploy: production or staging"
+}
+
+variable "domain" {
+  type        = string
+  default     = "tilehuria.platyplus.io"
+  description = "The main DNS name for the application"
+}
+
+variable "region" {
+  type        = string
+  default     = "ams3"
+  description = "The Digital Ocean region to deploy kubernetes into"
+}
+
+variable "auto_scale" {
+  type        = bool
+  default     = true
+  description = "Autoscale the cluster"
+}
+
+variable "min_nodes" {
+  type        = number
+  default     = 1
+  description = "Minimum number of nodes in the cluster"
+}
+
+variable "max_nodes" {
+  type        = number
+  default     = 3
+  description = "Maximum number of nodes in the cluster"
+}
+
 # variable "project_id" {
 #   type        = string
 #   description = "The project ID to deploy resources into"
@@ -32,8 +74,3 @@ variable "do_token" {}
 #   description = "RabbitMQ default password"
 # }
 
-# variable "region" {
-#   type        = string
-#   default     = "us-central1"
-#   description = "The GCP region to deploy instances into"
-# }

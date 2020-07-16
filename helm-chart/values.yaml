@@ -1,23 +1,16 @@
 
-email: pilou@platyplus.io
-
 # TODO comment required values, and set 'required': https://helm.sh/docs/howto/charts_tips_and_tricks/#know-your-template-functions
 # TODO traefik: redirect http to https when tls is enabled
+
+email: pilou@platyplus.io
+hasuraAdminSecret: parent-blahhhhhhh
+jwtKey: 2FK6FD+o0+c7tzabcdefghNDi2yARAAKzQlk9876543214nF7EdAh8s3TwpHwrdWT6R
+jwtAlgorithm: HS256
+  
 global:
-  hostname: tilehuria.platyplus.io
-  minio:
-    accessKey: <minio-access-key> # TODO secret
-    secretKey: <minio-secret-key> # TODO secret
-    defaultBuckets: tilehuria # TODO duplicate - couldn't find a workaround
-  postgresql:
-    postgresqlDatabase: tilehuria
-    postgresqlUsername: postgres
-    postgresqlPassword: secret-postgresql-password
-    servicePort: 5432
-  hasura:
-    adminSecret: parent-blahhhhhhh # TODO kubernetes secret
-    jwtAlgorithm: HS256
-    jwtKey: 2FK6FD+o0+c7tzabcdefghNDi2yARAAKzQlk9876543214nF7EdAh8s3TwpHwrdWT6R
+  # TODO configmap?
+  letsencrypt: production # staging or production
+  hostname: tilehuria.platyplus.io    
 
 frontend:
   enabled: true
@@ -30,17 +23,25 @@ frontend:
 minio:
   enabled: true
   defaultBuckets: tilehuria
+  accessKey: 
+    password: <minio-access-key>
+  secretKey:
+    password: <minio-secret-key>
 
 rabbitmq:
   enabled: true
   auth:
     username: user
-    password: <secret-rabbitmq-password> # TODO secret
+    password: <secret-rabbitmq-password>
 
 postgresql:
   enabled: true
   image:
     tag: 12.3.0
+  postgresqlDatabase: tilehuria
+  postgresqlUsername: postgres
+  postgresqlPassword: secret-postgresql-password
+  servicePort: 5432
 
 hasura:
   enabled: true
@@ -50,10 +51,6 @@ hasura:
   ingress:
     enabled: true
   env:
-    HASURA_GRAPHQL_JWT_SECRET: 
-      type: "{{ .Values.global.hasura.jwtAlgorithm }}"
-      key: "{{ .Values.global.hasura.jwtKey }}"
-      # jwk_url: "http://{{ .Release.Name }}-hasura-backend-plus/auth/jwks"
     HOOKS_URL: "http://{{ .Release.Name }}-hooks"
     HOOKS_REMOTE_SCHEMA: "http://{{ .Release.Name }}-hooks/graphql"
     EVENT_AOI: "http://{{ .Release.Name }}-hooks/events/area-of-interest"
@@ -66,11 +63,6 @@ hasura-backend-plus:
   ingress:
     enabled: true
   env: 
-  # TODO tls is enabled http/https
-  # TODO hard code this variable in the deployment template
-    SERVER_URL: "https://{{ .Values.global.hostname }}"
-    JWT_ALGORITHM: "{{ .Values.global.hasura.jwtAlgorithm }}"
-    JWT_KEY: "{{ .Values.global.hasura.jwtKey }}"
     AUTO_MIGRATE: "false"
     HIBP_ENABLE: "false"
     JWT_CUSTOM_FIELDS: ""

@@ -9,6 +9,7 @@ TileHuria - a map tiles proxy
 - tileset progress, availability and size. Estimate the proportion download tiles vs generate mbtiles.
 - get single tile: re-download after a certain period of time?
 - docker-compose and .env: do I need to re-declare env vars, or are they passed on to each container? -> no they're not.
+- wildcard certificate & dns
 
 ## Production
 

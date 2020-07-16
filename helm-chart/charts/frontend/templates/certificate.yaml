@@ -10,5 +10,5 @@ spec:
   dnsNames:
     - {{ .Values.global.hostname }}
   issuerRef:
-    name: letsencrypt-production
+    name: "letsencrypt-{{ .Values.global.letsencrypt }}"
     kind: ClusterIssuer

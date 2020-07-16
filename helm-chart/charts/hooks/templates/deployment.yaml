@@ -41,13 +41,22 @@ spec:
             - name: RABBITMQ_HOST
               value: "{{ .Release.Name }}-rabbitmq"
             - name: RABBITMQ_DEFAULT_USER
-              value: "{{ .Values.global.rabbitmq.username }}"
+              valueFrom:
+                configMapKeyRef:
+                  name: app-config
+                  key: rabbitmq.username
             - name: RABBITMQ_DEFAULT_PASS
-              value: "{{ .Values.global.rabbitmq.password }}"
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Release.Name }}-rabbitmq
+                  key: rabbitmq-password
             - name: HASURA_ENDPOINT
               value: "http://{{ .Release.Name }}-hasura/v1/graphql"
             - name: HASURA_GRAPHQL_ADMIN_SECRET
-              value: "{{ .Values.global.hasura.adminSecret }}"
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: hasuraAdminSecret
           # livenessProbe:
           #   httpGet:
           #     path: /

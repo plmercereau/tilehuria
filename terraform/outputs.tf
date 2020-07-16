@@ -1,7 +1,7 @@
 output "cluster-id" {
-  value = "${digitalocean_kubernetes_cluster.tilehuria.id}"
+  value = "${digitalocean_kubernetes_cluster.default.id}"
 }
 
-output "ip-address" {
-  value = "${digitalocean_kubernetes_cluster.tilehuria.ipv4_address}"
+output "end-ip" {
+   value = "${data.kubernetes_service.traefik.load_balancer_ingress.0.ip}"
 }
