@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-hasura
+  namespace: default
+data:
+  jwt.algorithm: {{ .Values.jwt.algorithm }}
+  endpoint: "http://{{ .Release.Name }}-hasura/v1/graphql"

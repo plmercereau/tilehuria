@@ -3,10 +3,7 @@
 # TODO traefik: redirect http to https when tls is enabled
 
 email: pilou@platyplus.io
-hasuraAdminSecret: parent-blahhhhhhh
-jwtKey: 2FK6FD+o0+c7tzabcdefghNDi2yARAAKzQlk9876543214nF7EdAh8s3TwpHwrdWT6R
-jwtAlgorithm: HS256
-  
+
 global:
   # TODO configmap?
   letsencrypt: production # staging or production
@@ -50,6 +47,10 @@ hasura:
     pullPolicy: Always
   ingress:
     enabled: true
+  hasuraAdminSecret: parent-blahhhhhhh
+  jwt:
+    algorithm: HS256
+    key: 2FK6FD+o0+c7tzabcdefghNDi2yARAAKzQlk9876543214nF7EdAh8s3TwpHwrdWT6R
   env:
     HOOKS_URL: "http://{{ .Release.Name }}-hooks"
     HOOKS_REMOTE_SCHEMA: "http://{{ .Release.Name }}-hooks/graphql"

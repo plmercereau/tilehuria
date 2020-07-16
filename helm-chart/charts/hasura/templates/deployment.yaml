@@ -49,18 +49,18 @@ spec:
             - name: HASURA_GRAPHQL_DATABASE_URL
               valueFrom:
                 secretKeyRef:
-                  name: app-secrets
-                  key: databaseUrl
+                  name: {{ .Release.Name }}-postgresql
+                  key: url
             - name: HASURA_GRAPHQL_ADMIN_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: app-secrets
+                  name: {{ .Release.Name }}-hasura
                   key: hasuraAdminSecret
             - name: HASURA_GRAPHQL_JWT_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: app-secrets
-                  key: jwtSecret
+                  name: {{ .Release.Name }}-hasura
+                  key: jwt.secret
             {{- range $key, $value := .Values.env }}
             - name: {{ $key }}
             {{- if kindIs "string" $value }}

@@ -11,9 +11,6 @@ TileHuria - a map tiles proxy
 - docker-compose and .env: do I need to re-declare env vars, or are they passed on to each container? -> no they're not.
 - wildcard certificate & dns
 - ? one configmap per chart, and connect to it to get the environment variables?
-  -> maybe something like {{- define "hostname" }}{{ .Values.hostname }}{{ end }}
-  -> then something like {{ include $hostname }}
-  -> see: https://helm.sh/docs/chart_template_guide/subcharts_and_globals/
 
 ## Production
 
