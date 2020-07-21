@@ -13,31 +13,22 @@ TileHuria - a map tiles proxy
 
 ### Requirements
 
-- A domain name
-- Kubernetes
-- Helm
+- A Kubernetes cluster.
+- A DNS domain name.
+- The [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) Kubernetes client.
+- [Helm](https://helm.sh/docs/intro/install/).
 
-#### Clone this repository
+### Create and connect to the cluster
 
-```sh
-git clone https://github.com/plmercereau/tilehuria
-cd tilehuria/helm-chart
-```
+You can run a cheap Kubernetes cluster on [Digital Ocean](https://www.digitalocean.com/docs/kubernetes/how-to/create-clusters/).
 
-#### Create the Kubernetes cluster
-
-You can automatically create a Kubernetes plaform on Digital Ocean with Terraform. See the terraform folder.
-
-Once the Kubernetes cluster is connected, select it as the default context.
-
-#### Install Traefik
+### Install Traefik
 
 ```sh
-helm repo add traefik https://containous.github.io/traefik-helm-chart
-helm repo update
-
-kubectl create namespace traefik
-helm install --namespace traefik traefik traefik/traefik --values traefik/values.yaml
+helm install traefik traefik \
+  --repo https://charts.platyplus.io \
+  --namespace traefik \
+  --create-namespace
 ```
 
 Check if you have access to the dashboard. First, forward the pod to a local port:
@@ -48,7 +39,25 @@ kubectl port-forward -n traefik $(kubectl get pods -n traefik --selector "app.ku
 
 Then you can check [http://127.0.0.1:9000/dashboard/](http://127.0.0.1:9000/dashboard/). Don't forget the trailing backslash...
 
-#### Get IP bound to traefik, and update your DNS records
+### Install cert-manager
+
+```sh
+helm install cert-manager cert-manager \
+  --repo https://charts.platyplus.io \
+  --namespace cert-manager \
+  --create-namespace \
+  --version v0.15.2
+```
+
+Verify cert-manager installation:
+
+```sh
+kubectl get pods --namespace cert-manager
+```
+
+### Get IP bound to traefik, and update your DNS records
+
+TODO: how to get the IP with kubectl
 
 Given a `example.com` domain name, you must create a A record pointing to Traefik for the following hosts:
 
@@ -56,44 +65,12 @@ Given a `example.com` domain name, you must create a A record pointing to Traefi
 - hasura.example.com
 - hbp.example.com
 
-#### Install cert-manager
+### Install Tilehuria
 
 ```sh
-# Install the CustomResourceDefinition resources separately
-kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.15.2/cert-manager.crds.yaml
-
-# Create the namespace for cert-manager
-kubectl create namespace cert-manager
-
-# Add the Jetstack Helm repository
-helm repo add jetstack https://charts.jetstack.io
-
-# Update your local Helm chart repository cache
-helm repo update
-
-# Install the cert-manager Helm chart
-helm install \
-  cert-manager jetstack/cert-manager \
-  --namespace cert-manager \
-  --version v0.15.2
-
-# Verify cert-manager installation
-kubectl get pods --namespace cert-manager
-```
-
-#### Configure the Helm Chart
-
-Edit the `values.yaml` file.
-Some are really important:
-
-- Secrets
-- `global.hostname`must be your main domain name, e.g. `example.com`
-
-#### Install the Chart
-
-```sh
-helm dependencies update
-helm install tilehuria .
+helm install tilehuria tilehuria \
+    --repo https://charts.platyplus.io \
+    --set global.hostname=example.com
 ```
 
 ## Development
