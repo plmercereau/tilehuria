@@ -10,7 +10,7 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@mapbox/tile-cover": "^3.0.2",
+    "@turf/turf": "^5.1.6",
     "amqplib": "^0.5.6",
     "geojson": "^0.5.0",
     "graphql": "^15.2.0",
@@ -25,13 +25,13 @@
   },
   "devDependencies": {
     "@types/amqplib": "^0.5.13",
+    "@types/geojson": "^7946.0.7",
     "@types/koa": "^2.11.3",
     "@types/koa-bodyparser": "^4.3.0",
     "@types/koa-graphql": "^0.8.4",
     "@types/koa-json": "^2.0.18",
     "@types/koa-logger": "^3.1.1",
     "@types/koa-router": "^7.4.1",
-    "@types/mapbox__tile-cover": "^3.0.0",
     "@types/node": "^14.0.14",
     "ts-node": "^8.10.2",
     "ts-node-dev": "^1.0.0-pre.49",

@@ -1,6 +1,6 @@
 import Router from 'koa-router'
 import gql from 'graphql-tag'
-// ! Remove this file
+// ! For debugging only. The processing goes now through an action
 
 import { HasuraEventContext } from '../types'
 import { AreaOfInterest, QueryRoot } from '../generated'

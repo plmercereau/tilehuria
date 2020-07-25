@@ -13,30 +13,34 @@
           q-field(label="Tile sets" stack-label)
             template(#control)
               q-list.col-12(separator)
-                p-item-tile-set(v-for="set of aoi.tileSets" :key="set.id" :tileSet="set")
+                p-item-tile-set(v-for="set of aoi.tileSets"
+                  :key="set.id"
+                  :tileSet="set"
+                  @click="select(set)"
+                  :active="selection === set")
         div
-          div {{zoom}}
-          div {{bounds}}
           q-btn(@click="setCenter") center
       l-map.col-12.col-sm-6(
           ref="refMap"
           :options="mapOptions"
           style="height: 100%")
         l-tile-layer(:url="url")
-        l-geo-json(ref="refSource"
+        l-tile-layer(v-if="selection" :url="selectionUrl" :options="{errorTileUrl: 'https://www.reality.fr/webvr/Bemyfarm/VR/image/popupbouteille1X.png'}")
+        l-geo-json(v-if="aoi" ref="refSource"
           :geojson="aoi.source"
           :options-style="sourceStyle")
         
 </template>
 
 <script lang="ts">
+// TODO handle the missing tiles in a better way - see the template
 import { defineComponent, ref, computed, watch } from '@vue/composition-api'
 import { useSubscription, useResult } from '@vue/apollo-composable'
 import PItemTileSet from 'components/ItemTileSet.vue'
-import { SubscriptionRoot, AreaOfInterest } from '../generated'
+import { SubscriptionRoot, AreaOfInterest, TileSet } from '../generated'
 import { SELECT_AREA_OF_INTEREST } from 'src/graphql'
-import { LatLngBounds, LatLng } from 'leaflet'
-import { DEFAULT_TILE_LAYER } from 'src/config'
+import { LatLngBounds } from 'leaflet'
+import { DEFAULT_TILE_LAYER, HBP_ENDPOINT } from 'src/config'
 import { LGeoJson, LMap } from 'vue2-leaflet'
 
 export default defineComponent({
@@ -53,37 +57,27 @@ export default defineComponent({
   setup(props) {
     const { result, loading, onError } = useSubscription<SubscriptionRoot>(
       SELECT_AREA_OF_INTEREST,
-      {
-        id: props.id
-      }
+      { id: props.id }
     )
-    onError(err => {
-      console.warn(err)
-    })
+    onError(err => console.warn(err))
     const aoi = useResult<
       SubscriptionRoot,
       undefined,
       AreaOfInterest | undefined
-    >(result, undefined, data => {
-      return data?.areaOfInterest
-    })
+    >(result, undefined, data => data?.areaOfInterest)
+
+    const selection = ref<TileSet>()
+    const selectionUrl = computed(
+      () =>
+        selection.value &&
+        `${HBP_ENDPOINT}/storage/o/tile/${selection.value.tileProvider.slug}/{z}/{x}/{y}.png`
+    )
+    const select = (aoi: TileSet) => {
+      selection.value = aoi
+    }
 
     const refSource = ref<LGeoJson>(null)
     const refMap = ref<LMap>(null)
-    // const zoom = ref(0)
-    // const bounds = ref<LatLngBounds>()
-    // const center = ref<LatLng>()
-    // const updateZoom = (newZoom: number) => {
-    //   console.log('update zoom', newZoom)
-    //   zoom.value = newZoom
-    // }
-    // const updateBounds = (newBounds: LatLngBounds) => {
-    //   console.log('update bounds')
-    //   bounds.value = newBounds
-    // }
-    // const updateCenter = (newCenter: LatLng) => {
-    //   center.value = newCenter
-    // }
     const setCenter = () => {
       if (aoi.value?.source && refSource.value) {
         console.log('Center to the area of interest')
@@ -96,22 +90,20 @@ export default defineComponent({
     watch(() => aoi.value?.source && refSource.value, setCenter)
     const url = DEFAULT_TILE_LAYER
 
-    const mapOptions = {
-      zoomSnap: 0.5
-    }
+    const mapOptions = { zoomSnap: 0.5 }
 
-    const sourceStyle = computed(() => {
-      return () => {
-        return {
-          weight: 2,
-          color: '#ECEFF1',
-          opacity: 1,
-          fillColor: '#e4ce7f',
-          fillOpacity: 0.6
-        }
-      }
-    })
+    const sourceStyle = computed(() => ({
+      weight: 2,
+      color: '#ECEFF1',
+      opacity: 1,
+      fillColor: '#e4ce7f',
+      fillOpacity: 0.6
+    }))
+
     return {
+      select,
+      selection,
+      selectionUrl,
       refSource,
       refMap,
       aoi,

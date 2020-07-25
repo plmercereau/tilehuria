@@ -15,13 +15,16 @@ export const getOneTile = async (
   }
   try {
     await s3.headObject(params).promise()
+    console.log(` [*] Tile tile/${slug}/${z}/${x}/${y}.png already exists`)
     return s3.getObject(params).createReadStream()
   } catch (error) {
     const url = tileUrl([x, y, z], template)
     console.log(` [*] Download tile ${url}`)
     function uploadFromStream() {
       var pass = new PassThrough()
-      s3.upload({ ...params, Body: pass })
+      s3.upload({ ...params, Body: pass }, function(err) {
+        if (err) console.log(` [!] Error uploading ${url}`, err)
+      })
       return pass
     }
     return got.stream(url).pipe(uploadFromStream())

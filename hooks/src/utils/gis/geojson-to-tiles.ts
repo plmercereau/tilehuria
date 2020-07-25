@@ -1,7 +1,12 @@
-import cover from '@mapbox/tile-cover'
+// import cover from '@mapbox/tile-cover'
 import { GeoJSON } from 'geojson'
+// import geojsonExtent from '@mapbox/geojson-extent'
+import { squareGrid, bbox } from '@turf/turf'
+import { LngLatToXYZ } from './lng-lat-zoom-to-xyz'
+import { tileWidth } from './tile-width'
 
 export const geojsonToTiles = (geojson: GeoJSON, minZoom = 1, maxZoom = 19) => {
+  const doneTiles: string[] = []
   const walkTiles = (geojson: GeoJSON, tiles: number[][] = []) => {
     if (geojson.type === 'FeatureCollection') {
       for (const feature of geojson.features) {
@@ -14,24 +19,39 @@ export const geojsonToTiles = (geojson: GeoJSON, minZoom = 1, maxZoom = 19) => {
         walkTiles(geometry, tiles)
       }
     } else {
-      let maxZoomCursor = maxZoom
-      let tilesCursor: number[][] = []
+      let nbTilesForZoom: number
+      let zoom = maxZoom
       do {
-        tilesCursor = cover.tiles(geojson, {
-          min_zoom: 1,
-          max_zoom: maxZoomCursor
+        nbTilesForZoom = 0
+        const mask =
+          geojson.type === 'MultiPolygon' || geojson.type === 'Polygon'
+            ? geojson
+            : undefined
+
+        const cellSize = tileWidth(zoom)
+        const extent = bbox(geojson)
+        const grid = squareGrid(extent, cellSize, {
+          mask,
+          units: 'degrees'
         })
-        // TODO filter out any tile that is already in the tiles array
-        tiles.push(...tilesCursor)
-        maxZoomCursor--
-      } while (
-        (tilesCursor.length > 1 || geojson.type === 'Point') &&
-        maxZoomCursor > minZoom
-      )
+        grid.features.forEach(feature => {
+          feature?.geometry?.coordinates?.[0]?.forEach(corner => {
+            const done = `${zoom}/${corner[0]}/${corner[1]}`
+            if (!doneTiles.includes(done)) {
+              const [x, y, z] = LngLatToXYZ([corner[0], corner[1]], zoom)
+              tiles.push([x, y, z])
+              nbTilesForZoom++
+              doneTiles.push(done)
+            }
+          })
+        })
+        console.log(` [*] Found ${nbTilesForZoom} tiles for zoom ${zoom}`)
+        zoom--
+      } while (nbTilesForZoom > 1 && zoom > minZoom)
     }
   }
   // * Generate the tiles list
-  console.log(` [*] Calculating tiles coordinates of the Area of Internet...`)
+  console.log(` [*] Calculating tiles coordinates...`)
   const tiles: number[][] = []
   if (geojson) walkTiles(geojson, tiles)
   console.log(` [*] Found ${tiles.length} tiles.`)

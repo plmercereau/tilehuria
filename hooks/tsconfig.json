@@ -5,6 +5,7 @@
     "lib": ["dom", "es2020"],
     "declaration": true,
     "paths": {
+      "*": ["src/types/*"]
       // "@types/*": ["src/types/*"]
       // "@shared/*": ["src/shared/*"],
       // "@test/*": ["src/test/*"]
