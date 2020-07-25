@@ -8,3 +8,6 @@ export const HBP_ENDPOINT = process.env.PROD
 export const HASURA_WS_ENDPOINT = process.env.PROD
   ? `${wsProtocol}//hasura.${host}/v1/graphql`
   : 'ws://localhost:8080/v1/graphql'
+
+export const DEFAULT_TILE_LAYER =
+  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'

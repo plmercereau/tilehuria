@@ -10,13 +10,36 @@ export const AREAS_OF_INTEREST = gql`
   }
 `
 
+const PROVIDER_FRAGMENT = gql`
+  fragment providerFragment on tile_provider {
+    id
+    name
+    slug
+    url
+    tileSets_aggregate {
+      aggregate {
+        count
+      }
+    }
+  }
+`
+
 export const PROVIDERS = gql`
   query listAllTileProviders {
     tileProviders {
-      id
-      name
+      ...providerFragment
     }
   }
+  ${PROVIDER_FRAGMENT}
+`
+
+export const INSERT_PROVIDER = gql`
+  mutation insertProvider($name: String!, $slug: String!, $url: String!) {
+    insertTileProvider(object: { name: $name, slug: $slug, url: $url }) {
+      ...providerFragment
+    }
+  }
+  ${PROVIDER_FRAGMENT}
 `
 
 export const SELECT_AREA_OF_INTEREST = gql`

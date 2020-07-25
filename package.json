@@ -20,12 +20,14 @@
     "apollo-link-ws": "^1.0.20",
     "core-js": "^3.6.5",
     "graphql": "^15.2.0",
+    "leaflet": "^1.6.0",
     "nhost-js-sdk": "^2.0.4",
     "quasar": "^1.0.0",
     "subscriptions-transport-ws": "^0.9.16",
     "vee-validate": "^3.3.7",
     "vue-filter-pretty-bytes": "^0.1.5",
-    "vue-i18n": "^8.0.0"
+    "vue-i18n": "^8.0.0",
+    "vue2-leaflet": "^2.5.2"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^1.16.0",
@@ -33,6 +35,7 @@
     "@graphql-codegen/typescript": "^1.16.0",
     "@quasar/app": "^2.0.0",
     "@types/geojson": "^7946.0.7",
+    "@types/leaflet": "^1.5.17",
     "@types/node": "^10.17.15",
     "@types/ws": "^7.2.6",
     "@typescript-eslint/eslint-plugin": "^3.3.0",

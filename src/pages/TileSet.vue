@@ -1,19 +1,22 @@
 <template lang="pug">
-  q-page.row.q-pa-md
-    div(v-if="loading") Loading...
-    div(v-else).col-12
-      q-field(label="Area of Interest" stack-label)
-        template(#control) {{tileSet.areaOfInterest.name}}
-      q-field(label="Provider" stack-label)
-        template(#control) {{tileSet.tileProvider.name}}
-      q-field(label="Size" stack-label)
-        template(#control) {{tileSet.size | pretty-bytes}}
-      q-field(label="Format" stack-label)
-        template(#control) {{tileSet.format}}
-      q-field(label="Quality" stack-label)
-        template(#control) {{tileSet.quality}}
-      q-btn.q-ma-md(v-if="tileSet.progress === 1" type="a" :href="downloadLink") Download
-
+q-page.row.q-pa-md
+  q-spinner(v-if='loading', color='primary', size='3em')
+  .col-12(v-else)
+    q-field(label='Area of Interest', stack-label)
+      template(#control) {{ tileSet.areaOfInterest.name }}
+    q-field(label='Provider', stack-label)
+      template(#control) {{ tileSet.tileProvider.name }}
+    q-field(label='Format', stack-label)
+      template(#control) {{ tileSet.format }}
+    q-field(label='Quality', stack-label)
+      template(#control) {{ tileSet.quality }}
+    q-field(label='Size', stack-label)
+      template(#control) {{ tileSet.size | prettyBytes }}
+    q-btn.q-ma-md(
+      v-if='tileSet.progress === 1',
+      type='a',
+      :href='downloadLink'
+    ) Download
 </template>
 
 <script lang="ts">

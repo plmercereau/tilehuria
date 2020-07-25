@@ -251,6 +251,7 @@
       - size
       - tile_provider_id
       filter: {}
+      allow_aggregations: true
   update_permissions:
   - role: user
     permission:
