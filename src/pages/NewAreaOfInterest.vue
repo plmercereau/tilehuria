@@ -1,16 +1,36 @@
 <template lang="pug">
-  q-page.row.q-pa-md
-    validation-observer(v-slot="{ handleSubmit, reset }")
-      form(@submit.prevent="handleSubmit(create)" @reset.prevent="reset(); resetForm()")
-        validation-provider(rules="required|min:3" name="name" v-slot="{ errors, touched, invalid }")
-          q-input(v-model="name" label="Name" autofocus
-            :error="touched && invalid" :error-message="errors[0]")
-        validation-provider(rules="required" name="source" v-slot="{ errors, touched, invalid }")
-          q-input(v-model="source" label="Source" 
-            :error="touched && invalid" :error-message="errors[0]")
-        div.text-negative(v-if="error") {{ error }}
-        q-btn(type="submit") Create
-        q-btn(type="reset") Reset
+q-page.row.q-pa-md
+  validation-observer(v-slot='{ handleSubmit, reset }')
+    form(
+      @submit.prevent='handleSubmit(create)',
+      @reset.prevent='reset(); resetForm()'
+    )
+      validation-provider(
+        rules='required|min:3',
+        name='name',
+        v-slot='{ errors, touched, invalid }'
+      )
+        q-input(
+          v-model='name',
+          label='Name',
+          autofocus,
+          :error='touched && invalid',
+          :error-message='errors[0]'
+        )
+      validation-provider(
+        rules='required',
+        name='source',
+        v-slot='{ errors, touched, invalid }'
+      )
+        q-input(
+          v-model='source',
+          label='Source',
+          :error='touched && invalid',
+          :error-message='errors[0]'
+        )
+      .text-negative(v-if='error') {{ error }}
+      q-btn(type='submit') Create
+      q-btn(type='reset') Reset
 </template>
 
 <script lang="ts">
@@ -45,8 +65,7 @@ export default defineComponent({
           source: JSON.parse(source.value)
         },
         update: (cache, { data }) => {
-          const areaOfInterest =
-            data?.insertAreaOfInterestAction?.areaOfInterest
+          const areaOfInterest = data?.insertAreaOfInterest
           if (areaOfInterest) {
             const list = cache.readQuery<QueryRoot>({
               query: AREAS_OF_INTEREST
@@ -72,7 +91,7 @@ export default defineComponent({
       error.value = JSON.stringify(err)
     })
     onDone(res => {
-      const id = res?.data?.insertAreaOfInterestAction?.areaOfInterestId
+      const id = res?.data?.insertAreaOfInterest?.id
       if (id) void $router.push(`/areas-of-interest/${id}`)
       else error.value = 'Error in retreiving the object id'
     })
