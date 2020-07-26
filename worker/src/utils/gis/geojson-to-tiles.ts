@@ -45,7 +45,7 @@ export const geojsonToTiles = (geojson: GeoJSON, minZoom = 1, maxZoom = 19) => {
         })
         console.log(` [*] Found ${nbTilesForZoom} tiles for zoom ${zoom}`)
         zoom--
-      } while (nbTilesForZoom > 1 && zoom > minZoom)
+      } while (nbTilesForZoom > 0 && zoom > minZoom)
     }
   }
   // * Generate the tiles list
