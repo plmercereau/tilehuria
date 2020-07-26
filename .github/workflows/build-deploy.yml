@@ -17,56 +17,55 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      # - name: Build and publish frontend to Docker Hub
-      #   # ? Kind of optional if static deployment
-      #   uses: docker/build-push-action@v1
-      #   with:
-      #     repository: platyplus/tilehuria
-      #     build_args: HOSTNAME=${{ secrets.HOSTNAME }}
-      #     username: ${{ secrets.DOCKER_USERNAME }}
-      #     password: ${{ secrets.DOCKER_PASSWORD }}
-      #     tag_with_ref: true
-      #     tag_with_sha: true
-      # - name: Build and publish Hasura to Docker Hub
-      #   uses: docker/build-push-action@v1
-      #   with:
-      #     path: ./hasura
-      #     repository: platyplus/tilehuria-hasura
-      #     username: ${{ secrets.DOCKER_USERNAME }}
-      #     password: ${{ secrets.DOCKER_PASSWORD }}
-      #     tag_with_ref: true
-      #     tag_with_sha: true
-      # - name: Build and publish Worker to Docker Hub
-      #   uses: docker/build-push-action@v1
-      #   with:
-      #     path: ./worker
-      #     repository: platyplus/tilehuria-worker
-      #     username: ${{ secrets.DOCKER_USERNAME }}
-      #     password: ${{ secrets.DOCKER_PASSWORD }}
-      #     tag_with_ref: true
-      #     tag_with_sha: true
-      # - name: Build and publish Hooks to Docker Hub
-      #   uses: docker/build-push-action@v1
-      #   with:
-      #     path: ./hooks
-      #     repository: platyplus/tilehuria-hooks
-      #     username: ${{ secrets.DOCKER_USERNAME }}
-      #     password: ${{ secrets.DOCKER_PASSWORD }}
-      #     tag_with_ref: true
-      #     tag_with_sha: true
-      # - name: Connect to Digital Ocean
-      #   uses: digitalocean/action-doctl@v2
-      #   with:
-      #     token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-      # - name: Save DigitalOcean kubeconfig
-      #   run: doctl kubernetes cluster kubeconfig save tilehuria
+      - name: Build and publish frontend to Docker Hub
+        # ? Kind of optional if static deployment
+        uses: docker/build-push-action@v1
+        with:
+          repository: platyplus/tilehuria
+          build_args: HOSTNAME=${{ secrets.HOSTNAME }}
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          tag_with_ref: true
+          tag_with_sha: true
+      - name: Build and publish Hasura to Docker Hub
+        uses: docker/build-push-action@v1
+        with:
+          path: ./hasura
+          repository: platyplus/tilehuria-hasura
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          tag_with_ref: true
+          tag_with_sha: true
+      - name: Build and publish Worker to Docker Hub
+        uses: docker/build-push-action@v1
+        with:
+          path: ./worker
+          repository: platyplus/tilehuria-worker
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          tag_with_ref: true
+          tag_with_sha: true
+      - name: Build and publish Hooks to Docker Hub
+        uses: docker/build-push-action@v1
+        with:
+          path: ./hooks
+          repository: platyplus/tilehuria-hooks
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          tag_with_ref: true
+          tag_with_sha: true
+      - name: Connect to Digital Ocean
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      - name: Save DigitalOcean kubeconfig
+        run: doctl kubernetes cluster kubeconfig save tilehuria
       - name: 'Deploy'
         uses: 'platyplus/helm-gh-action@master'
         with:
           release: tilehuria
           namespace: default
           chart: 'tilehuria'
-          dry-run: true
           values: |
             global:
               hostname: tilehuria.platyplus.io
