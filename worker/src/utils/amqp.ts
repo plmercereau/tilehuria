@@ -23,19 +23,17 @@ export const startQueue = async (
     durable: false // ? Is it ok ?
   })
   console.log(' [*] Waiting for messages in %s.', q.queue)
-  await channel.consume(q.queue, msg => {
-    if (msg) {
-      const strMessage = msg.content.toString()
-      console.log(
-        ` [*] [${q.queue}] Received message with length ${strMessage.length}`
-      )
-      handler(strMessage)
-        .then(() => channel.ack(msg))
-        .catch(err => {
-          console.log(' [!] Error in handling the message')
-          console.log(err)
-          channel.nack(msg)
-        })
-    }
-  })
+  await channel.consume(
+    q.queue,
+    msg => {
+      if (msg) {
+        const strMessage = msg.content.toString()
+        console.log(
+          ` [*] [${q.queue}] Received message with length ${strMessage.length}`
+        )
+        handler(strMessage)
+      }
+    },
+    { noAck: true }
+  )
 }
