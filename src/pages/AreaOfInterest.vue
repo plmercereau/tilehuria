@@ -37,7 +37,7 @@
           :options="mapOptions"
           style="height: 100%")
         l-tile-layer(:url="url")
-        l-tile-layer(v-if="selection" :url="selectionUrl" :options="{errorTileUrl: 'https://www.reality.fr/webvr/Bemyfarm/VR/image/popupbouteille1X.png'}")
+        l-tile-layer(v-if="selection" :url="selectionUrl" :options="{errorTileUrl: 'empty-tile.png'}")
         l-geo-json(v-if="aoi" ref="refSource"
           :geojson="aoi.source"
           :options-style="sourceStyle")
