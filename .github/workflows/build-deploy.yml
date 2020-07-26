@@ -63,16 +63,10 @@ jobs:
       - name: Save DigitalOcean kubeconfig
         run: doctl kubernetes cluster kubeconfig show tilehuria > .kubeconfig
       - name: 'Deploy'
-        uses: 'vimeda/helm@master'
+        uses: stefanprodan/kube-tools@v1
         with:
-          release: 'tilehuria'
-          namespace: 'default'
-          repo: 'https://charts.platyplus.io'
-          repo-alias: 'platyplus'
-          chart: 'tilehuria'
-          helm: 'helm'
-          token: '${{ github.token }}'
-          values: |
-            global.hostname: ${{ secrets.HOSTNAME }}
-        # env:
-        #   KUBECONFIG_FILE: '.kubeconfig'
+          kubectl: 1.18.2
+          helmv3: 3.2.1
+          command: |
+            echo "Run conftest"
+            helmv3 upgrade tilehuria tilehuria --repo https://charts.platyplus.io --set global.hostname=${{ secrets.HOSTNAME }}
