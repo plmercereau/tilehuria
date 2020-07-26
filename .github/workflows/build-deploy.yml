@@ -61,7 +61,7 @@ jobs:
       # - name: Save DigitalOcean kubeconfig
       #   run: doctl kubernetes cluster kubeconfig save tilehuria
       - name: 'Deploy'
-        uses: 'deliverybot/helm@master'
+        uses: 'platyplus/helm-gh-action@master'
         with:
           release: tilehuria
           namespace: default
@@ -73,4 +73,3 @@ jobs:
           repository: 'https://charts.platyplus.io'
         env:
           KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
-          HELM_3_FILE: helm-v3.2.4-linux-amd64.tar.gz
