@@ -74,5 +74,4 @@ export const updateAoiTiles = async ({
     console.log(` [*] Tileset(s) or the area of interest updated`)
   }
   console.log(` [*] Done updating the Area of Interest's tiles`)
-  // TODO: tiles_count in the DB: posgres computed value from jsonb
 }
