@@ -1,55 +1,31 @@
 import Router from 'koa-router'
-import gql from 'graphql-tag'
-// ! For debugging only. The processing goes now through an action
-
 import { HasuraEventContext } from '../types'
-import { AreaOfInterest, QueryRoot } from '../generated'
-import { geojsonToTiles, hasuraClient } from '../utils'
-import { MIN_ZOOM, MAX_ZOOM } from '../config'
+import { AreaOfInterest } from '../generated'
+import { AREA_OF_INTEREST_QUEUE } from '../config'
+import { sendMessage } from '../queue'
 
 export const areaOfInterest: Router.IMiddleware = async (
-  context: HasuraEventContext<AreaOfInterest>
+  context: HasuraEventContext<
+    AreaOfInterest & { min_zoom: number; max_zoom: number }
+  > // TODO Hasura events refers to the Postgres columns, not the graphql columns
 ) => {
-  const id =
-    context.request.body?.event.data.new?.id ||
-    context.request.body?.event.data.old?.id
-  console.log(
-    ` [*] Calculating tiles coordinates of the Area of Internet ${id}...`
-  )
-  const query = gql`
-    query getAoiSource($id: uuid!) {
-      areaOfInterest(id: $id) {
-        source
-        name
-      }
-    }
-  `
-  const { areaOfInterest: aoi } = await hasuraClient.request<QueryRoot>(query, {
-    id
-  })
+  const aoi = context.request.body?.event.data.new
   if (aoi) {
-    const name = aoi.name || aoi.source.name
-    const tiles = aoi.source
-      ? geojsonToTiles(aoi.source as GeoJSON.GeoJSON, MIN_ZOOM, MAX_ZOOM)
-      : []
-    const mutation = gql`
-      mutation update_aoi_coordinates(
-        $id: uuid!
-        $tiles: jsonb!
-        $name: String
-      ) {
-        updateAreaOfInterest(
-          pk_columns: { id: $id }
-          _set: { xyzCoordinates: $tiles, name: $name }
-        ) {
-          id
-        }
-      }
-    `
-    console.log(` [*] Updating the Area of Internet ${id}...`)
-    await hasuraClient.request(mutation, { id, tiles, name })
-    console.log(` [*] Done.`)
-    // TODO send messages on the existing tileSets to the worker (if any)
+    const { id, source, min_zoom, max_zoom } = aoi
+    console.log(
+      ` [*] New or updated area of internet: ${id}. Relaying the information to the worker...`
+    )
+
+    sendMessage(
+      AREA_OF_INTEREST_QUEUE,
+      JSON.stringify({
+        id,
+        source,
+        minZoom: min_zoom,
+        maxZoom: max_zoom
+      })
+    )
   }
+  console.log(` [*] Done.`)
   context.status = 200
 }

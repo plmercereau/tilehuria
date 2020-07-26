@@ -1,11 +1,4 @@
-actions:
-- name: insertAreaOfInterestAction
-  definition:
-    kind: synchronous
-    handler: '{{HOOKS_URL}}/actions/area-of-interest/insert'
-    forward_client_headers: true
-  permissions:
-  - role: user
+actions: []
 custom_types:
   enums: []
   input_objects: []

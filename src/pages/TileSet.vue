@@ -17,6 +17,7 @@ q-page.row.q-pa-md
       type='a',
       :href='downloadLink'
     ) Download
+    q-btn.q-ma-md(v-if='tileSet.progress === 1') Edit
 </template>
 
 <script lang="ts">

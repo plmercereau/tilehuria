@@ -1,12 +1,3 @@
-type Mutation {
-  insertAreaOfInterestAction (
-    id: uuid
-    source: jsonb!
-    name: String!
-  ): InsertAreaOfInterestActionOutput
-}
-
-
 
 
 type InsertAreaOfInterestActionOutput {

@@ -13,6 +13,9 @@ export const tileSet: Router.IMiddleware = async (
   const id =
     context.request.body?.event.data.new?.id ||
     context.request.body?.event.data.old?.id
+  console.log(
+    ` [*] New or updated tileset: ${id}. Relaying the information to the worker...`
+  )
   const query = gql`
     query getTileSetProviders($id: uuid!) {
       tileSet(id: $id) {
@@ -54,5 +57,6 @@ export const tileSet: Router.IMiddleware = async (
       })
     )
   }
+  console.log(` [*] Done.`)
   context.status = 200
 }

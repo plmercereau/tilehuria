@@ -1,5 +1,4 @@
 import got from 'got'
-import { Readable, PassThrough } from 'stream'
 
 import { s3, tileUrl } from '../utils'
 import { S3_BUCKET } from '../config'
@@ -8,25 +7,21 @@ export const getOneTile = async (
   [x, y, z]: number[],
   template: string,
   slug: string
-): Promise<Readable> => {
+): Promise<Buffer> => {
   const params = {
     Bucket: S3_BUCKET,
     Key: `tile/${slug}/${z}/${x}/${y}.png`
   }
+  const url = tileUrl([x, y, z], template)
   try {
     await s3.headObject(params).promise()
-    console.log(` [*] Tile tile/${slug}/${z}/${x}/${y}.png already exists`)
-    return s3.getObject(params).createReadStream()
+    const result = await s3.getObject(params).promise()
+    console.log(` [*] Tile ${url}: using cache`)
+    return result.Body as Buffer
   } catch (error) {
-    const url = tileUrl([x, y, z], template)
-    console.log(` [*] Download tile ${url}`)
-    function uploadFromStream() {
-      var pass = new PassThrough()
-      s3.upload({ ...params, Body: pass }, function(err) {
-        if (err) console.log(` [!] Error uploading ${url}`, err)
-      })
-      return pass
-    }
-    return got.stream(url).pipe(uploadFromStream())
+    console.log(` [*] Tile ${url}: downloading`)
+    const body = await got(url).buffer()
+    await s3.putObject({ ...params, Body: body }).promise()
+    return body
   }
 }

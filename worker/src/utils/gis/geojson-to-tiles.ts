@@ -1,6 +1,4 @@
-// import cover from '@mapbox/tile-cover'
 import { GeoJSON } from 'geojson'
-// import geojsonExtent from '@mapbox/geojson-extent'
 import { squareGrid, bbox } from '@turf/turf'
 import { LngLatToXYZ } from './lng-lat-zoom-to-xyz'
 import { tileWidth } from './tile-width'

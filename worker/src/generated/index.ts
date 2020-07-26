@@ -8,7 +8,6 @@ export type Scalars = {
   Int: number;
   Float: number;
   citext: string;
-  json: any;
   jsonb: { [key: string]: any };
   smallint: any;
   timestamptz: Date;
@@ -60,6 +59,17 @@ export type IntComparisonExp = {
   _nin?: Maybe<Array<Scalars['Int']>>;
 };
 
+export type Query = {
+  __typename?: 'Query';
+  hello?: Maybe<Scalars['String']>;
+  tileSetInfo?: Maybe<TileSetInfo>;
+};
+
+
+export type QueryTileSetInfoArgs = {
+  id: Scalars['uuid'];
+};
+
 /** expression to compare columns of type String. All fields are combined with logical 'AND'. */
 export type StringComparisonExp = {
   _eq?: Maybe<Scalars['String']>;
@@ -79,6 +89,11 @@ export type StringComparisonExp = {
   _similar?: Maybe<Scalars['String']>;
 };
 
+export type TileSetInfo = {
+  __typename?: 'TileSetInfo';
+  size?: Maybe<Scalars['Int']>;
+};
+
 export type TileSetInfoOutput = {
   __typename?: 'TileSetInfoOutput';
   size?: Maybe<Scalars['Int']>;
@@ -90,6 +105,8 @@ export type TileSetInfoOutput = {
 export type AreaOfInterest = {
   __typename?: 'area_of_interest';
   id: Scalars['uuid'];
+  maxZoom?: Maybe<Scalars['Int']>;
+  minZoom?: Maybe<Scalars['Int']>;
   name: Scalars['String'];
   source: Scalars['jsonb'];
   /** An array relationship */
@@ -195,11 +212,15 @@ export type AreaOfInterestArrRelInsertInput = {
 /** aggregate avg on columns */
 export type AreaOfInterestAvgFields = {
   __typename?: 'area_of_interest_avg_fields';
+  maxZoom?: Maybe<Scalars['Float']>;
+  minZoom?: Maybe<Scalars['Float']>;
   tilesCount?: Maybe<Scalars['Float']>;
 };
 
 /** order by avg() on columns of table "area_of_interest" */
 export type AreaOfInterestAvgOrderBy = {
+  maxZoom?: Maybe<OrderBy>;
+  minZoom?: Maybe<OrderBy>;
   tilesCount?: Maybe<OrderBy>;
 };
 
@@ -209,6 +230,8 @@ export type AreaOfInterestBoolExp = {
   _not?: Maybe<AreaOfInterestBoolExp>;
   _or?: Maybe<Array<Maybe<AreaOfInterestBoolExp>>>;
   id?: Maybe<UuidComparisonExp>;
+  maxZoom?: Maybe<IntComparisonExp>;
+  minZoom?: Maybe<IntComparisonExp>;
   name?: Maybe<StringComparisonExp>;
   source?: Maybe<JsonbComparisonExp>;
   tileSets?: Maybe<TileSetBoolExp>;
@@ -244,12 +267,16 @@ export type AreaOfInterestDeleteKeyInput = {
 
 /** input type for incrementing integer column in table "area_of_interest" */
 export type AreaOfInterestIncInput = {
+  maxZoom?: Maybe<Scalars['Int']>;
+  minZoom?: Maybe<Scalars['Int']>;
   tilesCount?: Maybe<Scalars['Int']>;
 };
 
 /** input type for inserting data into table "area_of_interest" */
 export type AreaOfInterestInsertInput = {
   id?: Maybe<Scalars['uuid']>;
+  maxZoom?: Maybe<Scalars['Int']>;
+  minZoom?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   source?: Maybe<Scalars['jsonb']>;
   tileSets?: Maybe<TileSetArrRelInsertInput>;
@@ -263,6 +290,8 @@ export type AreaOfInterestInsertInput = {
 export type AreaOfInterestMaxFields = {
   __typename?: 'area_of_interest_max_fields';
   id?: Maybe<Scalars['uuid']>;
+  maxZoom?: Maybe<Scalars['Int']>;
+  minZoom?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   tilesCount?: Maybe<Scalars['Int']>;
   userId?: Maybe<Scalars['uuid']>;
@@ -271,6 +300,8 @@ export type AreaOfInterestMaxFields = {
 /** order by max() on columns of table "area_of_interest" */
 export type AreaOfInterestMaxOrderBy = {
   id?: Maybe<OrderBy>;
+  maxZoom?: Maybe<OrderBy>;
+  minZoom?: Maybe<OrderBy>;
   name?: Maybe<OrderBy>;
   tilesCount?: Maybe<OrderBy>;
   userId?: Maybe<OrderBy>;
@@ -280,6 +311,8 @@ export type AreaOfInterestMaxOrderBy = {
 export type AreaOfInterestMinFields = {
   __typename?: 'area_of_interest_min_fields';
   id?: Maybe<Scalars['uuid']>;
+  maxZoom?: Maybe<Scalars['Int']>;
+  minZoom?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   tilesCount?: Maybe<Scalars['Int']>;
   userId?: Maybe<Scalars['uuid']>;
@@ -288,6 +321,8 @@ export type AreaOfInterestMinFields = {
 /** order by min() on columns of table "area_of_interest" */
 export type AreaOfInterestMinOrderBy = {
   id?: Maybe<OrderBy>;
+  maxZoom?: Maybe<OrderBy>;
+  minZoom?: Maybe<OrderBy>;
   name?: Maybe<OrderBy>;
   tilesCount?: Maybe<OrderBy>;
   userId?: Maybe<OrderBy>;
@@ -318,6 +353,8 @@ export type AreaOfInterestOnConflict = {
 /** ordering options when selecting data from "area_of_interest" */
 export type AreaOfInterestOrderBy = {
   id?: Maybe<OrderBy>;
+  maxZoom?: Maybe<OrderBy>;
+  minZoom?: Maybe<OrderBy>;
   name?: Maybe<OrderBy>;
   source?: Maybe<OrderBy>;
   tileSets_aggregate?: Maybe<TileSetAggregateOrderBy>;
@@ -343,6 +380,10 @@ export enum AreaOfInterestSelectColumn {
   /** column name */
   Id = 'id',
   /** column name */
+  MaxZoom = 'maxZoom',
+  /** column name */
+  MinZoom = 'minZoom',
+  /** column name */
   Name = 'name',
   /** column name */
   Source = 'source',
@@ -357,6 +398,8 @@ export enum AreaOfInterestSelectColumn {
 /** input type for updating data in table "area_of_interest" */
 export type AreaOfInterestSetInput = {
   id?: Maybe<Scalars['uuid']>;
+  maxZoom?: Maybe<Scalars['Int']>;
+  minZoom?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   source?: Maybe<Scalars['jsonb']>;
   tilesCount?: Maybe<Scalars['Int']>;
@@ -367,44 +410,60 @@ export type AreaOfInterestSetInput = {
 /** aggregate stddev on columns */
 export type AreaOfInterestStddevFields = {
   __typename?: 'area_of_interest_stddev_fields';
+  maxZoom?: Maybe<Scalars['Float']>;
+  minZoom?: Maybe<Scalars['Float']>;
   tilesCount?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev() on columns of table "area_of_interest" */
 export type AreaOfInterestStddevOrderBy = {
+  maxZoom?: Maybe<OrderBy>;
+  minZoom?: Maybe<OrderBy>;
   tilesCount?: Maybe<OrderBy>;
 };
 
 /** aggregate stddev_pop on columns */
 export type AreaOfInterestStddevPopFields = {
   __typename?: 'area_of_interest_stddev_pop_fields';
+  maxZoom?: Maybe<Scalars['Float']>;
+  minZoom?: Maybe<Scalars['Float']>;
   tilesCount?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_pop() on columns of table "area_of_interest" */
 export type AreaOfInterestStddevPopOrderBy = {
+  maxZoom?: Maybe<OrderBy>;
+  minZoom?: Maybe<OrderBy>;
   tilesCount?: Maybe<OrderBy>;
 };
 
 /** aggregate stddev_samp on columns */
 export type AreaOfInterestStddevSampFields = {
   __typename?: 'area_of_interest_stddev_samp_fields';
+  maxZoom?: Maybe<Scalars['Float']>;
+  minZoom?: Maybe<Scalars['Float']>;
   tilesCount?: Maybe<Scalars['Float']>;
 };
 
 /** order by stddev_samp() on columns of table "area_of_interest" */
 export type AreaOfInterestStddevSampOrderBy = {
+  maxZoom?: Maybe<OrderBy>;
+  minZoom?: Maybe<OrderBy>;
   tilesCount?: Maybe<OrderBy>;
 };
 
 /** aggregate sum on columns */
 export type AreaOfInterestSumFields = {
   __typename?: 'area_of_interest_sum_fields';
+  maxZoom?: Maybe<Scalars['Int']>;
+  minZoom?: Maybe<Scalars['Int']>;
   tilesCount?: Maybe<Scalars['Int']>;
 };
 
 /** order by sum() on columns of table "area_of_interest" */
 export type AreaOfInterestSumOrderBy = {
+  maxZoom?: Maybe<OrderBy>;
+  minZoom?: Maybe<OrderBy>;
   tilesCount?: Maybe<OrderBy>;
 };
 
@@ -412,6 +471,10 @@ export type AreaOfInterestSumOrderBy = {
 export enum AreaOfInterestUpdateColumn {
   /** column name */
   Id = 'id',
+  /** column name */
+  MaxZoom = 'maxZoom',
+  /** column name */
+  MinZoom = 'minZoom',
   /** column name */
   Name = 'name',
   /** column name */
@@ -427,33 +490,45 @@ export enum AreaOfInterestUpdateColumn {
 /** aggregate var_pop on columns */
 export type AreaOfInterestVarPopFields = {
   __typename?: 'area_of_interest_var_pop_fields';
+  maxZoom?: Maybe<Scalars['Float']>;
+  minZoom?: Maybe<Scalars['Float']>;
   tilesCount?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_pop() on columns of table "area_of_interest" */
 export type AreaOfInterestVarPopOrderBy = {
+  maxZoom?: Maybe<OrderBy>;
+  minZoom?: Maybe<OrderBy>;
   tilesCount?: Maybe<OrderBy>;
 };
 
 /** aggregate var_samp on columns */
 export type AreaOfInterestVarSampFields = {
   __typename?: 'area_of_interest_var_samp_fields';
+  maxZoom?: Maybe<Scalars['Float']>;
+  minZoom?: Maybe<Scalars['Float']>;
   tilesCount?: Maybe<Scalars['Float']>;
 };
 
 /** order by var_samp() on columns of table "area_of_interest" */
 export type AreaOfInterestVarSampOrderBy = {
+  maxZoom?: Maybe<OrderBy>;
+  minZoom?: Maybe<OrderBy>;
   tilesCount?: Maybe<OrderBy>;
 };
 
 /** aggregate variance on columns */
 export type AreaOfInterestVarianceFields = {
   __typename?: 'area_of_interest_variance_fields';
+  maxZoom?: Maybe<Scalars['Float']>;
+  minZoom?: Maybe<Scalars['Float']>;
   tilesCount?: Maybe<Scalars['Float']>;
 };
 
 /** order by variance() on columns of table "area_of_interest" */
 export type AreaOfInterestVarianceOrderBy = {
+  maxZoom?: Maybe<OrderBy>;
+  minZoom?: Maybe<OrderBy>;
   tilesCount?: Maybe<OrderBy>;
 };
 
@@ -1813,7 +1888,6 @@ export type CitextComparisonExp = {
 };
 
 
-
 /** expression to compare columns of type jsonb. All fields are combined with logical 'AND'. */
 export type JsonbComparisonExp = {
   /** is the column contained in the given json value */
@@ -1882,8 +1956,6 @@ export type MutationRoot = {
   delete_users_by_pk?: Maybe<Users>;
   /** insert a single row into the table: "area_of_interest" */
   insertAreaOfInterest?: Maybe<AreaOfInterest>;
-  /** perform the action: "insertAreaOfInterestAction" */
-  insertAreaOfInterestAction?: Maybe<InsertAreaOfInterestActionOutput>;
   /** insert data into the table: "area_of_interest" */
   insertAreasOfInterest?: Maybe<AreaOfInterestMutationResponse>;
   /** insert a single row into the table: "tile_provider" */
@@ -2089,14 +2161,6 @@ export type MutationRootDeleteUsersByPkArgs = {
 export type MutationRootInsertAreaOfInterestArgs = {
   object: AreaOfInterestInsertInput;
   on_conflict?: Maybe<AreaOfInterestOnConflict>;
-};
-
-
-/** mutation root */
-export type MutationRootInsertAreaOfInterestActionArgs = {
-  id?: Maybe<Scalars['uuid']>;
-  name: Scalars['String'];
-  source: Scalars['jsonb'];
 };
 
 
@@ -2457,6 +2521,7 @@ export type QueryRoot = {
   auth_roles_aggregate: AuthRolesAggregate;
   /** fetch data from the table: "auth.roles" using primary key columns */
   auth_roles_by_pk?: Maybe<AuthRoles>;
+  hello?: Maybe<Scalars['String']>;
   /** fetch data from the table: "tile_provider" using primary key columns */
   tileProvider?: Maybe<TileProvider>;
   /** fetch aggregated fields from the table: "tile_provider" */
@@ -2467,6 +2532,7 @@ export type QueryRoot = {
   tileSet?: Maybe<TileSet>;
   /** fetch aggregated fields from the table: "tile_set" */
   tileSetAggregate: TileSetAggregate;
+  tileSetInfo?: Maybe<TileSetInfo>;
   /** fetch data from the table: "tile_set" */
   tileSets: Array<TileSet>;
   /** fetch data from the table: "users" */
@@ -2699,6 +2765,12 @@ export type QueryRootTileSetAggregateArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<TileSetOrderBy>>;
   where?: Maybe<TileSetBoolExp>;
+};
+
+
+/** query root */
+export type QueryRootTileSetInfoArgs = {
+  id: Scalars['uuid'];
 };
 
 
@@ -3285,6 +3357,8 @@ export type TileSet = {
   area_of_interest_id: Scalars['uuid'];
   format: Scalars['String'];
   id: Scalars['uuid'];
+  /** Remote relationship field */
+  info?: Maybe<TileSetInfo>;
   progress?: Maybe<Scalars['Float']>;
   quality?: Maybe<Scalars['smallint']>;
   size?: Maybe<Scalars['Int']>;
@@ -3658,11 +3732,35 @@ export type Users = {
   __typename?: 'users';
   /** An object relationship */
   account?: Maybe<AuthAccounts>;
+  /** An array relationship */
+  area_of_interests: Array<AreaOfInterest>;
+  /** An aggregated array relationship */
+  area_of_interests_aggregate: AreaOfInterestAggregate;
   avatar_url?: Maybe<Scalars['String']>;
   created_at: Scalars['timestamptz'];
   display_name?: Maybe<Scalars['String']>;
   id: Scalars['uuid'];
   updated_at: Scalars['timestamptz'];
+};
+
+
+/** columns and relationships of "users" */
+export type UsersAreaOfInterestsArgs = {
+  distinct_on?: Maybe<Array<AreaOfInterestSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<AreaOfInterestOrderBy>>;
+  where?: Maybe<AreaOfInterestBoolExp>;
+};
+
+
+/** columns and relationships of "users" */
+export type UsersAreaOfInterestsAggregateArgs = {
+  distinct_on?: Maybe<Array<AreaOfInterestSelectColumn>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<AreaOfInterestOrderBy>>;
+  where?: Maybe<AreaOfInterestBoolExp>;
 };
 
 /** aggregated selection of "users" */
@@ -3706,6 +3804,7 @@ export type UsersBoolExp = {
   _not?: Maybe<UsersBoolExp>;
   _or?: Maybe<Array<Maybe<UsersBoolExp>>>;
   account?: Maybe<AuthAccountsBoolExp>;
+  area_of_interests?: Maybe<AreaOfInterestBoolExp>;
   avatar_url?: Maybe<StringComparisonExp>;
   created_at?: Maybe<TimestamptzComparisonExp>;
   display_name?: Maybe<StringComparisonExp>;
@@ -3722,6 +3821,7 @@ export enum UsersConstraint {
 /** input type for inserting data into table "users" */
 export type UsersInsertInput = {
   account?: Maybe<AuthAccountsObjRelInsertInput>;
+  area_of_interests?: Maybe<AreaOfInterestArrRelInsertInput>;
   avatar_url?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   display_name?: Maybe<Scalars['String']>;
@@ -3792,6 +3892,7 @@ export type UsersOnConflict = {
 /** ordering options when selecting data from "users" */
 export type UsersOrderBy = {
   account?: Maybe<AuthAccountsOrderBy>;
+  area_of_interests_aggregate?: Maybe<AreaOfInterestAggregateOrderBy>;
   avatar_url?: Maybe<OrderBy>;
   created_at?: Maybe<OrderBy>;
   display_name?: Maybe<OrderBy>;

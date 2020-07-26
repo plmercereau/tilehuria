@@ -54,6 +54,11 @@ input Int_comparison_exp {
   _nin: [Int!]
 }
 
+type Query {
+  hello: String
+  tileSetInfo(id: uuid!): TileSetInfo
+}
+
 """
 expression to compare columns of type String. All fields are combined with logical 'AND'.
 """
@@ -75,6 +80,10 @@ input String_comparison_exp {
   _similar: String
 }
 
+type TileSetInfo {
+  size: Int
+}
+
 type TileSetInfoOutput {
   size: Int
   tileSet: tile_set
@@ -86,6 +95,8 @@ columns and relationships of "area_of_interest"
 """
 type area_of_interest {
   id: uuid!
+  maxZoom: Int
+  minZoom: Int
   name: String!
   source(
     """JSON select path"""
@@ -196,6 +207,8 @@ input area_of_interest_arr_rel_insert_input {
 
 """aggregate avg on columns"""
 type area_of_interest_avg_fields {
+  maxZoom: Float
+  minZoom: Float
   tilesCount: Float
 }
 
@@ -203,6 +216,8 @@ type area_of_interest_avg_fields {
 order by avg() on columns of table "area_of_interest"
 """
 input area_of_interest_avg_order_by {
+  maxZoom: order_by
+  minZoom: order_by
   tilesCount: order_by
 }
 
@@ -214,6 +229,8 @@ input area_of_interest_bool_exp {
   _not: area_of_interest_bool_exp
   _or: [area_of_interest_bool_exp]
   id: uuid_comparison_exp
+  maxZoom: Int_comparison_exp
+  minZoom: Int_comparison_exp
   name: String_comparison_exp
   source: jsonb_comparison_exp
   tileSets: tile_set_bool_exp
@@ -259,6 +276,8 @@ input area_of_interest_delete_key_input {
 input type for incrementing integer column in table "area_of_interest"
 """
 input area_of_interest_inc_input {
+  maxZoom: Int
+  minZoom: Int
   tilesCount: Int
 }
 
@@ -267,6 +286,8 @@ input type for inserting data into table "area_of_interest"
 """
 input area_of_interest_insert_input {
   id: uuid
+  maxZoom: Int
+  minZoom: Int
   name: String
   source: jsonb
   tileSets: tile_set_arr_rel_insert_input
@@ -279,6 +300,8 @@ input area_of_interest_insert_input {
 """aggregate max on columns"""
 type area_of_interest_max_fields {
   id: uuid
+  maxZoom: Int
+  minZoom: Int
   name: String
   tilesCount: Int
   userId: uuid
@@ -289,6 +312,8 @@ order by max() on columns of table "area_of_interest"
 """
 input area_of_interest_max_order_by {
   id: order_by
+  maxZoom: order_by
+  minZoom: order_by
   name: order_by
   tilesCount: order_by
   userId: order_by
@@ -297,6 +322,8 @@ input area_of_interest_max_order_by {
 """aggregate min on columns"""
 type area_of_interest_min_fields {
   id: uuid
+  maxZoom: Int
+  minZoom: Int
   name: String
   tilesCount: Int
   userId: uuid
@@ -307,6 +334,8 @@ order by min() on columns of table "area_of_interest"
 """
 input area_of_interest_min_order_by {
   id: order_by
+  maxZoom: order_by
+  minZoom: order_by
   name: order_by
   tilesCount: order_by
   userId: order_by
@@ -345,6 +374,8 @@ ordering options when selecting data from "area_of_interest"
 """
 input area_of_interest_order_by {
   id: order_by
+  maxZoom: order_by
+  minZoom: order_by
   name: order_by
   source: order_by
   tileSets_aggregate: tile_set_aggregate_order_by
@@ -375,6 +406,12 @@ enum area_of_interest_select_column {
   id
 
   """column name"""
+  maxZoom
+
+  """column name"""
+  minZoom
+
+  """column name"""
   name
 
   """column name"""
@@ -395,6 +432,8 @@ input type for updating data in table "area_of_interest"
 """
 input area_of_interest_set_input {
   id: uuid
+  maxZoom: Int
+  minZoom: Int
   name: String
   source: jsonb
   tilesCount: Int
@@ -404,6 +443,8 @@ input area_of_interest_set_input {
 
 """aggregate stddev on columns"""
 type area_of_interest_stddev_fields {
+  maxZoom: Float
+  minZoom: Float
   tilesCount: Float
 }
 
@@ -411,11 +452,15 @@ type area_of_interest_stddev_fields {
 order by stddev() on columns of table "area_of_interest"
 """
 input area_of_interest_stddev_order_by {
+  maxZoom: order_by
+  minZoom: order_by
   tilesCount: order_by
 }
 
 """aggregate stddev_pop on columns"""
 type area_of_interest_stddev_pop_fields {
+  maxZoom: Float
+  minZoom: Float
   tilesCount: Float
 }
 
@@ -423,11 +468,15 @@ type area_of_interest_stddev_pop_fields {
 order by stddev_pop() on columns of table "area_of_interest"
 """
 input area_of_interest_stddev_pop_order_by {
+  maxZoom: order_by
+  minZoom: order_by
   tilesCount: order_by
 }
 
 """aggregate stddev_samp on columns"""
 type area_of_interest_stddev_samp_fields {
+  maxZoom: Float
+  minZoom: Float
   tilesCount: Float
 }
 
@@ -435,11 +484,15 @@ type area_of_interest_stddev_samp_fields {
 order by stddev_samp() on columns of table "area_of_interest"
 """
 input area_of_interest_stddev_samp_order_by {
+  maxZoom: order_by
+  minZoom: order_by
   tilesCount: order_by
 }
 
 """aggregate sum on columns"""
 type area_of_interest_sum_fields {
+  maxZoom: Int
+  minZoom: Int
   tilesCount: Int
 }
 
@@ -447,6 +500,8 @@ type area_of_interest_sum_fields {
 order by sum() on columns of table "area_of_interest"
 """
 input area_of_interest_sum_order_by {
+  maxZoom: order_by
+  minZoom: order_by
   tilesCount: order_by
 }
 
@@ -456,6 +511,12 @@ update columns of table "area_of_interest"
 enum area_of_interest_update_column {
   """column name"""
   id
+
+  """column name"""
+  maxZoom
+
+  """column name"""
+  minZoom
 
   """column name"""
   name
@@ -475,6 +536,8 @@ enum area_of_interest_update_column {
 
 """aggregate var_pop on columns"""
 type area_of_interest_var_pop_fields {
+  maxZoom: Float
+  minZoom: Float
   tilesCount: Float
 }
 
@@ -482,11 +545,15 @@ type area_of_interest_var_pop_fields {
 order by var_pop() on columns of table "area_of_interest"
 """
 input area_of_interest_var_pop_order_by {
+  maxZoom: order_by
+  minZoom: order_by
   tilesCount: order_by
 }
 
 """aggregate var_samp on columns"""
 type area_of_interest_var_samp_fields {
+  maxZoom: Float
+  minZoom: Float
   tilesCount: Float
 }
 
@@ -494,11 +561,15 @@ type area_of_interest_var_samp_fields {
 order by var_samp() on columns of table "area_of_interest"
 """
 input area_of_interest_var_samp_order_by {
+  maxZoom: order_by
+  minZoom: order_by
   tilesCount: order_by
 }
 
 """aggregate variance on columns"""
 type area_of_interest_variance_fields {
+  maxZoom: Float
+  minZoom: Float
   tilesCount: Float
 }
 
@@ -506,6 +577,8 @@ type area_of_interest_variance_fields {
 order by variance() on columns of table "area_of_interest"
 """
 input area_of_interest_variance_order_by {
+  maxZoom: order_by
+  minZoom: order_by
   tilesCount: order_by
 }
 
@@ -2143,8 +2216,6 @@ input citext_comparison_exp {
   _similar: String
 }
 
-scalar json
-
 scalar jsonb
 
 """
@@ -2318,11 +2389,6 @@ type mutation_root {
     """on conflict condition"""
     on_conflict: area_of_interest_on_conflict
   ): area_of_interest
-
-  """
-  perform the action: "insertAreaOfInterestAction"
-  """
-  insertAreaOfInterestAction(id: uuid, name: String!, source: jsonb!): InsertAreaOfInterestActionOutput
 
   """
   insert data into the table: "area_of_interest"
@@ -3161,6 +3227,7 @@ type query_root {
 
   """fetch data from the table: "auth.roles" using primary key columns"""
   auth_roles_by_pk(role: String!): auth_roles
+  hello: String
 
   """fetch data from the table: "tile_provider" using primary key columns"""
   tileProvider(id: uuid!): tile_provider
@@ -3227,6 +3294,7 @@ type query_root {
     """filter the rows returned"""
     where: tile_set_bool_exp
   ): tile_set_aggregate!
+  tileSetInfo(id: uuid!): TileSetInfo
 
   """
   fetch data from the table: "tile_set"
@@ -4004,6 +4072,9 @@ type tile_set {
   area_of_interest_id: uuid!
   format: String!
   id: uuid!
+
+  """Remote relationship field"""
+  info: TileSetInfo
   progress: Float
   quality: smallint
   size: Int
@@ -4427,6 +4498,42 @@ columns and relationships of "users"
 type users {
   """An object relationship"""
   account: auth_accounts
+
+  """An array relationship"""
+  area_of_interests(
+    """distinct select on columns"""
+    distinct_on: [area_of_interest_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [area_of_interest_order_by!]
+
+    """filter the rows returned"""
+    where: area_of_interest_bool_exp
+  ): [area_of_interest!]!
+
+  """An aggregated array relationship"""
+  area_of_interests_aggregate(
+    """distinct select on columns"""
+    distinct_on: [area_of_interest_select_column!]
+
+    """limit the number of rows returned"""
+    limit: Int
+
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+
+    """sort the rows by one or more columns"""
+    order_by: [area_of_interest_order_by!]
+
+    """filter the rows returned"""
+    where: area_of_interest_bool_exp
+  ): area_of_interest_aggregate!
   avatar_url: String
   created_at: timestamptz!
   display_name: String
@@ -4476,6 +4583,7 @@ input users_bool_exp {
   _not: users_bool_exp
   _or: [users_bool_exp]
   account: auth_accounts_bool_exp
+  area_of_interests: area_of_interest_bool_exp
   avatar_url: String_comparison_exp
   created_at: timestamptz_comparison_exp
   display_name: String_comparison_exp
@@ -4496,6 +4604,7 @@ input type for inserting data into table "users"
 """
 input users_insert_input {
   account: auth_accounts_obj_rel_insert_input
+  area_of_interests: area_of_interest_arr_rel_insert_input
   avatar_url: String
   created_at: timestamptz
   display_name: String
@@ -4576,6 +4685,7 @@ ordering options when selecting data from "users"
 """
 input users_order_by {
   account: auth_accounts_order_by
+  area_of_interests_aggregate: area_of_interest_aggregate_order_by
   avatar_url: order_by
   created_at: order_by
   display_name: order_by

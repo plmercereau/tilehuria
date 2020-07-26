@@ -88,13 +88,10 @@ export const SELECT_TILE_SET = gql`
 
 export const INSERT_AREA_OF_INTEREST = gql`
   mutation insertAoi($name: String!, $source: jsonb!) {
-    insertAreaOfInterestAction(name: $name, source: $source) {
-      areaOfInterestId
-      areaOfInterest {
-        id
-        name
-        tilesCount
-      }
+    insertAreaOfInterest(object: { name: $name, source: $source }) {
+      id
+      name
+      tilesCount
     }
   }
 `

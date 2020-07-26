@@ -101,7 +101,9 @@
       delete_by_pk: deleteAreaOfInterest
       update_by_pk: updateAreaOfInterest
     custom_column_names:
+      max_zoom: maxZoom
       tiles_count: tilesCount
+      min_zoom: minZoom
       xyz_coordinates: xyzCoordinates
       user_id: userId
   object_relationships:
@@ -116,6 +118,16 @@
         table:
           schema: public
           name: tile_set
+  insert_permissions:
+  - role: user
+    permission:
+      check: {}
+      set:
+        user_id: x-hasura-user-id
+      columns:
+      - name
+      - source
+      backend_only: false
   select_permissions:
   - role: user
     permission:
@@ -127,14 +139,33 @@
       - user_id
       - xyz_coordinates
       filter: {}
+  update_permissions:
+  - role: user
+    permission:
+      columns:
+      - name
+      - source
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+      check: null
   delete_permissions:
   - role: user
     permission:
-      filter: {}
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
   event_triggers:
   - name: calculate_aoi_coordinates
     definition:
       enable_manual: true
+      insert:
+        columns: '*'
+      update:
+        columns:
+        - max_zoom
+        - min_zoom
+        - source
     retry_conf:
       num_retries: 0
       interval_sec: 10
@@ -195,7 +226,11 @@
   delete_permissions:
   - role: user
     permission:
-      filter: {}
+      filter:
+        _not:
+          tileSets:
+            id:
+              _is_null: false
 - table:
     schema: public
     name: tile_set
@@ -258,7 +293,9 @@
       columns:
       - format
       - quality
-      filter: {}
+      filter:
+        progress:
+          _eq: 1
       check: {}
   delete_permissions:
   - role: user
@@ -272,6 +309,8 @@
         columns: '*'
       update:
         columns:
+        - quality
+        - format
         - area_of_interest_id
         - tile_provider_id
     retry_conf:
@@ -291,3 +330,11 @@
           name: accounts
         column_mapping:
           id: user_id
+  array_relationships:
+  - name: area_of_interests
+    using:
+      foreign_key_constraint_on:
+        column: user_id
+        table:
+          schema: public
+          name: area_of_interest

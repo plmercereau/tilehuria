@@ -1,10 +1,8 @@
 import Router from 'koa-router'
 import gql from 'graphql-tag'
 // TODO 'src/' import won't work!!
-
 import { HasuraActionContext } from '../../types'
-import { geojsonToTiles, hasuraClient } from '../../utils'
-import { MIN_ZOOM, MAX_ZOOM } from '../../config'
+import { hasuraClient } from '../../utils'
 
 const updateSourceMutation = gql`
   mutation update_aoi_source(
@@ -44,7 +42,7 @@ export const updateAreaOfInterest: Router.IMiddleware = async (
     await hasuraClient.request(updateSourceMutation, {
       id,
       source,
-      xyzCoordinates: geojsonToTiles(source, MIN_ZOOM, MAX_ZOOM)
+      xyzCoordinates: [] //geojsonToTiles(source, MIN_ZOOM, MAX_ZOOM)
     })
 
   if (name)

@@ -1,11 +1,9 @@
 import Router from 'koa-router'
 import gql from 'graphql-tag'
 // TODO 'src/' import won't work!!
-
 import { HasuraActionContext } from '../../types'
-import { geojsonToTiles, hasuraClient } from '../../utils'
+import { hasuraClient } from '../../utils'
 import { MutationRoot } from '../../generated'
-import { MIN_ZOOM, MAX_ZOOM } from '../../config'
 
 const mutation = gql`
   mutation insert_aoi_coordinates($object: area_of_interest_insert_input!) {
@@ -32,7 +30,7 @@ export const insertAreaOfInterest: Router.IMiddleware = async (
         object: {
           id,
           source,
-          xyzCoordinates: geojsonToTiles(source, MIN_ZOOM, MAX_ZOOM),
+          xyzCoordinates: [], // geojsonToTiles(source, MIN_ZOOM, MAX_ZOOM),
           name: name,
           userId: context.request.body.session_variables['x-hasura-user-id']
         }
