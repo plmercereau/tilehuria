@@ -65,7 +65,7 @@ jobs:
         with:
           release: tilehuria
           namespace: default
-          chart: 'https://charts.platyplus.io'
+          chart: 'tilehuria'
           values: |
             global.hostname: ${{ secrets.HOSTNAME }}
           helm: helm3
