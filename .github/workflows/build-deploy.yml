@@ -66,6 +66,7 @@ jobs:
           release: tilehuria
           namespace: default
           chart: 'tilehuria'
+          dry-run: true
           values: |
             global.hostname: ${{ secrets.HOSTNAME }}
           helm: helm3
