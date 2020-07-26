@@ -73,3 +73,4 @@ jobs:
           repository: 'https://charts.platyplus.io'
         env:
           KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
+          HELM_3_FILE: helm-v3.2.4-linux-amd64.tar.gz
