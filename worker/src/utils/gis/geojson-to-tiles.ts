@@ -1,5 +1,6 @@
 import { GeoJSON } from 'geojson'
-import { squareGrid, bbox } from '@turf/turf'
+import squareGrid from '@turf/square-grid'
+import bbox from '@turf/bbox'
 import { LngLatToXYZ } from './lng-lat-zoom-to-xyz'
 import { tileWidth } from './tile-width'
 
