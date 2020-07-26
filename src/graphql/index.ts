@@ -48,11 +48,15 @@ export const SELECT_AREA_OF_INTEREST = gql`
       id
       name
       source
+      minZoom
+      maxZoom
       tilesCount
       tileSets {
         id
         progress
         size
+        format
+        quality
         tileProvider {
           id
           name

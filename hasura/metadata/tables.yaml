@@ -133,6 +133,8 @@
     permission:
       columns:
       - id
+      - max_zoom
+      - min_zoom
       - name
       - source
       - tiles_count

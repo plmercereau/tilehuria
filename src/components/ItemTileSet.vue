@@ -1,18 +1,47 @@
 <template lang="pug">
-q-item(clickable, :active='active', @click='$emit("click")')
-  q-item-section
-    q-item-label {{ label }}
-    q-item-label
-      q-linear-progress.q-mt-md(
-        v-if='tileSet.progress !== 1',
-        :value='tileSet.progress'
-      )
-  q-item-section(side, v-if='tileSet.size')
-    q-badge {{ tileSet.size | prettyBytes }}
+q-expansion-item(
+  v-model='expanded',
+  expand-separator,
+  icon='perm_identity',
+  :label='label',
+  caption='John Doe',
+  @show='$emit("show")',
+  @hide='$emit("hide")'
+)
+  template(#header)
+    q-item-section
+      q-item-label(overline) {{ label }}
+      q-item-label(v-if='!expanded && tileSet.progress !== 1')
+        q-linear-progress.q-mt-md(:value='tileSet.progress')
+    q-item-section(side, v-if='!expanded && tileSet.size')
+      q-badge {{ tileSet.size | prettyBytes }}
+  template(#default)
+    q-item
+      q-item-section(top)
+        q-item-label(overline) Format
+        q-item-label
+          q-badge {{ tileSet.format }}
+      q-item-section(top)
+        q-item-label(overline) Quality
+        q-item-label(overline) &nbsp;
+        q-item-label 
+          q-slider(
+            :value='tileSet.quality',
+            :min='0',
+            :max='100',
+            label-always,
+            readonly
+          )
+    q-item(v-if='tileSet.size')
+      q-item-section
+        q-item-label(overline) MBTile file
+        q-item-label
+          q-badge(v-if='tileSet.progress === 1') {{ tileSet.size | prettyBytes }}
+          q-linear-progress.q-mt-md(v-else, :value='tileSet.progress')
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed } from '@vue/composition-api'
+import { defineComponent, PropType, computed, ref } from '@vue/composition-api'
 import { TileSet } from '../generated'
 import '../filters/pretty-bytes'
 export default defineComponent({
@@ -25,19 +54,16 @@ export default defineComponent({
     title: {
       type: String as PropType<'areaOfInterest' | 'tileProvider'>,
       default: 'tileProvider'
-    },
-    active: {
-      type: Boolean,
-      default: false
     }
   },
   setup(props) {
+    const expanded = ref(false)
     const label = computed(() => {
       return props.title === 'areaOfInterest'
         ? props.tileSet.areaOfInterest.name
         : props.tileSet.tileProvider.name
     })
-    return { label }
+    return { label, expanded }
   }
 })
 </script>

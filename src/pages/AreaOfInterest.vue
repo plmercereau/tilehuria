@@ -4,22 +4,34 @@
     div.row.full-width(v-else)
       div.col-12.col-sm-6
         q-list.q-px-md.q-py-xs(bordered)
-          q-field(label="Name" stack-label)
-            template(#control) {{aoi.name}}
-          //- q-field(label="Type" stack-label)
-            template(#control) {{type}}
-          q-field(label="Tiles" stack-label)
-            template(#control) {{aoi.tilesCount}}
-          q-field(label="Tile sets" stack-label)
-            template(#control)
-              q-list.col-12(separator)
-                p-item-tile-set(v-for="set of aoi.tileSets"
-                  :key="set.id"
-                  :tileSet="set"
-                  @click="select(set)"
-                  :active="selection === set")
-        div
-          q-btn(@click="setCenter") center
+          q-item-label(header) {{aoi.name}}
+          q-item
+            q-item-section(avatar)
+              q-tooltip Zoom
+              q-icon( name="zoom_in")
+            q-item-section
+              q-item-label(overline) &nbsp;
+              q-item-label
+                q-range(:value="{min:aoi.minZoom, max:aoi.maxZoom}"
+                  :min="1" :max="19"
+                  label-always
+                  :steps="1" markers
+                  readonly
+                  )
+          q-item
+            q-item-section(avatar)
+              q-icon(name="layers")
+            q-item-section {{aoi.tilesCount}} tiles
+          q-separator(spaced)
+          q-item-label(header) Tile sets
+          p-item-tile-set(v-for="set of aoi.tileSets"
+            :key="'item'+set.id"
+            :tileSet="set"
+            @show="select(set)"
+            @hide="select(null)"
+            :active="selection === set")
+        //- div
+        //-   q-btn(@click="setCenter") center
       l-map.col-12.col-sm-6(
           ref="refMap"
           :options="mapOptions"
@@ -72,7 +84,7 @@ export default defineComponent({
         selection.value &&
         `${HBP_ENDPOINT}/storage/o/tile/${selection.value.tileProvider.slug}/{z}/{x}/{y}.png`
     )
-    const select = (aoi: TileSet) => {
+    const select = (aoi: TileSet | undefined) => {
       selection.value = aoi
     }
 

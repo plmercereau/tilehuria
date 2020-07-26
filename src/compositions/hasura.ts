@@ -26,36 +26,37 @@ export const createApolloClient = (uri: string, auth: Auth | undefined) => {
   })
   const link = new WebSocketLink(wsClient)
 
-  const errorLink = onError(({ operation, networkError, forward }) => {
-    if (
-      networkError?.message?.includes(
-        'Missing Authorization header in JWT authentication mode'
-      ) ||
-      networkError?.message?.includes('JWSInvalidSignature')
-    ) {
-      const token = auth?.getJWTToken()
-      if (token) {
-        // TODO weird TS error
-        // const operations: Operations = {...wsClient.operations}
-        // const operations = (wsClient.operations as unknown) as Operations
-        if (wsClient) {
-          wsClient.close()
-          // .connect()
+  const errorLink = onError(
+    ({ operation, networkError, graphQLErrors, forward }) => {
+      if (
+        networkError?.message?.includes(
+          'Missing Authorization header in JWT authentication mode'
+        ) ||
+        networkError?.message?.includes('JWSInvalidSignature')
+      ) {
+        const token = auth?.getJWTToken()
+        if (token) {
+          // TODO weird TS error
+          // const operations: Operations = {...wsClient.operations}
+          // const operations = (wsClient.operations as unknown) as Operations
+          if (wsClient) {
+            wsClient.close()
+            // .connect()
+          }
+          // Object.keys(operations).forEach(id => {
+          //   ;(wsClient as any).sendMessage(
+          //     id,
+          //     MessageTypes.GQL_START,
+          //     operations[id].options
+          //   )
+          // })
+          return forward(operation)
+        } else {
+          console.error(graphQLErrors || networkError)
         }
-        // Object.keys(operations).forEach(id => {
-        //   ;(wsClient as any).sendMessage(
-        //     id,
-        //     MessageTypes.GQL_START,
-        //     operations[id].options
-        //   )
-        // })
-        return forward(operation)
-      } else {
-        console.log('error')
-        // return { networkError }
       }
     }
-  })
+  )
   auth?.onAuthStateChanged(() => {
     console.log('auth state changed!!!')
     console.log(wsClient.status)
