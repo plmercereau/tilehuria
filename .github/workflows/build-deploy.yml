@@ -60,12 +60,25 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           tag_with_ref: true
           tag_with_sha: true
-      # - name: Connect to Digital Ocean
-      #   uses: digitalocean/action-doctl@master
-      #   with:
-      #     token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-      # - name: Save DigitalOcean kubeconfig
-      #   run: doctl kubernetes cluster kubeconfig save tilehuria
+      - name: Connect to Digital Ocean
+        uses: digitalocean/action-doctl@master
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      - name: Save DigitalOcean kubeconfig
+        run: doctl kubernetes cluster kubeconfig save tilehuria
+      - name: 'Deploy'
+        uses: 'deliverybot/helm@v1'
+        with:
+          release: 'tilehuria'
+          namespace: 'default'
+          repository: 'https://charts.platyplus.io'
+          chart: 'tilehuria'
+          helm: 'helm3'
+          token: '${{ github.token }}'
+          values: |
+            global.hostname: tilehuria.platyplus.io
+        # env:
+        #   KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
       # TODO build + deploy static file + traefik
       # TODO terraform: big bunch of containers in k8s
       # TODO helm chart secrets (& config map?)
