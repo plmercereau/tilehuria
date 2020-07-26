@@ -67,8 +67,8 @@ jobs:
         with:
           release: 'tilehuria'
           namespace: 'default'
-          repo: 'https://charts.platyplus.io'
-          chart: 'tilehuria'
+          # repo: 'https://charts.platyplus.io'
+          chart: 'https://charts.platyplus.io/tilehuria'
           helm: 'helm3'
           token: '${{ github.token }}'
           values: |
