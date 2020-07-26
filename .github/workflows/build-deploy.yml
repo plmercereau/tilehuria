@@ -61,9 +61,6 @@ jobs:
       - name: Save DigitalOcean kubeconfig
         run: doctl kubernetes cluster kubeconfig save tilehuria
       - name: Save DigitalOcean kubeconfig
-        run: ls .kube
-
-      - name: Save DigitalOcean kubeconfig
         run: |
           mkdir -p .kube
           doctl kubernetes cluster kubeconfig show tilehuria > .kube/config
