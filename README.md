@@ -4,10 +4,43 @@ TileHuria - a map tiles proxy
 
 ## TODO
 
-- when updating a tileset (format/quality) check what changed first. if no change of quality+format, don't recalculate the mbtile
 - get single tile: re-download after a certain period of time?
 - get single tile: compare with the existing tile. If the downloaded tile is of better quality, replace the tile
 - upload mbtiles. see above
+- add helm update in gh action to auto-deploy
+- set a progress system when generating the aoi's coordinates. To do so, estimate the number of tiles from the aoi boundaries and the zoom levels
+- ? Are zoom levels really part of the aoi or the tile set?
+- if format=png and quality=100 then don't run the image transformation when generating the mbtiles file
+- edit new/existing aoi:
+  - zoom levels
+  - source: import from file
+  - source: edit with leaflet
+- create new tileset from the aoi screen
+- edit tileset from the aoi screen
+- remove components and pages that are not used anymore
+- edit tile providers
+  - to be considered: when changing the slug, change the object keys and the mbtile files
+  - change the name
+  - change the url (only if it has no tileset?)
+- delete tile providers (only if it has no tileset)
+- fix the login/refresh token bug
+- page titles
+- confirm when logout
+- home page
+  - unauthenticated
+  - authenticated -> redirect to aoi list?
+- aoi page: smaller information pan, larger map
+- aoi map buttons:
+  - fullscreen
+  - center
+- tile provider: "copy" link of the local server
+- remove unused Hasura actions in hooks
+- rename event hooks
+- ? split aoi source update / tileset update -> when finishing the aoi coordinates calculation from source, save the source, that will trigger an aoi xyz coordinates updates, that will queue tile set updates if some exist
+- next
+  - talk about permissions with Ivan
+  - include a mapathon module?
+  - package the server to automate local installation
 
 ## Production
 

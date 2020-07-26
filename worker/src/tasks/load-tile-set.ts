@@ -60,15 +60,16 @@ export const loadTileSet = async ({
     // * Queue the task - will not run more than CONCURRENT_DOWNLOADS promises
     pQueue.add(async () => {
       try {
-        const buffer = await getOneTile([x, y, z], url, slug)
+        let buffer = await getOneTile([x, y, z], url, slug)
         try {
-          const stream = sharp(buffer)
-          if (quality) {
+          // * Don't transform the image if no quality is given, or if max png quality
+          if (quality && !(quality == 100 && format === 'png')) {
+            const stream = sharp(buffer)
             if (format === 'jpg') stream.jpeg({ quality })
             else stream.png({ quality })
+            buffer = await stream.toBuffer()
           }
-          const image = await stream.toBuffer()
-          await mbTiles.putTile([x, y, z], image)
+          await mbTiles.putTile([x, y, z], buffer)
         } catch (error) {
           console.log(' [!] Error processing the image')
           console.log(error)
