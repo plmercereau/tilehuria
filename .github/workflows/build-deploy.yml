@@ -59,10 +59,11 @@ jobs:
           release: tilehuria
           namespace: default
           chart: 'tilehuria'
+          repository: 'https://charts.platyplus.io'
+          helm: helm3
+          timeout: 10m0s
           values: |
             global:
               hostname: ${{ secrets.HOSTNAME }}
-          helm: helm3
-          repository: 'https://charts.platyplus.io'
         env:
           KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
