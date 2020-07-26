@@ -32,7 +32,7 @@ q-card(style='width: 300px')
             :error-message='errors[0]'
           )
         validation-provider(
-          rules='required',
+          rules='required|url',
           name='source',
           v-slot='{ errors, touched, invalid }'
         )
@@ -57,7 +57,6 @@ import { useMutation } from '@vue/apollo-composable'
 import { INSERT_PROVIDER, PROVIDERS } from 'src/graphql'
 import { extend } from 'vee-validate'
 import { required, min } from 'vee-validate/dist/rules'
-// TODO validate url
 extend('min', {
   ...min,
   message: '{_field_} must have at least {length} characters'
@@ -65,6 +64,17 @@ extend('min', {
 extend('required', {
   ...required,
   message: '{_field_} is required'
+})
+extend('url', {
+  validate(value: string | null | undefined): boolean {
+    if (value) {
+      return /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/.test(
+        value
+      )
+    }
+    return false
+  },
+  message: '{_field_} must be a valid URL'
 })
 
 export default defineComponent({
