@@ -2,7 +2,7 @@
   q-page.row.q-pa-md
     q-spinner(v-if="loading" color="primary" size="3em")
     div.row.full-width(v-else)
-      div.col-12.col-sm-6
+      div.col-12.col-sm-6.col-md-4
         q-list.q-px-md.q-py-xs(bordered)
           q-item-label(header) {{aoi.name}}
           q-item
@@ -32,7 +32,7 @@
             :active="selection === set")
         //- div
         //-   q-btn(@click="setCenter") center
-      div.col-12.col-sm-6.q-px-xs
+      div.col-12.col-sm-6.col-md-8.q-px-xs
         l-map(
             ref="refMap"
             :options="mapOptions"

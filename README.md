@@ -31,7 +31,6 @@ TileHuria - a map tiles proxy
 - home page
   - unauthenticated
   - authenticated -> redirect to aoi list?
-- aoi page: smaller information pan, larger map
 - aoi map buttons:
   - fullscreen
   - center
