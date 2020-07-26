@@ -63,15 +63,15 @@ jobs:
       - name: Save DigitalOcean kubeconfig
         run: doctl kubernetes cluster kubeconfig show tilehuria > .kubeconfig
       - name: 'Deploy'
-        uses: 'deliverybot/helm@v1'
+        uses: 'vimeda/helm@master'
         with:
           release: 'tilehuria'
           namespace: 'default'
-          # repo: 'https://charts.platyplus.io'
-          chart: 'https://charts.platyplus.io/tilehuria'
+          repo: 'https://charts.platyplus.io'
+          chart: 'tilehuria'
           helm: 'helm3'
           token: '${{ github.token }}'
           values: |
             global.hostname: ${{ secrets.HOSTNAME }}
-        env:
-          KUBECONFIG_FILE: '.kubeconfig'
+        # env:
+        #   KUBECONFIG_FILE: '.kubeconfig'
