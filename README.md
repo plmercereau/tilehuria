@@ -13,6 +13,7 @@ TileHuria - a map tiles proxy
 - set a progress system when generating the aoi's coordinates. To do so, estimate the number of tiles from the aoi boundaries and the zoom levels
 - ? Are zoom levels really part of the aoi or the tile set?
 - if format=png and quality=100 then don't run the image transformation when generating the mbtiles file
+- what png compression means? How does it work? See https://sharp.pixelplumbing.com/api-output#png
 - edit new/existing aoi:
   - zoom levels
   - source: import from file
