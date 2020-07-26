@@ -313,8 +313,6 @@
         columns:
         - quality
         - format
-        - area_of_interest_id
-        - tile_provider_id
     retry_conf:
       num_retries: 3
       interval_sec: 10

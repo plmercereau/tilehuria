@@ -10,9 +10,20 @@ import { TileSet, QueryRoot } from '../generated'
 export const tileSet: Router.IMiddleware = async (
   context: HasuraEventContext<TileSet>
 ) => {
-  const id =
-    context.request.body?.event.data.new?.id ||
-    context.request.body?.event.data.old?.id
+  const newTileSet = context.request.body?.event.data.new
+  const oldTileSet = context.request.body?.event.data.old
+  const id = newTileSet?.id || oldTileSet?.id
+  if (
+    oldTileSet &&
+    newTileSet &&
+    oldTileSet.format === newTileSet.format &&
+    oldTileSet.quality === newTileSet.quality
+  ) {
+    console.log(
+      ` [*] Updated tileset: ${id}. No changes of quality nor format. Do nothing.`
+    )
+    return (context.status = 200)
+  }
   console.log(
     ` [*] New or updated tileset: ${id}. Relaying the information to the worker...`
   )
