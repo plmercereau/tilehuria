@@ -54,21 +54,21 @@ jobs:
       #     password: ${{ secrets.DOCKER_PASSWORD }}
       #     tag_with_ref: true
       #     tag_with_sha: true
-      - name: Connect to Digital Ocean
-        uses: digitalocean/action-doctl@v2
-        with:
-          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-      - name: Save DigitalOcean kubeconfig
-        run: doctl kubernetes cluster kubeconfig save tilehuria
-      - name: Save DigitalOcean kubeconfig
-        run: |
-          mkdir -p .kube
-          doctl kubernetes cluster kubeconfig show tilehuria > .kube/config
+      # - name: Connect to Digital Ocean
+      #   uses: digitalocean/action-doctl@v2
+      #   with:
+      #     token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      # - name: Save DigitalOcean kubeconfig
+      #   run: doctl kubernetes cluster kubeconfig save tilehuria
       - name: 'Deploy'
-        uses: stefanprodan/kube-tools@v1
+        uses: 'deliverybot/helm@master'
         with:
-          kubectl: 1.18.2
-          helmv3: 3.2.1
-          command: |
-            echo "Run conftest"
-            helmv3 upgrade tilehuria tilehuria --repo https://charts.platyplus.io --set global.hostname=${{ secrets.HOSTNAME }}
+          release: tilehuria
+          namespace: default
+          chart: 'https://charts.platyplus.io'
+          values: |
+            global.hostname: {{ secrets.HOSTNAME }}
+          helm: helm3
+          repository: 'https://charts.platyplus.io'
+        env:
+          KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
