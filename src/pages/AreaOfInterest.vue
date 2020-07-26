@@ -32,15 +32,16 @@
             :active="selection === set")
         //- div
         //-   q-btn(@click="setCenter") center
-      l-map.col-12.col-sm-6(
-          ref="refMap"
-          :options="mapOptions"
-          style="height: 100%")
-        l-tile-layer(:url="url")
-        l-tile-layer(v-if="selection" :url="selectionUrl" :options="{errorTileUrl: 'empty-tile.png'}")
-        l-geo-json(v-if="aoi" ref="refSource"
-          :geojson="aoi.source"
-          :options-style="sourceStyle")
+      div.col-12.col-sm-6.q-px-xs
+        l-map(
+            ref="refMap"
+            :options="mapOptions"
+            style="height: 100%")
+          l-tile-layer(:url="url")
+          l-tile-layer(v-if="selection" :url="selectionUrl" :options="{errorTileUrl: 'empty-tile.png'}")
+          l-geo-json(v-if="aoi" ref="refSource"
+            :geojson="aoi.source"
+            :options-style="sourceStyle")
         
 </template>
 

@@ -38,12 +38,16 @@ q-expansion-item(
         q-item-label
           q-badge(v-if='tileSet.progress === 1') {{ tileSet.size | prettyBytes }}
           q-linear-progress.q-mt-md(v-else, :value='tileSet.progress')
+      q-item-section(v-if='tileSet.progress === 1')
+        q-item-label
+          q-btn.q-ma-md(type='a', :href='downloadLink') Download
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType, computed, ref } from '@vue/composition-api'
 import { TileSet } from '../generated'
 import '../filters/pretty-bytes'
+import { HBP_ENDPOINT } from 'src/config'
 export default defineComponent({
   name: 'ItemTileSet',
   props: {
@@ -58,12 +62,23 @@ export default defineComponent({
   },
   setup(props) {
     const expanded = ref(false)
+
     const label = computed(() => {
       return props.title === 'areaOfInterest'
         ? props.tileSet.areaOfInterest.name
         : props.tileSet.tileProvider.name
     })
-    return { label, expanded }
+
+    const downloadLink = computed(() => {
+      const {
+        areaOfInterest: { name, userId },
+        tileProvider: { slug }
+      } = props.tileSet
+      if (userId)
+        return `${HBP_ENDPOINT}/storage/o/mbtiles/${userId}/${slug}/${name}.mbtiles`
+    })
+
+    return { label, expanded, downloadLink }
   }
 })
 </script>

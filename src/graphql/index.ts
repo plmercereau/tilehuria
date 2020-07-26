@@ -63,6 +63,10 @@ export const SELECT_AREA_OF_INTEREST = gql`
           slug
           url
         }
+        areaOfInterest {
+          name
+          userId
+        }
       }
     }
   }
