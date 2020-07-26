@@ -68,7 +68,7 @@ jobs:
           chart: 'tilehuria'
           dry-run: true
           values: |
-            global.hostname: ${{ secrets.HOSTNAME }}
+            global.hostname=${{ secrets.HOSTNAME }}
           helm: helm3
           repository: 'https://charts.platyplus.io'
         env:
