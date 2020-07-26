@@ -70,7 +70,7 @@ jobs:
           repo: 'https://charts.platyplus.io'
           repo-alias: 'platyplus'
           chart: 'tilehuria'
-          helm: 'helm3'
+          helm: 'helm'
           token: '${{ github.token }}'
           values: |
             global.hostname: ${{ secrets.HOSTNAME }}
