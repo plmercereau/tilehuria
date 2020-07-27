@@ -34,7 +34,7 @@
             q-item-section(avatar)
               q-icon(name="layers")
             q-item-section(v-if="editing") {{ tilesCountEstimate.toLocaleString() }} tiles (estimation)
-            q-item-section(v-else) {{ aoi.tilesCount.toLocaleString() }} tiles
+            q-item-section(v-else) {{ item.tilesCount.toLocaleString() }} tiles
           q-separator(spaced)
           q-item.q-pr-none
             q-item-section
@@ -42,14 +42,14 @@
             q-item-section(side)
               q-item-label(:lines="2")
                 q-btn(size='12px' flat dense round icon="add")
-          p-item-tile-set(v-for="set of aoi.tileSets"
+          p-item-tile-set(v-for="set of item.tileSets"
             :key="'item'+set.id"
             :tileSet="set"
             @show="select(set)"
             @hide="select(null)"
             :active="selection === set")
       div.col-12.col-sm-6.col-md-8.q-px-xs
-        l-map(:options="mapOptions" style="height: 100%")
+        l-map(:options="{ zoomSnap: 0.5 }" style="height: 100%")
           p-leaflet-draw(v-model="source" :readonly="!editing")
           l-tile-layer(:url="url")
           l-tile-layer(v-if="selection" :url="selectionUrl" :options="{errorTileUrl: 'empty-tile.png'}") 
@@ -57,27 +57,28 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed } from '@vue/composition-api'
-import { useSubscription, useResult, useMutation } from '@vue/apollo-composable'
 import PItemTileSet from 'components/ItemTileSet.vue'
 import PLeafletDraw from 'components/LeafletDraw.vue'
-import {
-  SubscriptionRoot,
-  AreaOfInterest,
-  TileSet,
-  MutationRoot
-} from '../generated'
+import { AreaOfInterest, TileSet } from '../generated'
 import { SELECT_AREA_OF_INTEREST, UPDATE_AREA_OF_INTEREST } from 'src/graphql'
-import 'leaflet-draw'
 import { DEFAULT_TILE_LAYER, HBP_ENDPOINT } from 'src/config'
-import { useFormEditor } from 'src/compositions'
+import { useSingleItemSubscription } from 'src/compositions'
 import { nbTilesEstimation } from 'src/utils'
+
+const defaultAreaOfInterest: AreaOfInterest = {
+  id: '',
+  source: {},
+  name: '',
+  tileSets: [],
+  tileSets_aggregate: { nodes: [] },
+  tilesCount: 0
+}
 
 export default defineComponent({
   name: 'AreaOfInterest',
   props: {
     id: {
-      type: String,
-      required: true
+      type: String
     }
   },
   components: {
@@ -85,56 +86,43 @@ export default defineComponent({
     PLeafletDraw
   },
   setup(props) {
-    const { result, loading, onError } = useSubscription<SubscriptionRoot>(
-      SELECT_AREA_OF_INTEREST,
-      { id: props.id }
-    )
-    onError(err => console.warn(err))
-    const aoi = useResult<
-      SubscriptionRoot,
-      undefined,
-      AreaOfInterest | undefined
-    >(result, undefined, data => data?.areaOfInterest)
+    const {
+      item,
+      onLoadError,
+      loading,
+      onSaved,
+      onSaveError,
+      editing,
+      edit,
+      cancel,
+      save,
+      fields: { minZoom, maxZoom, source, name }
+    } = useSingleItemSubscription({
+      query: SELECT_AREA_OF_INTEREST,
+      update: UPDATE_AREA_OF_INTEREST,
+      properties: ['name', 'source', 'minZoom', 'maxZoom'],
+      defaults: defaultAreaOfInterest,
+      id: () => props.id
+    })
 
     const selection = ref<TileSet>()
+    const select = (tileSet?: TileSet) => {
+      selection.value = tileSet
+    }
     const selectionUrl = computed(
       () =>
         selection.value &&
         `${HBP_ENDPOINT}/storage/o/tile/${selection.value.tileProvider.slug}/{z}/{x}/{y}.png`
     )
-    const select = (aoi: TileSet | undefined) => {
-      selection.value = aoi
-    }
 
     const url = DEFAULT_TILE_LAYER
 
-    const mapOptions = { zoomSnap: 0.5 }
-    const { mutate, onError: onSaveError, onDone } = useMutation<MutationRoot>(
-      UPDATE_AREA_OF_INTEREST,
-      () => ({
-        variables: { id: props.id, ...values.value }
-      })
-      // TODO update cache
-    )
-    const {
-      editing,
-      save,
-      edit,
-      cancel,
-      fields: { name, source, minZoom, maxZoom },
-      values
-    } = useFormEditor(aoi, ['name', 'source', 'minZoom', 'maxZoom'], {
-      save: async () => {
-        await mutate()
-      }
-    })
-    onDone(() => {
-      console.log('saved')
-    })
+    onLoadError(err => console.warn(err))
+    onSaved(() => console.log('saved'))
     onSaveError(error => console.log('save error', error))
 
     const zoomRange = computed({
-      get: () => ({ min: minZoom?.value, max: maxZoom?.value }),
+      get: () => ({ min: minZoom.value, max: maxZoom.value }),
       set: val => {
         minZoom.value = val.min
         maxZoom.value = val.max
@@ -157,11 +145,10 @@ export default defineComponent({
       select,
       selection,
       selectionUrl,
-      aoi,
+      item,
       tilesCountEstimate,
       loading,
       url,
-      mapOptions,
       editing,
       edit,
       cancel,

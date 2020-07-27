@@ -1,9 +1,12 @@
 import { ref, Ref, watch, computed } from '@vue/composition-api'
+import { useSubscription, useResult, useMutation } from '@vue/apollo-composable'
+import { DocumentNode } from 'graphql'
 
-type PropType<TObj, TProp extends keyof TObj> = TObj[TProp]
+import { PropertyOf, PropType } from 'src/utils'
 
 export const useFormEditor = <
-  T extends { [key: string]: unknown },
+  S extends Record<string, Record<string, unknown>>,
+  T extends PropertyOf<S>,
   U extends { fieldName: K },
   K extends keyof T
 >(
@@ -69,4 +72,67 @@ export const useFormEditor = <
   })
 
   return { editing, edit, save: _save, cancel, values, fields }
+}
+
+export const useSingleItemSubscription = <
+  S extends Record<string, Record<string, unknown>>,
+  T extends PropertyOf<S>,
+  U extends { fieldName: K },
+  K extends keyof T
+>({
+  query,
+  properties,
+  update,
+  defaults,
+  id
+}: {
+  query: DocumentNode
+  update: DocumentNode
+  defaults: T
+  properties: K[]
+  id: () => string | undefined
+}) => {
+  const { result, loading, onError: onLoadError } = useSubscription<S>(
+    query,
+    { id: id() },
+    { enabled: !!id() }
+  )
+  const item = useResult<S, T, T>(
+    result,
+    defaults,
+    // * More generic than data => data.areaOfInterest
+    data => (data[Object.keys(data)[0] as keyof S] as T) || defaults
+  )
+
+  const { editing, save, edit, cancel, fields, values } = useFormEditor<
+    S,
+    T,
+    U,
+    K
+  >(item, properties, {
+    save: async () => {
+      await mutate()
+    }
+  })
+
+  const { mutate, onError: onSaveError, onDone: onSaved } = useMutation<S>(
+    update,
+    () => ({
+      variables: { id: id(), ...values.value }
+    })
+    // TODO update cache
+  )
+
+  return {
+    item,
+    onLoadError,
+    loading,
+    editing,
+    save,
+    edit,
+    cancel,
+    fields,
+    onSaveError,
+    onSaved
+  }
 }
