@@ -11,9 +11,12 @@ q-expansion-item(
   template(#header)
     q-item-section
       q-item-label(overline) {{ label }}
-      q-item-label(v-if='!expanded && tileSet.progress !== 1')
+      q-item-label(v-if='!expanded && tileSet.progress != 1')
         q-linear-progress.q-mt-md(:value='tileSet.progress')
-    q-item-section(side, v-if='!expanded && tileSet.size')
+    q-item-section(
+      side,
+      v-if='!expanded && tileSet.progress == 1 && tileSet.size'
+    )
       q-badge {{ tileSet.size | prettyBytes }}
   template(#default)
     q-item

@@ -103,3 +103,25 @@ export const INSERT_AREA_OF_INTEREST = gql`
     }
   }
 `
+
+export const UPDATE_AREA_OF_INTEREST = gql`
+  mutation updateAoi(
+    $id: uuid!
+    $name: String!
+    $source: jsonb!
+    $minZoom: Int!
+    $maxZoom: Int!
+  ) {
+    updateAreaOfInterest(
+      pk_columns: { id: $id }
+      _set: {
+        name: $name
+        source: $source
+        minZoom: $minZoom
+        maxZoom: $maxZoom
+      }
+    ) {
+      id
+    }
+  }
+`

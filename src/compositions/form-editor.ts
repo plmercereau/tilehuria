@@ -12,7 +12,7 @@ export const useFormEditor = <
   {
     save
   }: {
-    save: (values: Pick<T, U['fieldName']>) => Promise<void> | void
+    save: (values: Pick<T, U['fieldName']>) => Promise<unknown> | unknown
   }
 ) => {
   // type dd = fieldNames[number]
@@ -24,7 +24,7 @@ export const useFormEditor = <
   type Fields = Pick<
     Required<
       {
-        [key in keyof T]: Ref<PropType<T, key> | undefined> // TODO only fieldNames
+        [key in keyof T]: Ref<PropType<T, key> | undefined>
       }
     >,
     U['fieldName']

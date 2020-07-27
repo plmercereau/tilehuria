@@ -13,15 +13,16 @@ TileHuria - a map tiles proxy
 - set a progress system when generating the aoi's coordinates. To do so:
   - [x] estimate the number of tiles from the aoi boundaries and the zoom levels
 - ? Are zoom levels really part of the aoi or the tile set?
-- if format=png and quality=100 then don't run the image transformation when generating the mbtiles file
+- [x] if format=png and quality=100 then don't run the image transformation when generating the mbtiles file
 - what png compression means? How does it work? See https://sharp.pixelplumbing.com/api-output#png
-- edit new/existing aoi:
-  - zoom levels
+- edit aoi:
+  - [x] zoom levels
   - source: import from file
-  - source: edit with leaflet
+  - [x] source: edit with leaflet
+- create new aoi: use the same interface as the 'update' one
 - create new tileset from the aoi screen
 - edit tileset from the aoi screen
-- remove components and pages that are not used anymore
+- remove components and pages that are not used anymore (e.g. new aoi, new tileset etc)
 - edit tile providers
   - to be considered: when changing the slug, change the object keys and the mbtile files
   - change the name
@@ -35,13 +36,13 @@ TileHuria - a map tiles proxy
   - authenticated -> redirect to aoi list?
 - aoi map buttons:
   - fullscreen
-  - center
+  - [x] center
 - tile provider: "copy" link of the local server
 - remove unused Hasura actions in hooks
 - rename event hooks
 - ? split aoi source update / tileset update -> when finishing the aoi coordinates calculation from source, save the source, that will trigger an aoi xyz coordinates updates, that will queue tile set updates if some exist
 - next
-  - talk about permissions with Ivan
+  - talk about user permissions with Ivan
   - include a mapathon module?
   - package the server to automate local installation
 

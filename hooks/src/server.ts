@@ -26,7 +26,7 @@ export const start = () =>
     // Middlewares
     app.use(json())
     app.use(logger())
-    app.use(bodyParser())
+    app.use(bodyParser({ jsonLimit: '10mb', textLimit: '10mb' }))
 
     // Routes
     app.use(router.routes()).use(router.allowedMethods())

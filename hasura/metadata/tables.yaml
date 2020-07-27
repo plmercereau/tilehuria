@@ -125,6 +125,8 @@
       set:
         user_id: x-hasura-user-id
       columns:
+      - max_zoom
+      - min_zoom
       - name
       - source
       backend_only: false
@@ -145,6 +147,8 @@
   - role: user
     permission:
       columns:
+      - max_zoom
+      - min_zoom
       - name
       - source
       filter:

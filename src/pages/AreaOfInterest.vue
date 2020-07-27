@@ -57,11 +57,16 @@
 
 <script lang="ts">
 import { defineComponent, ref, computed, watch } from '@vue/composition-api'
-import { useSubscription, useResult } from '@vue/apollo-composable'
+import { useSubscription, useResult, useMutation } from '@vue/apollo-composable'
 import PItemTileSet from 'components/ItemTileSet.vue'
 import PLeafletDraw from 'components/LeafletDraw.vue'
-import { SubscriptionRoot, AreaOfInterest, TileSet } from '../generated'
-import { SELECT_AREA_OF_INTEREST } from 'src/graphql'
+import {
+  SubscriptionRoot,
+  AreaOfInterest,
+  TileSet,
+  MutationRoot
+} from '../generated'
+import { SELECT_AREA_OF_INTEREST, UPDATE_AREA_OF_INTEREST } from 'src/graphql'
 import { LatLngBounds, Control } from 'leaflet'
 import L from 'leaflet'
 import 'leaflet-draw'
@@ -107,19 +112,29 @@ export default defineComponent({
     const url = DEFAULT_TILE_LAYER
 
     const mapOptions = { zoomSnap: 0.5 }
-
+    const { mutate, onError: onSaveError, onDone } = useMutation<MutationRoot>(
+      UPDATE_AREA_OF_INTEREST,
+      () => ({
+        variables: { id: props.id, ...values.value }
+      })
+      // TODO update cache
+    )
     const {
       editing,
       save,
       edit,
       cancel,
-      fields: { name, source, minZoom, maxZoom }
+      fields: { name, source, minZoom, maxZoom },
+      values
     } = useFormEditor(aoi, ['name', 'source', 'minZoom', 'maxZoom'], {
-      save: values => {
-        console.log('todo save')
-        console.log(values)
+      save: async () => {
+        await mutate()
       }
     })
+    onDone(() => {
+      console.log('saved')
+    })
+    onSaveError(error => console.log('save error', error))
 
     const zoomRange = computed({
       get: () => ({ min: minZoom?.value, max: maxZoom?.value }),
