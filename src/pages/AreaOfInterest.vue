@@ -51,15 +51,10 @@
         //- div
         //-   q-btn(@click="setCenter") center
       div.col-12.col-sm-6.col-md-8.q-px-xs
-        l-map(
-            ref="refMap"
-            :options="mapOptions"
-            style="height: 100%")
+        l-map(:options="mapOptions" style="height: 100%")
+          p-leaflet-draw(v-model="source" :readonly="!editing")
           l-tile-layer(:url="url")
           l-tile-layer(v-if="selection" :url="selectionUrl" :options="{errorTileUrl: 'empty-tile.png'}")
-          l-geo-json(v-if="aoi" ref="refSource"
-            :geojson="aoi.source"
-            :options-style="sourceStyle")
         
 </template>
 
@@ -68,9 +63,12 @@
 import { defineComponent, ref, computed, watch } from '@vue/composition-api'
 import { useSubscription, useResult } from '@vue/apollo-composable'
 import PItemTileSet from 'components/ItemTileSet.vue'
+import PLeafletDraw from 'components/LeafletDraw.vue'
 import { SubscriptionRoot, AreaOfInterest, TileSet } from '../generated'
 import { SELECT_AREA_OF_INTEREST } from 'src/graphql'
-import { LatLngBounds } from 'leaflet'
+import { LatLngBounds, Control } from 'leaflet'
+import L from 'leaflet'
+import 'leaflet-draw'
 import { DEFAULT_TILE_LAYER, HBP_ENDPOINT } from 'src/config'
 import { LGeoJson, LMap } from 'vue2-leaflet'
 import { useFormEditor } from 'src/compositions'
@@ -85,7 +83,8 @@ export default defineComponent({
     }
   },
   components: {
-    PItemTileSet
+    PItemTileSet,
+    PLeafletDraw
   },
   setup(props) {
     const { result, loading, onError } = useSubscription<SubscriptionRoot>(
@@ -109,29 +108,9 @@ export default defineComponent({
       selection.value = aoi
     }
 
-    const refSource = ref<LGeoJson>(null)
-    const refMap = ref<LMap>(null)
-    const setCenter = () => {
-      if (aoi.value?.source && refSource.value) {
-        console.log('Center to the area of interest')
-        const map = refMap.value
-        const sourceBounds = (refSource.value.getBounds() as unknown) as LatLngBounds
-        map?.mapObject.fitBounds(sourceBounds, { padding: [80, 80] })
-      }
-    }
-
-    watch(() => aoi.value?.source && refSource.value, setCenter)
     const url = DEFAULT_TILE_LAYER
 
     const mapOptions = { zoomSnap: 0.5 }
-
-    const sourceStyle = computed(() => ({
-      weight: 2,
-      color: '#ECEFF1',
-      opacity: 1,
-      fillColor: '#e4ce7f',
-      fillOpacity: 0.6
-    }))
 
     const {
       editing,
@@ -140,7 +119,7 @@ export default defineComponent({
       cancel,
       fields: { name, source, minZoom, maxZoom }
     } = useFormEditor(aoi, ['name', 'source', 'minZoom', 'maxZoom'], {
-      save: async values => {
+      save: values => {
         console.log('todo save')
         console.log(values)
       }
@@ -156,10 +135,12 @@ export default defineComponent({
 
     const tilesCountEstimate = computed(() => {
       if (source.value) {
-        return nbTilesEstimation(
-          source.value as GeoJSON.GeoJSON,
-          minZoom.value,
-          maxZoom.value
+        return (
+          nbTilesEstimation(
+            source.value as GeoJSON.GeoJSON,
+            minZoom.value,
+            maxZoom.value
+          ) || 0
         )
       } else return 0
     })
@@ -168,20 +149,17 @@ export default defineComponent({
       select,
       selection,
       selectionUrl,
-      refSource,
-      refMap,
       aoi,
       tilesCountEstimate,
       loading,
       url,
       mapOptions,
-      sourceStyle,
-      setCenter,
       editing,
       edit,
       cancel,
       save,
       name,
+      source,
       zoomRange
     }
   }

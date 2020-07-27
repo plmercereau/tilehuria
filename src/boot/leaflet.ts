@@ -7,9 +7,12 @@ import {
   LMarker,
   LPopup,
   LTooltip,
-  LGeoJson
+  LGeoJson,
+  LControl
 } from 'vue2-leaflet'
 import 'leaflet/dist/leaflet.css'
+import 'leaflet-draw/dist/leaflet.draw.css'
+
 import { Icon } from 'leaflet'
 
 type D = Icon.Default & {
@@ -31,4 +34,5 @@ export default boot(() => {
   Vue.component('l-marker', LMarker)
   Vue.component('l-popup', LPopup)
   Vue.component('l-tooltip', LTooltip)
+  Vue.component('l-control', LControl)
 })
