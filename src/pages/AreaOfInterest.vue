@@ -4,7 +4,18 @@
     div.row.full-width(v-else)
       div.col-12.col-sm-6.col-md-4
         q-list.q-px-md.q-py-xs(bordered)
-          q-item-label(header) {{aoi.name}}
+          q-item.q-pr-none
+            q-item-section(avatar)
+              q-tooltip Name
+              q-icon( name="label")
+            q-item-section
+              q-item-label
+                q-input(v-model="name" :readonly="!editing" :borderless="!editing" autofocus)
+            q-item-section(side)
+              q-item-label(:lines="2")
+                q-btn(v-if="!editing" size='12px' flat dense round icon="edit" @click="edit")
+                q-btn(v-if="editing" size='12px' flat dense round icon="save" @click="save")
+                q-btn(v-if="editing" size='12px' flat dense round icon="clear" @click="cancel")
           q-item
             q-item-section(avatar)
               q-tooltip Zoom
@@ -12,18 +23,25 @@
             q-item-section
               q-item-label(overline) &nbsp;
               q-item-label
-                q-range(:value="{min:aoi.minZoom, max:aoi.maxZoom}"
+                q-range(v-model="zoomRange"
                   :min="1" :max="19"
-                  label-always
+                  :label-always="!editing"
+                  :label="editing"
                   :steps="1" markers
-                  readonly
+                  :readonly="!editing"
                   )
           q-item
             q-item-section(avatar)
               q-icon(name="layers")
-            q-item-section {{aoi.tilesCount}} tiles
+            q-item-section(v-if="editing") {{ tilesCountEstimate.toLocaleString() }} tiles (estimation)
+            q-item-section(v-else) {{ aoi.tilesCount.toLocaleString() }} tiles
           q-separator(spaced)
-          q-item-label(header) Tile sets
+          q-item.q-pr-none
+            q-item-section
+              q-item-label(header) Tile sets
+            q-item-section(side)
+              q-item-label(:lines="2")
+                q-btn(size='12px' flat dense round icon="add")
           p-item-tile-set(v-for="set of aoi.tileSets"
             :key="'item'+set.id"
             :tileSet="set"
@@ -55,6 +73,8 @@ import { SELECT_AREA_OF_INTEREST } from 'src/graphql'
 import { LatLngBounds } from 'leaflet'
 import { DEFAULT_TILE_LAYER, HBP_ENDPOINT } from 'src/config'
 import { LGeoJson, LMap } from 'vue2-leaflet'
+import { useFormEditor } from 'src/compositions'
+import { nbTilesEstimation } from 'src/utils'
 
 export default defineComponent({
   name: 'AreaOfInterest',
@@ -113,6 +133,37 @@ export default defineComponent({
       fillOpacity: 0.6
     }))
 
+    const {
+      editing,
+      save,
+      edit,
+      cancel,
+      fields: { name, source, minZoom, maxZoom }
+    } = useFormEditor(aoi, ['name', 'source', 'minZoom', 'maxZoom'], {
+      save: async values => {
+        console.log('todo save')
+        console.log(values)
+      }
+    })
+
+    const zoomRange = computed({
+      get: () => ({ min: minZoom?.value, max: maxZoom?.value }),
+      set: val => {
+        minZoom.value = val.min
+        maxZoom.value = val.max
+      }
+    })
+
+    const tilesCountEstimate = computed(() => {
+      if (source.value) {
+        return nbTilesEstimation(
+          source.value as GeoJSON.GeoJSON,
+          minZoom.value,
+          maxZoom.value
+        )
+      } else return 0
+    })
+
     return {
       select,
       selection,
@@ -120,11 +171,18 @@ export default defineComponent({
       refSource,
       refMap,
       aoi,
+      tilesCountEstimate,
       loading,
       url,
       mapOptions,
       sourceStyle,
-      setCenter
+      setCenter,
+      editing,
+      edit,
+      cancel,
+      save,
+      name,
+      zoomRange
     }
   }
 })

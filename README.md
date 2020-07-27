@@ -4,12 +4,14 @@ TileHuria - a map tiles proxy
 
 ## TODO
 
+- [ ] Lerna package to use "platyplus" packages e.g. gis etc
 - get single tile: re-download after a certain period of time?
 - get single tile: compare with the existing tile. If the downloaded tile is of better quality, replace the tile.
   - Set a `quality` metadata field when creating the tile (from an mbtile). Then if quality < 100, re-download
   - but what if we want to generate mbtiles without downloading anything more than what's already in the server?
 - upload mbtiles. see above
-- set a progress system when generating the aoi's coordinates. To do so, estimate the number of tiles from the aoi boundaries and the zoom levels
+- set a progress system when generating the aoi's coordinates. To do so:
+  - [x] estimate the number of tiles from the aoi boundaries and the zoom levels
 - ? Are zoom levels really part of the aoi or the tile set?
 - if format=png and quality=100 then don't run the image transformation when generating the mbtiles file
 - what png compression means? How does it work? See https://sharp.pixelplumbing.com/api-output#png
