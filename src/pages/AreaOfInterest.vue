@@ -56,7 +56,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, watch } from '@vue/composition-api'
+import { defineComponent, ref, computed } from '@vue/composition-api'
 import { useSubscription, useResult, useMutation } from '@vue/apollo-composable'
 import PItemTileSet from 'components/ItemTileSet.vue'
 import PLeafletDraw from 'components/LeafletDraw.vue'
@@ -67,11 +67,8 @@ import {
   MutationRoot
 } from '../generated'
 import { SELECT_AREA_OF_INTEREST, UPDATE_AREA_OF_INTEREST } from 'src/graphql'
-import { LatLngBounds, Control } from 'leaflet'
-import L from 'leaflet'
 import 'leaflet-draw'
 import { DEFAULT_TILE_LAYER, HBP_ENDPOINT } from 'src/config'
-import { LGeoJson, LMap } from 'vue2-leaflet'
 import { useFormEditor } from 'src/compositions'
 import { nbTilesEstimation } from 'src/utils'
 
