@@ -12,7 +12,7 @@ export const useFormEditor = <
   {
     save
   }: {
-    save: (values: Pick<T, U['fieldName']>) => Promise<void> // TODO only fieldNames
+    save: (values: Pick<T, U['fieldName']>) => Promise<void> | void
   }
 ) => {
   // type dd = fieldNames[number]
@@ -47,7 +47,7 @@ export const useFormEditor = <
   const _save = async () => {
     editing.value = false
     try {
-      await save(values.value)
+      await Promise.resolve(save(values.value))
       reset()
     } catch (error) {
       console.log('Save failed', error)
