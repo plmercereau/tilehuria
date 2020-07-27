@@ -30,6 +30,8 @@ TileHuria - a map tiles proxy
 - delete tile providers (only if it has no tileset)
 - fix the login/refresh token bug
 - page titles
+- ! In dev, the tsconfig microservices are somehow linked. On a general basis, it is not properly configured
+- review the size limit of events sent to the hook service
 - confirm when logout
 - home page
   - unauthenticated
