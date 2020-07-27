@@ -61,7 +61,7 @@ jobs:
           chart: 'tilehuria'
           repository: 'https://charts.platyplus.io'
           helm: helm3
-          timeout: 10m0s
+          timeout: 20m0s
           values: |
             global:
               hostname: ${{ secrets.HOSTNAME }}
