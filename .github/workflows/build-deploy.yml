@@ -68,7 +68,7 @@ jobs:
         run: doctl kubernetes cluster kubeconfig save tilehuria
       - name: DO Kubeconfig in env
         run: |
-          KUBECONFIG = $(doctl kubernetes cluster kubeconfig show tilehuria)
+          KUBECONFIG=$(doctl kubernetes cluster kubeconfig show tilehuria)
       - name: DO Kubeconfig in env
         run: |
           echo $KUBECONFIG
@@ -84,5 +84,17 @@ jobs:
           values: |
             global:
               hostname: ${{ secrets.HOSTNAME }}
+            hasura-backend-plus:
+              minio:
+                accessKey: 
+                  password: ${{ secrets.MINIO_ACCESS_KEY }}
+                secretKey:
+                  password: ${{ secrets.MINIO_SECRET_KEY }}
+            hasura:
+              postgresql:
+                postgresqlPassword: ${{ secrets.POSTGRES_PASSWORD }}
+            rabbitmq:
+              auth:
+                password: ${{ secrets.RABBITMQ_PASSWORD }}
         env:
           KUBECONFIG_FILE: '$KUBECONFIG'
