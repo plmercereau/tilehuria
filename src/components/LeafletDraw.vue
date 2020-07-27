@@ -70,13 +70,17 @@ export default defineComponent({
     watch(
       () => props.value,
       (newValue, oldValue) => {
-        drawnItems.value?.clearLayers()
-        const geo = L.geoJSON(newValue)
-        geo.eachLayer(l => {
-          drawnItems.value?.addLayer(l)
-        })
-        // * Center if autocenter is activated and it's the first time the value is loaded
-        if (!oldValue && props.autoCenter) setCenter()
+        if (newValue && Object.keys(newValue).length) {
+          // ? Weird thing: on creation, newValue can exist but be some kind of an empty object with proto methods
+          drawnItems.value?.clearLayers()
+          const geo = L.geoJSON(newValue)
+          geo.eachLayer(l => {
+            drawnItems.value?.addLayer(l)
+          })
+          // * Center if autocenter is activated and it's the first time the value is loaded
+          if (!(oldValue && Object.keys(oldValue).length) && props.autoCenter)
+            setCenter()
+        }
       }
     )
 
