@@ -48,18 +48,14 @@
             @show="select(set)"
             @hide="select(null)"
             :active="selection === set")
-        //- div
-        //-   q-btn(@click="setCenter") center
       div.col-12.col-sm-6.col-md-8.q-px-xs
         l-map(:options="mapOptions" style="height: 100%")
           p-leaflet-draw(v-model="source" :readonly="!editing")
           l-tile-layer(:url="url")
-          l-tile-layer(v-if="selection" :url="selectionUrl" :options="{errorTileUrl: 'empty-tile.png'}")
-        
+          l-tile-layer(v-if="selection" :url="selectionUrl" :options="{errorTileUrl: 'empty-tile.png'}") 
 </template>
 
 <script lang="ts">
-// TODO handle the missing tiles in a better way - see the template
 import { defineComponent, ref, computed, watch } from '@vue/composition-api'
 import { useSubscription, useResult } from '@vue/apollo-composable'
 import PItemTileSet from 'components/ItemTileSet.vue'

@@ -1,5 +1,5 @@
 <template lang="pug">
-l-control(:position='position')
+l-control(v-if='centerButton', :position='position')
   button(@click='setCenter') Center
 </template>
 
@@ -22,7 +22,7 @@ export default defineComponent({
   name: 'LeafletDraw',
   props: {
     position: {
-      type: String, // TODO find a better typing
+      type: String, // TODO find a better way to type this prop
       default: 'bottomright'
     },
     readonly: {
@@ -72,12 +72,12 @@ export default defineComponent({
     watch(
       () => props.value,
       (newValue, oldValue) => {
-        console.log('new value')
         drawnItems.value?.clearLayers()
         const geo = L.geoJSON(newValue)
         geo.eachLayer(l => {
           drawnItems.value?.addLayer(l)
         })
+        // * Center if autocenter is activated and it's the first time the value is loaded
         if (!oldValue && props.autoCenter) setCenter()
       }
     )
