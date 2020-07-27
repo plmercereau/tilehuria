@@ -62,9 +62,7 @@ export default defineComponent({
 
     const setCenter = () => {
       if (props.value) {
-        const sourceBounds = L.geoJSON(
-          props.value as GeoJSON.GeoJSON
-        ).getBounds()
+        const sourceBounds = L.geoJSON(props.value).getBounds()
         map.fitBounds(sourceBounds, { padding: [80, 80] })
       }
     }
@@ -105,7 +103,7 @@ export default defineComponent({
         drawnItems.value?.addLayer(event.layer)
         ctx.emit('input', drawnItems.value?.toGeoJSON())
       })
-      map.on(L.Draw.Event.EDITED, event => {
+      map.on(L.Draw.Event.EDITED, () => {
         ctx.emit('input', drawnItems.value?.toGeoJSON())
       })
       map.on(L.Draw.Event.DELETED, event => {
