@@ -9,7 +9,6 @@ TileHuria - a map tiles proxy
   - Set a `quality` metadata field when creating the tile (from an mbtile). Then if quality < 100, re-download
   - but what if we want to generate mbtiles without downloading anything more than what's already in the server?
 - upload mbtiles. see above
-- add helm update in gh action to auto-deploy
 - set a progress system when generating the aoi's coordinates. To do so, estimate the number of tiles from the aoi boundaries and the zoom levels
 - ? Are zoom levels really part of the aoi or the tile set?
 - if format=png and quality=100 then don't run the image transformation when generating the mbtiles file

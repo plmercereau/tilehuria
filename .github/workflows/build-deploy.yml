@@ -54,24 +54,10 @@ jobs:
           tag_with_ref: true
           tag_with_sha: true
   deploy:
-    name: Deploy
-    # needs: build
+    name: Deploy to K8s
+    needs: build
     runs-on: ubuntu-latest
     steps:
-      # - name: Checkout
-      #   uses: actions/checkout@v2
-      # - name: Connect to Digital Ocean
-      #   uses: digitalocean/action-doctl@v2
-      #   with:
-      #     token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-      # - name: Save DigitalOcean kubeconfig
-      #   run: doctl kubernetes cluster kubeconfig save tilehuria
-      # - name: DO Kubeconfig in env
-      #   run: |
-      #     KUBECONFIG=$(doctl kubernetes cluster kubeconfig show tilehuria)
-      # - name: DO Kubeconfig in env
-      #   run: |
-      #     echo $KUBECONFIG
       - name: 'Deploy'
         uses: 'platyplus/helm-gh-action@master'
         with:
