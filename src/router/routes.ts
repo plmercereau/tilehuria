@@ -14,7 +14,7 @@ const routes: RouteConfig[] = [
       },
       {
         path: 'areas-of-interest/new',
-        component: () => import('pages/NewAreaOfInterest.vue')
+        component: () => import('pages/AreaOfInterest.vue')
       },
       {
         path: 'areas-of-interest/:id',

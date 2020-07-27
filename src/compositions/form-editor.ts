@@ -1,4 +1,4 @@
-import { ref, Ref, watch, computed } from '@vue/composition-api'
+import { ref, Ref, watch, computed, onMounted } from '@vue/composition-api'
 import { useSubscription, useResult, useMutation } from '@vue/apollo-composable'
 import { DocumentNode } from 'graphql'
 
@@ -122,6 +122,10 @@ export const useSingleItemSubscription = <
     })
     // TODO update cache
   )
+
+  onMounted(() => {
+    if (!id()) edit()
+  })
 
   return {
     item,

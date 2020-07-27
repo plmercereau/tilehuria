@@ -10,7 +10,7 @@
               q-icon( name="label")
             q-item-section
               q-item-label
-                q-input(v-model="name" :readonly="!editing" :borderless="!editing" autofocus)
+                q-input(v-model="name" :readonly="!editing" :borderless="!editing" placeholder="Name" autofocus)
             q-item-section(side)
               q-item-label(:lines="2")
                 q-btn(v-if="!editing" size='12px' flat dense round icon="edit" @click="edit")
@@ -49,7 +49,7 @@
             @hide="select(null)"
             :active="selection === set")
       div.col-12.col-sm-6.col-md-8.q-px-xs
-        l-map(:options="{ zoomSnap: 0.5 }" style="height: 100%")
+        l-map(:options="{ zoomSnap: 0.5 }" style="height: 100%" :zoom="2")
           p-leaflet-draw(v-model="source" :readonly="!editing")
           l-tile-layer(:url="url")
           l-tile-layer(v-if="selection" :url="selectionUrl" :options="{errorTileUrl: 'empty-tile.png'}") 
@@ -65,13 +65,12 @@ import { DEFAULT_TILE_LAYER, HBP_ENDPOINT } from 'src/config'
 import { useSingleItemSubscription } from 'src/compositions'
 import { nbTilesEstimation } from 'src/utils'
 
-const defaultAreaOfInterest: AreaOfInterest = {
-  id: '',
-  source: {},
+const defaultAreaOfInterest: Partial<AreaOfInterest> = {
   name: '',
   tileSets: [],
-  tileSets_aggregate: { nodes: [] },
-  tilesCount: 0
+  tilesCount: 0,
+  minZoom: 1,
+  maxZoom: 19
 }
 
 export default defineComponent({

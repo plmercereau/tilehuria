@@ -8,11 +8,10 @@ import {
   defineComponent,
   PropType,
   onMounted,
-  computed,
   ref,
   watch
 } from '@vue/composition-api'
-import { LMap, LGeoJson } from 'vue2-leaflet'
+import { LMap } from 'vue2-leaflet'
 import 'leaflet-draw'
 
 import L from 'leaflet'
@@ -43,20 +42,33 @@ export default defineComponent({
     }
   },
   setup(props, ctx) {
-    const vueMap = ctx.parent as LMap
-    const map = vueMap.mapObject
-    const vueControl = ref<LGeoJson>(null)
+    const map = (ctx.parent as LMap).mapObject
 
-    let drawnItems = ref<L.FeatureGroup>(null)
-    let drawControl = ref<L.Control.Draw>(null)
+    let drawnItems = ref<L.FeatureGroup>(L.featureGroup().addTo(map))
+    let drawControl = ref<L.Control.Draw>(
+      new L.Control.Draw({
+        position: props.position as Position,
+        draw: {
+          polygon: {
+            allowIntersection: false,
+            showArea: true
+          },
+          polyline: false,
+          circle: false,
+          circlemarker: false,
+          marker: false
+        },
+        edit: {
+          featureGroup: drawnItems.value
+        }
+      })
+    )
 
     watch(
       () => props.readonly,
       readonly => {
-        if (drawControl.value) {
-          if (readonly) map.removeControl(drawControl.value)
-          else map.addControl(drawControl.value)
-        }
+        if (readonly) map.removeControl(drawControl.value)
+        else map.addControl(drawControl.value)
       }
     )
 
@@ -85,24 +97,6 @@ export default defineComponent({
     )
 
     onMounted(() => {
-      drawnItems.value = L.featureGroup().addTo(map)
-      drawControl.value = new L.Control.Draw({
-        position: props.position as Position,
-        draw: {
-          polygon: {
-            allowIntersection: false,
-            showArea: true
-          },
-          polyline: false,
-          circle: false,
-          circlemarker: false,
-          marker: false
-        },
-        edit: {
-          featureGroup: drawnItems.value
-        }
-      })
-
       map.on(L.Draw.Event.CREATED, event => {
         drawnItems.value?.addLayer(event.layer)
         ctx.emit('input', drawnItems.value?.toGeoJSON())
@@ -116,11 +110,11 @@ export default defineComponent({
       })
     })
 
-    const options = computed(() => {
-      return { drawlayer: drawnItems }
-    })
+    // const options = computed(() => {
+    //   return { drawlayer: drawnItems.value }
+    // })
 
-    return { vueControl, options, setCenter }
+    return { setCenter }
   }
 })
 </script>
