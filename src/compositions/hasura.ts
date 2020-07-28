@@ -1,37 +1,70 @@
-import ApolloClient from 'apollo-client'
-import { WebSocketLink } from 'apollo-link-ws'
+import { ApolloClient } from 'apollo-client'
+import { createHttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
-import { SubscriptionClient } from 'subscriptions-transport-ws'
+import { WebSocketLink } from 'apollo-link-ws'
 import { onError } from 'apollo-link-error'
+import { setContext } from 'apollo-link-context'
+import { getMainDefinition } from 'apollo-utilities'
+import { from, split, ApolloLink } from 'apollo-link'
+import { SubscriptionClient } from 'subscriptions-transport-ws'
 import Auth from 'nhost-js-sdk/dist/Auth'
-// import MessageTypes from 'subscriptions-transport-ws/dist/message-types'
 
-export const createApolloClient = (uri: string, auth: Auth | undefined) => {
+export const createApolloClient = (httpUri: string, auth: Auth | undefined) => {
+  const wsUri = httpUri.replace('http', 'ws')
+
   const getHeaders = () => {
-    console.log('get Headers')
     const headers: Record<string, string> = {}
     const token = auth?.getJWTToken()
     if (token) {
       headers.authorization = `Bearer ${token}`
     }
-    console.log(headers)
     return headers
   }
 
-  const wsClient = new SubscriptionClient(uri, {
+  const wsClient = new SubscriptionClient(wsUri, {
     reconnect: true,
     connectionParams: () => {
       return { headers: getHeaders() }
     }
   })
-  const link = new WebSocketLink(wsClient)
+  const wsLink = new WebSocketLink(wsClient)
 
+  const httplink = createHttpLink({
+    uri: httpUri
+  })
+
+  // eslint-disable-next-line
+  const authLink: ApolloLink = setContext((_, { headers }) => {
+    return {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+      headers: {
+        ...headers,
+        ...getHeaders()
+      }
+    }
+  })
+
+  const link = split(
+    ({ query }) => {
+      const definition = getMainDefinition(query)
+      return (
+        definition.kind === 'OperationDefinition' &&
+        definition.operation === 'subscription'
+      )
+    },
+    wsLink,
+    authLink.concat(httplink)
+  )
+
+  // eslint-disable-next-line
   const errorLink = onError(
     ({ operation, networkError, graphQLErrors, forward }) => {
       if (
+        // eslint-disable-next-line
         networkError?.message?.includes(
           'Missing Authorization header in JWT authentication mode'
         ) ||
+        // eslint-disable-next-line
         networkError?.message?.includes('JWSInvalidSignature')
       ) {
         const token = auth?.getJWTToken()
@@ -40,7 +73,7 @@ export const createApolloClient = (uri: string, auth: Auth | undefined) => {
           // const operations: Operations = {...wsClient.operations}
           // const operations = (wsClient.operations as unknown) as Operations
           if (wsClient) {
-            wsClient.close()
+            wsClient.close(false)
             // .connect()
           }
           // Object.keys(operations).forEach(id => {
@@ -50,6 +83,7 @@ export const createApolloClient = (uri: string, auth: Auth | undefined) => {
           //     operations[id].options
           //   )
           // })
+          // eslint-disable-next-line
           return forward(operation)
         } else {
           console.error(graphQLErrors || networkError)
@@ -57,17 +91,27 @@ export const createApolloClient = (uri: string, auth: Auth | undefined) => {
       }
     }
   )
+
   auth?.onAuthStateChanged(() => {
     console.log('auth state changed!!!')
     console.log(wsClient.status)
-    wsClient.close()
+    wsClient.close(false)
     console.log(wsClient.status)
   })
+
   const apolloClient = new ApolloClient({
-    link: errorLink.concat(link),
+    connectToDevTools: !!process.env.DEV,
+    // eslint-disable-next-line
+    link: from([errorLink.concat(link)]),
     cache: new InMemoryCache({
       addTypename: true
-    })
+    }),
+    defaultOptions: {
+      watchQuery: {
+        // * See https://medium.com/@galen.corey/understanding-apollo-fetch-policies-705b5ad71980
+        fetchPolicy: 'cache-first'
+      }
+    }
   })
 
   return apolloClient

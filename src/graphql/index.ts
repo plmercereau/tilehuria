@@ -42,34 +42,41 @@ export const INSERT_PROVIDER = gql`
   ${PROVIDER_FRAGMENT}
 `
 
-export const SELECT_AREA_OF_INTEREST = gql`
-  subscription selectOneAreaOfInterest($id: uuid!) {
-    areaOfInterest(id: $id) {
+export const AREA_OF_INTEREST_FRAGMENT = gql`
+  fragment areaOfInterestFragment on area_of_interest {
+    id
+    name
+    source
+    minZoom
+    maxZoom
+    tilesCount
+    tileSets {
       id
-      name
-      source
-      minZoom
-      maxZoom
-      tilesCount
-      tileSets {
+      progress
+      size
+      format
+      quality
+      tileProvider {
         id
-        progress
-        size
-        format
-        quality
-        tileProvider {
-          id
-          name
-          slug
-          url
-        }
-        areaOfInterest {
-          name
-          userId
-        }
+        name
+        slug
+        url
+      }
+      areaOfInterest {
+        name
+        userId
       }
     }
   }
+`
+
+export const SELECT_AREA_OF_INTEREST = gql`
+  subscription selectOneAreaOfInterest($id: uuid!) {
+    areaOfInterest(id: $id) {
+      ...areaOfInterestFragment
+    }
+  }
+  ${AREA_OF_INTEREST_FRAGMENT}
 `
 
 export const SELECT_TILE_SET = gql`
@@ -121,7 +128,9 @@ export const UPDATE_AREA_OF_INTEREST = gql`
         maxZoom: $maxZoom
       }
     ) {
-      id
+      # ? Optional, as optimisticResponse and subscribeToMore update the cache already
+      ...areaOfInterestFragment
     }
   }
+  ${AREA_OF_INTEREST_FRAGMENT}
 `

@@ -60,7 +60,12 @@ import { defineComponent, ref, computed } from '@vue/composition-api'
 import PItemTileSet from 'components/ItemTileSet.vue'
 import PLeafletDraw from 'components/LeafletDraw.vue'
 import { AreaOfInterest, TileSet } from '../generated'
-import { SELECT_AREA_OF_INTEREST, UPDATE_AREA_OF_INTEREST } from 'src/graphql'
+import {
+  SELECT_AREA_OF_INTEREST,
+  UPDATE_AREA_OF_INTEREST,
+  INSERT_AREA_OF_INTEREST,
+  AREAS_OF_INTEREST
+} from 'src/graphql'
 import { DEFAULT_TILE_LAYER, HBP_ENDPOINT } from 'src/config'
 import { useSingleItemSubscription } from 'src/compositions'
 import { nbTilesEstimation } from 'src/utils'
@@ -97,8 +102,10 @@ export default defineComponent({
       save,
       fields: { minZoom, maxZoom, source, name }
     } = useSingleItemSubscription({
-      query: SELECT_AREA_OF_INTEREST,
+      subscription: SELECT_AREA_OF_INTEREST,
+      insert: INSERT_AREA_OF_INTEREST,
       update: UPDATE_AREA_OF_INTEREST,
+      list: AREAS_OF_INTEREST,
       properties: ['name', 'source', 'minZoom', 'maxZoom'],
       defaults: defaultAreaOfInterest,
       id: () => props.id

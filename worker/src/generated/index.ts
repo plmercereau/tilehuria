@@ -59,17 +59,6 @@ export type IntComparisonExp = {
   _nin?: Maybe<Array<Scalars['Int']>>;
 };
 
-export type Query = {
-  __typename?: 'Query';
-  hello?: Maybe<Scalars['String']>;
-  tileSetInfo?: Maybe<TileSetInfo>;
-};
-
-
-export type QueryTileSetInfoArgs = {
-  id: Scalars['uuid'];
-};
-
 /** expression to compare columns of type String. All fields are combined with logical 'AND'. */
 export type StringComparisonExp = {
   _eq?: Maybe<Scalars['String']>;
@@ -87,11 +76,6 @@ export type StringComparisonExp = {
   _nlike?: Maybe<Scalars['String']>;
   _nsimilar?: Maybe<Scalars['String']>;
   _similar?: Maybe<Scalars['String']>;
-};
-
-export type TileSetInfo = {
-  __typename?: 'TileSetInfo';
-  size?: Maybe<Scalars['Int']>;
 };
 
 export type TileSetInfoOutput = {
@@ -2521,7 +2505,6 @@ export type QueryRoot = {
   auth_roles_aggregate: AuthRolesAggregate;
   /** fetch data from the table: "auth.roles" using primary key columns */
   auth_roles_by_pk?: Maybe<AuthRoles>;
-  hello?: Maybe<Scalars['String']>;
   /** fetch data from the table: "tile_provider" using primary key columns */
   tileProvider?: Maybe<TileProvider>;
   /** fetch aggregated fields from the table: "tile_provider" */
@@ -2532,7 +2515,6 @@ export type QueryRoot = {
   tileSet?: Maybe<TileSet>;
   /** fetch aggregated fields from the table: "tile_set" */
   tileSetAggregate: TileSetAggregate;
-  tileSetInfo?: Maybe<TileSetInfo>;
   /** fetch data from the table: "tile_set" */
   tileSets: Array<TileSet>;
   /** fetch data from the table: "users" */
@@ -2765,12 +2747,6 @@ export type QueryRootTileSetAggregateArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<TileSetOrderBy>>;
   where?: Maybe<TileSetBoolExp>;
-};
-
-
-/** query root */
-export type QueryRootTileSetInfoArgs = {
-  id: Scalars['uuid'];
 };
 
 
@@ -3357,8 +3333,6 @@ export type TileSet = {
   area_of_interest_id: Scalars['uuid'];
   format: Scalars['String'];
   id: Scalars['uuid'];
-  /** Remote relationship field */
-  info?: Maybe<TileSetInfo>;
   progress?: Maybe<Scalars['Float']>;
   quality?: Maybe<Scalars['smallint']>;
   size?: Maybe<Scalars['Int']>;

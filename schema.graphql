@@ -54,11 +54,6 @@ input Int_comparison_exp {
   _nin: [Int!]
 }
 
-type Query {
-  hello: String
-  tileSetInfo(id: uuid!): TileSetInfo
-}
-
 """
 expression to compare columns of type String. All fields are combined with logical 'AND'.
 """
@@ -78,10 +73,6 @@ input String_comparison_exp {
   _nlike: String
   _nsimilar: String
   _similar: String
-}
-
-type TileSetInfo {
-  size: Int
 }
 
 type TileSetInfoOutput {
@@ -3227,7 +3218,6 @@ type query_root {
 
   """fetch data from the table: "auth.roles" using primary key columns"""
   auth_roles_by_pk(role: String!): auth_roles
-  hello: String
 
   """fetch data from the table: "tile_provider" using primary key columns"""
   tileProvider(id: uuid!): tile_provider
@@ -3294,7 +3284,6 @@ type query_root {
     """filter the rows returned"""
     where: tile_set_bool_exp
   ): tile_set_aggregate!
-  tileSetInfo(id: uuid!): TileSetInfo
 
   """
   fetch data from the table: "tile_set"
@@ -4072,9 +4061,6 @@ type tile_set {
   area_of_interest_id: uuid!
   format: String!
   id: uuid!
-
-  """Remote relationship field"""
-  info: TileSetInfo
   progress: Float
   quality: smallint
   size: Int

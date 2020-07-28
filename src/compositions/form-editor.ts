@@ -1,27 +1,26 @@
 import { ref, Ref, watch, computed, onMounted } from '@vue/composition-api'
-import { useSubscription, useResult, useMutation } from '@vue/apollo-composable'
+import { useResult, useMutation, useQuery } from '@vue/apollo-composable'
 import { DocumentNode } from 'graphql'
+import { PropType } from 'src/utils'
+import { FetchResult } from 'apollo-link'
+import { buildQueryFromSelectionSet } from 'apollo-utilities'
 
-import { PropertyOf, PropType } from 'src/utils'
+type RootQueryOrMutation<T extends unknown> = { [key: string]: T } //Record<string, T>
+type DataObject = { [key: string]: unknown }
 
 export const useFormEditor = <
-  S extends Record<string, Record<string, unknown>>,
-  T extends PropertyOf<S>,
-  U extends { fieldName: K },
-  K extends keyof T
+  T extends DataObject,
+  U extends { fieldName: V },
+  V extends keyof T
 >(
   source: Readonly<Ref<Readonly<T> | undefined>>,
-  fieldNames: K[],
+  fieldNames: V[],
   {
     save
   }: {
     save: (values: Pick<T, U['fieldName']>) => Promise<unknown> | unknown
   }
 ) => {
-  // type dd = fieldNames[number]
-  // type uu = U<[12,2]>
-  // type vv =
-
   const editing = ref(false)
 
   type Fields = Pick<
@@ -74,54 +73,163 @@ export const useFormEditor = <
   return { editing, edit, save: _save, cancel, values, fields }
 }
 
+export type SingleItemSubscriptionOptions<
+  T extends DataObject,
+  V extends keyof T
+> = {
+  subscription: DocumentNode
+  insert: DocumentNode
+  update: DocumentNode
+  list: DocumentNode
+  defaults: T
+  properties: V[]
+  id: () => string | undefined // TODO pkfields
+}
+
 export const useSingleItemSubscription = <
-  S extends Record<string, Record<string, unknown>>,
-  T extends PropertyOf<S>,
-  U extends { fieldName: K },
-  K extends keyof T
+  T extends DataObject,
+  U extends { fieldName: V },
+  V extends keyof T
 >({
-  query,
+  subscription,
   properties,
+  insert,
   update,
+  list,
   defaults,
   id
-}: {
-  query: DocumentNode
-  update: DocumentNode
-  defaults: T
-  properties: K[]
-  id: () => string | undefined
-}) => {
-  const { result, loading, onError: onLoadError } = useSubscription<S>(
-    query,
-    { id: id() },
-    { enabled: !!id() }
-  )
-  const item = useResult<S, T, T>(
+}: SingleItemSubscriptionOptions<T, V>) => {
+  const query = buildQueryFromSelectionSet(subscription)
+  const isNew = computed(() => !id())
+
+  const { result, loading, onError: onLoadError, subscribeToMore } = useQuery<
+    RootQueryOrMutation<T>
+  >(query, { id: id() }, { enabled: !isNew.value })
+
+  subscribeToMore(() => ({
+    document: subscription,
+    variables: {
+      id: id()
+    }
+  }))
+
+  const item = useResult<RootQueryOrMutation<T>, T, T>(
     result,
     defaults,
     // * More generic than data => data.areaOfInterest
-    data => (data[Object.keys(data)[0] as keyof S] as T) || defaults
+    data => data[Object.keys(data)[0]] || defaults
   )
-
   const { editing, save, edit, cancel, fields, values } = useFormEditor<
-    S,
     T,
     U,
-    K
+    V
   >(item, properties, {
     save: async () => {
-      await mutate()
+      if (isNew.value) await mutateInsert()
+      else await mutateUpdate()
     }
   })
 
-  const { mutate, onError: onSaveError, onDone: onSaved } = useMutation<S>(
-    update,
-    () => ({
-      variables: { id: id(), ...values.value }
-    })
-    // TODO update cache
-  )
+  const {
+    mutate: mutateUpdate,
+    onError: onUpdateError,
+    onDone: onUpdateDone
+  } = useMutation<RootQueryOrMutation<T>>(update, () => ({
+    variables: { id: id(), ...values.value },
+    optimisticResponse: {
+      result: {
+        ...item.value,
+        ...values.value
+      }
+    },
+    update: (cache, { data }) => {
+      const item = data?.[Object.keys(data)[0]]
+      if (data && item) {
+        const cachedItem = cache.readQuery<RootQueryOrMutation<T>>({
+          query,
+          variables: { id: id() }
+        })
+        if (cachedItem) {
+          const key = Object.keys(cachedItem)[0]
+          cache.writeQuery({
+            query,
+            data: { [key]: { ...values.value, ...item } }
+          })
+        }
+        // ? update cache list ?
+      }
+      return item
+    }
+  }))
+
+  const {
+    mutate: mutateInsert,
+    onError: onInsertError,
+    onDone: onInsertDone
+  } = useMutation<RootQueryOrMutation<T>>(insert, () => ({
+    variables: values.value,
+    update: (cache, { data }) => {
+      // TODO cache one single element
+      const item = data?.[Object.keys(data)[0]]
+      if (item) {
+        const cacheQuery = cache.readQuery<RootQueryOrMutation<T[]>>({
+          query: list
+        })
+        if (cacheQuery) {
+          const key = Object.keys(cacheQuery)[0]
+          const cachedList = cacheQuery[key]
+          if (cachedList) {
+            cachedList.push(item)
+            cache.writeQuery({
+              query: list,
+              data: {
+                [key]: cachedList
+                // TODO sort list
+                // .sort((a, b) =>
+                //   a.name.toLowerCase() > b.name.toLowerCase()
+                //     ? 1
+                //     : a.name.toLowerCase() === b.name.toLowerCase()
+                //     ? 0
+                //     : -1
+                // )
+              }
+            })
+          }
+        }
+      }
+      return item
+    }
+  }))
+
+  const onSaveError: (
+    fn: (param?: Error | undefined) => void
+  ) => {
+    off: () => void
+  } = fn => ({
+    off: () => {
+      onInsertError(fn).off()
+      onUpdateError(fn).off()
+    }
+  })
+
+  const onSaved: (
+    fn: (
+      param?:
+        | FetchResult<
+            RootQueryOrMutation<T>,
+            Record<string, unknown>,
+            Record<string, unknown>
+          >
+        | undefined
+    ) => void
+  ) => {
+    off: () => void
+  } = fn => ({
+    off: () => {
+      onInsertDone(fn).off()
+      onUpdateDone(fn).off()
+    }
+  })
 
   onMounted(() => {
     if (!id()) edit()
@@ -137,6 +245,7 @@ export const useSingleItemSubscription = <
     cancel,
     fields,
     onSaveError,
-    onSaved
+    onSaved,
+    values
   }
 }

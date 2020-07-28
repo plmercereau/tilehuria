@@ -48,7 +48,8 @@ export const nbTilesEstimation = (
     for (let zoom = minZoom; zoom <= maxZoom; zoom++) {
       nbTiles += metersSquare / Math.pow(256 * metersPerPixelOnEquator[zoom], 2)
     }
-    return Math.floor(nbTiles / Math.cos(maxY))
+    // ? Not sure Math.abs(Math.cos(maxY)) reflects the ratio of tile area depending on the latitude
+    return Math.floor(nbTiles / Math.abs(Math.cos(maxY)))
   } catch {
     return 0
   }

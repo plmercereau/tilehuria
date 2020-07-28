@@ -1,6 +1,6 @@
 <template lang="pug">
-  div(id="q-app")
-    router-view
+#q-app
+  router-view
 </template>
 
 <script lang="ts">
@@ -12,7 +12,7 @@ import {
   createApolloClient
 } from 'src/compositions'
 import { provide } from '@vue/composition-api'
-import { HASURA_WS_ENDPOINT } from './config'
+import { HASURA_HTTP_ENDPOINT } from './config'
 import { DefaultApolloClient } from '@vue/apollo-composable'
 
 export default defineComponent({
@@ -23,7 +23,7 @@ export default defineComponent({
     provideStorage()
     const auth = useAuth()
 
-    provide(DefaultApolloClient, createApolloClient(HASURA_WS_ENDPOINT, auth))
+    provide(DefaultApolloClient, createApolloClient(HASURA_HTTP_ENDPOINT, auth))
   }
 })
 </script>

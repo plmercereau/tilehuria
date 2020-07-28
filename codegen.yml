@@ -1,6 +1,6 @@
 overwrite: true
 schema:
-  - 'http://localhost:8080/v1/graphql':
+  - "http://localhost:8080/v1/graphql":
       headers:
         x-hasura-admin-secret: ${HASURA_GRAPHQL_ADMIN_SECRET}
 # documents: '**/src/**/*.graphql'
@@ -8,40 +8,40 @@ schema:
 generates:
   hooks/src/generated/index.ts:
     plugins:
-      - 'typescript'
+      - "typescript"
     config:
       maybeValue: T | undefined
       scalars:
         citext: string
         uuid: string
         timestamptz: Date
-        jsonb: '{ [key: string]: any }'
+        jsonb: "{ [key: string]: any }"
       namingConvention:
         typeNames: pascal-case#pascalCase
         transformUnderscore: true
   worker/src/generated/index.ts:
     plugins:
-      - 'typescript'
+      - "typescript"
     config:
       maybeValue: T | undefined
       scalars:
         citext: string
         uuid: string
         timestamptz: Date
-        jsonb: '{ [key: string]: any }'
+        jsonb: "{ [key: string]: any }"
       namingConvention:
         typeNames: pascal-case#pascalCase
         transformUnderscore: true
   src/generated/index.ts:
     plugins:
-      - 'typescript'
+      - "typescript"
     config:
       maybeValue: T | undefined
       scalars:
         citext: string
         uuid: string
         timestamptz: Date
-        jsonb: '{ [key: string]: any }'
+        jsonb: "{ [key: string]: any }"
       namingConvention:
         typeNames: pascal-case#pascalCase
         transformUnderscore: true
