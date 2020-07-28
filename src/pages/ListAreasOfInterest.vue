@@ -11,23 +11,26 @@
 import { defineComponent } from '@vue/composition-api'
 import { useQuery, useResult } from '@vue/apollo-composable'
 import PItemArea from 'components/ItemAreaOfInterest.vue'
-import { AREAS_OF_INTEREST } from 'src/graphql'
+import { AREA_OF_INTEREST_CONFIG } from 'src/graphql'
 
 import { QueryRoot, AreaOfInterest } from '../generated'
 export default defineComponent({
   name: 'ListAreasOfInterest',
   components: {
-    PItemArea,
+    PItemArea
   },
   setup() {
-    const { result, loading } = useQuery<QueryRoot>(AREAS_OF_INTEREST)
+    const { result, loading } = useQuery<QueryRoot>(
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      AREA_OF_INTEREST_CONFIG.list!
+    )
     const areas = useResult<QueryRoot, AreaOfInterest[], AreaOfInterest[]>(
       result,
       [],
-      (data) => data.areasOfInterest
+      data => data.areasOfInterest
     )
 
     return { areas, loading }
-  },
+  }
 })
 </script>

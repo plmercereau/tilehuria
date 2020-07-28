@@ -59,24 +59,11 @@
 import { defineComponent, ref, computed } from '@vue/composition-api'
 import PItemTileSet from 'components/ItemTileSet.vue'
 import PLeafletDraw from 'components/LeafletDraw.vue'
-import { AreaOfInterest, TileSet } from '../generated'
-import {
-  SELECT_AREA_OF_INTEREST,
-  UPDATE_AREA_OF_INTEREST,
-  INSERT_AREA_OF_INTEREST,
-  AREAS_OF_INTEREST
-} from 'src/graphql'
+import { TileSet } from '../generated'
+import { AREA_OF_INTEREST_CONFIG } from 'src/graphql'
 import { DEFAULT_TILE_LAYER, HBP_ENDPOINT } from 'src/config'
-import { useSingleItemSubscription } from 'src/compositions'
+import { useSingleItem } from 'src/compositions'
 import { nbTilesEstimation } from 'src/utils'
-
-const defaultAreaOfInterest: Partial<AreaOfInterest> = {
-  name: '',
-  tileSets: [],
-  tilesCount: 0,
-  minZoom: 1,
-  maxZoom: 19
-}
 
 export default defineComponent({
   name: 'AreaOfInterest',
@@ -94,22 +81,13 @@ export default defineComponent({
       item,
       onLoadError,
       loading,
-      onSaved,
       onSaveError,
       editing,
       edit,
       cancel,
       save,
       fields: { minZoom, maxZoom, source, name }
-    } = useSingleItemSubscription({
-      subscription: SELECT_AREA_OF_INTEREST,
-      insert: INSERT_AREA_OF_INTEREST,
-      update: UPDATE_AREA_OF_INTEREST,
-      list: AREAS_OF_INTEREST,
-      properties: ['name', 'source', 'minZoom', 'maxZoom'],
-      defaults: defaultAreaOfInterest,
-      id: () => props.id
-    })
+    } = useSingleItem(AREA_OF_INTEREST_CONFIG, () => props.id)
 
     const selection = ref<TileSet>()
     const select = (tileSet?: TileSet) => {
@@ -124,7 +102,6 @@ export default defineComponent({
     const url = DEFAULT_TILE_LAYER
 
     onLoadError(err => console.warn(err))
-    onSaved(() => console.log('saved'))
     onSaveError(error => console.log('save error', error))
 
     const zoomRange = computed({

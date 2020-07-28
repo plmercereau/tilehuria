@@ -28,6 +28,8 @@ TileHuria - a map tiles proxy
   - change the name
   - change the url (only if it has no tileset?)
 - delete tile providers (only if it has no tileset)
+- [x] generic single item
+- [ ] generic item list
 - fix the login/refresh token bug
 - page titles
 - ! In dev, the tsconfig microservices are somehow linked. On a general basis, it is not properly configured

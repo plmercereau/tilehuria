@@ -23,7 +23,7 @@ import { useQuery, useResult } from '@vue/apollo-composable'
 import PNewProvider from 'components/NewProvider.vue'
 
 import { QueryRoot, TileProvider } from 'src/generated'
-import { PROVIDERS } from 'src/graphql'
+import { PROVIDER_CONFIG } from 'src/graphql'
 
 export default defineComponent({
   name: 'ListProviders',
@@ -31,7 +31,10 @@ export default defineComponent({
     PNewProvider
   },
   setup() {
-    const { result, loading, onError } = useQuery<QueryRoot>(PROVIDERS)
+    const { result, loading, onError } = useQuery<QueryRoot>(
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      PROVIDER_CONFIG.list!
+    )
     const providers = useResult<QueryRoot, [], TileProvider[]>(
       result,
       [],

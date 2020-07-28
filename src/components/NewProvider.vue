@@ -2,7 +2,7 @@
 q-card(style='width: 300px')
   validation-observer(v-slot='{ handleSubmit, reset }')
     form(
-      @submit.prevent='handleSubmit(create)',
+      @submit.prevent='handleSubmit(save)',
       @reset.prevent='reset(); resetForm()'
     )
       q-card-section
@@ -52,9 +52,8 @@ q-card(style='width: 300px')
 
 <script lang="ts">
 import { defineComponent, ref } from '@vue/composition-api'
-import { MutationRoot, QueryRoot } from '../generated'
-import { useMutation } from '@vue/apollo-composable'
-import { INSERT_PROVIDER, PROVIDERS } from 'src/graphql'
+import { useSingleItem } from 'src/compositions'
+import { PROVIDER_CONFIG } from 'src/graphql'
 import { extend } from 'vee-validate'
 import { required, min } from 'vee-validate/dist/rules'
 extend('min', {
@@ -80,55 +79,26 @@ extend('url', {
 export default defineComponent({
   name: 'ItemAreaOfInterest',
   setup(_, ctx) {
-    const name = ref('')
-    const url = ref('')
-    const slug = ref('')
+    const {
+      fields: { name, url, slug },
+      save,
+      onSaveError,
+      onSaved,
+      reset: resetForm
+    } = useSingleItem(PROVIDER_CONFIG)
+
     const error = ref('')
-    const { mutate: create, onError, onDone } = useMutation<MutationRoot>(
-      INSERT_PROVIDER,
-      () => ({
-        variables: {
-          name: name.value,
-          slug: slug.value,
-          url: url.value
-        },
-        update: (cache, { data }) => {
-          const provider = data?.insertTileProvider
-          if (provider) {
-            const list = cache.readQuery<QueryRoot>({
-              query: PROVIDERS
-            })
-            list?.tileProviders.push(provider)
-            cache.writeQuery({
-              query: PROVIDERS,
-              data: {
-                tileProviders: list?.tileProviders.sort((a, b) =>
-                  a.name.toLowerCase() > b.name.toLowerCase()
-                    ? 1
-                    : a.name.toLowerCase() === b.name.toLowerCase()
-                    ? 0
-                    : -1
-                )
-              }
-            })
-          }
-        }
-      })
-    )
-    onError(err => {
+    onSaveError(err => {
       error.value = JSON.stringify(err)
     })
-    onDone(res => {
+
+    onSaved(res => {
+      console.log('On saved')
       if (res?.data?.insertTileProvider?.id) ctx.emit('done')
       else error.value = 'Error in retreiving the object id'
     })
 
-    const resetForm = () => {
-      error.value = ''
-      name.value = ''
-      url.value = ''
-    }
-    return { name, url, slug, error, resetForm, create }
+    return { name, url, slug, error, resetForm, save }
   }
 })
 </script>
