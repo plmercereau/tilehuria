@@ -7,6 +7,7 @@ TileHuria - a map tiles proxy
 - ? Are zoom levels really part of the aoi or the tile set?
 - ? what png compression means? How does it work? See https://sharp.pixelplumbing.com/api-output#png
 - ! In dev, the tsconfig microservices are somehow linked. On a general basis, it is not properly configured
+- case insensitive fields e.g. when ordering the list of tile providers
 
 ### Features
 
@@ -37,7 +38,7 @@ TileHuria - a map tiles proxy
     - unauthenticated
     - authenticated -> redirect to aoi list?
 - Tile Providers
-  - delete (only if it has no tileset)
+  - [x] delete (only if it has no tileset)
   - "copy" link of the local server
   - to be considered: when changing the slug, change the object keys and the mbtile files
   - change name

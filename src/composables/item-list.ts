@@ -1,10 +1,11 @@
-import { useResult, useQuery } from '@vue/apollo-composable'
+import { useResult, useQuery, useMutation } from '@vue/apollo-composable'
 
 import {
   ItemOptions,
   useSingleItem,
   RootOperation,
-  DataObject
+  DataObject,
+  Id
 } from './single-item'
 import { Ref, ref } from '@vue/composition-api'
 
@@ -23,5 +24,40 @@ export const useItemList = <T extends DataObject, V extends keyof T>(
       data => data && data[Object.keys(data)[0]]
     )
   }
-  return { ...singleItem, list, loading }
+  let remove: (id: Id) => Promise<void> = () => Promise.resolve()
+  if (options.remove) {
+    const deleteMutation = useMutation<RootOperation<T>>(
+      options.remove,
+      () => ({
+        update: (cache, { data }) => {
+          const item = data?.[Object.keys(data)[0]]
+          if (item && options.list) {
+            const cacheQuery = cache.readQuery<RootOperation<T[]>>({
+              query: options.list
+            })
+            if (cacheQuery) {
+              const key = Object.keys(cacheQuery)[0]
+              const cachedList = cacheQuery[key]
+              if (cachedList) {
+                cache.writeQuery({
+                  query: options.list,
+                  data: {
+                    [key]: cachedList
+                      .filter(cursor => cursor.id !== item.id)
+                      .sort(options.sort)
+                  }
+                })
+              }
+            }
+          }
+          return item
+        }
+      })
+    )
+
+    remove = async (id: Id) => {
+      await deleteMutation.mutate({ id })
+    }
+  }
+  return { ...singleItem, list, loading, remove }
 }

@@ -17,6 +17,7 @@ import { useFormEditor } from './form-editor'
 
 export type RootOperation<T extends unknown> = { [key: string]: T } //Record<string, T>
 export type DataObject = { [key: string]: unknown }
+export type Id = string // TODO pkfields
 
 type MutateAction<T> = MutateWithOptionalVariables<
   RootOperation<T>,
@@ -44,6 +45,7 @@ export type ItemOptions<T extends DataObject, V extends keyof T = keyof T> = {
   insert?: DocumentNode
   update?: DocumentNode
   list?: DocumentNode
+  remove?: DocumentNode
   defaults?: T // ? Partial<T>
   properties?: V[]
   sort?: (a: T, b: T) => number
@@ -62,7 +64,7 @@ export const useSingleItem = <
     list,
     sort
   }: ItemOptions<T, V>,
-  id: () => string | undefined = () => undefined // TODO pkfields
+  id: () => Id | undefined = () => undefined // TODO pkfields
 ) => {
   const query = buildQueryFromSelectionSet(subscription)
   const isNew = computed(() => !(id && id()))

@@ -9,7 +9,7 @@
         q-item-section(side) {{ slug }}
         q-item-section(side)
           div.q-gutter-xs
-            q-btn(v-if="tileSets_aggregate.aggregate.count === 0" size='12px' flat dense round icon="delete")
+            q-btn(v-if="tileSets_aggregate.aggregate.count === 0" size='12px' flat dense round icon="delete" @click="remove(id)")
     q-page-sticky(position="bottom-right" :offset="[18, 18]")
       q-btn(fab icon="add" color="primary" @click='newProviderDialog = true')
     q-dialog(v-model='newProviderDialog' persistent transition-show='scale' transition-hide='scale')
@@ -28,11 +28,11 @@ export default defineComponent({
     PNewProvider
   },
   setup() {
-    const { list, loading } = useItemList(PROVIDER_CONFIG)
+    const { list, loading, remove } = useItemList(PROVIDER_CONFIG)
 
     const newProviderDialog = ref(false)
 
-    return { list, loading, newProviderDialog }
+    return { list, loading, remove, newProviderDialog }
   }
 })
 </script>

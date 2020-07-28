@@ -37,11 +37,19 @@ export const PROVIDER_CONFIG: ItemOptions<TileProvider> = {
 
   list: gql`
     query listAllTileProviders {
-      tileProviders {
+      tileProviders(order_by: { name: asc }) {
         ...providerFragment
       }
     }
     ${PROVIDER_FRAGMENT}
+  `,
+
+  remove: gql`
+    mutation removeOneTileProvider($id: uuid!) {
+      deleteTileProvider(id: $id) {
+        id
+      }
+    }
   `,
 
   defaults: {
