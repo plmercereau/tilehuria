@@ -2,7 +2,7 @@
   q-page.row.q-pa-md
     q-spinner(v-if="loading" color="primary" size="3em")
     q-list.col-12(v-else bordered separator)
-      q-item(v-for="{id, name, url, slug, tileSets_aggregate} of providers" :key="id")
+      q-item(v-for="{id, name, url, slug, tileSets_aggregate} of list" :key="id")
         q-item-section
           q-item-label {{ name }}
           q-item-label(caption) {{ url }}
@@ -18,11 +18,8 @@
 
 <script lang="ts">
 import { defineComponent, ref } from '@vue/composition-api'
-import { useQuery, useResult } from '@vue/apollo-composable'
-
 import PNewProvider from 'components/NewProvider.vue'
-
-import { QueryRoot, TileProvider } from 'src/generated'
+import { useItemList } from 'src/composables'
 import { PROVIDER_CONFIG } from 'src/graphql'
 
 export default defineComponent({
@@ -31,20 +28,11 @@ export default defineComponent({
     PNewProvider
   },
   setup() {
-    const { result, loading, onError } = useQuery<QueryRoot>(
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      PROVIDER_CONFIG.list!
-    )
-    const providers = useResult<QueryRoot, [], TileProvider[]>(
-      result,
-      [],
-      data => data.tileProviders
-    )
-    onError(err => {
-      console.log(err)
-    })
+    const { list, loading } = useItemList(PROVIDER_CONFIG)
+
     const newProviderDialog = ref(false)
-    return { providers, loading, newProviderDialog }
+
+    return { list, loading, newProviderDialog }
   }
 })
 </script>

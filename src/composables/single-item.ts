@@ -15,11 +15,11 @@ import { OperationVariables } from 'apollo-client'
 
 import { useFormEditor } from './form-editor'
 
-type RootQueryOrMutation<T extends unknown> = { [key: string]: T } //Record<string, T>
-type DataObject = { [key: string]: unknown }
+export type RootOperation<T extends unknown> = { [key: string]: T } //Record<string, T>
+export type DataObject = { [key: string]: unknown }
 
 type MutateAction<T> = MutateWithOptionalVariables<
-  RootQueryOrMutation<T>,
+  RootOperation<T>,
   OperationVariables
 >
 type ErrorFunction = (
@@ -30,7 +30,7 @@ type ErrorFunction = (
 type DoneFunction<T> = (
   fn: (
     param?: FetchResult<
-      RootQueryOrMutation<T>,
+      RootOperation<T>,
       Record<string, unknown>,
       Record<string, unknown>
     >
@@ -39,10 +39,7 @@ type DoneFunction<T> = (
   off: () => void
 }
 
-export type SingleItemOptions<
-  T extends DataObject,
-  V extends keyof T = keyof T
-> = {
+export type ItemOptions<T extends DataObject, V extends keyof T = keyof T> = {
   subscription: DocumentNode
   insert?: DocumentNode
   update?: DocumentNode
@@ -64,14 +61,14 @@ export const useSingleItem = <
     update,
     list,
     sort
-  }: SingleItemOptions<T, V>,
+  }: ItemOptions<T, V>,
   id: () => string | undefined = () => undefined // TODO pkfields
 ) => {
   const query = buildQueryFromSelectionSet(subscription)
   const isNew = computed(() => !(id && id()))
 
   const { result, loading, onError: onLoadError, subscribeToMore } = useQuery<
-    RootQueryOrMutation<T>
+    RootOperation<T>
   >(query, { id: id() }, { enabled: !isNew.value })
 
   subscribeToMore(() => ({
@@ -83,7 +80,7 @@ export const useSingleItem = <
 
   const onSaveErrors: ErrorFunction[] = []
   const onDones: DoneFunction<T>[] = []
-  const item = useResult<RootQueryOrMutation<T>, T, T>(
+  const item = useResult<RootOperation<T>, T, T>(
     result,
     defaults,
     // * More generic than data => data.areaOfInterest
@@ -104,7 +101,7 @@ export const useSingleItem = <
   if (update) {
     const updateMutationName = (getMutationDefinition(update).selectionSet
       .selections[0] as FieldNode).name.value
-    const { mutate, onError, onDone } = useMutation<RootQueryOrMutation<T>>(
+    const { mutate, onError, onDone } = useMutation<RootOperation<T>>(
       update,
       () => ({
         variables: { id: id(), ...values.value },
@@ -117,7 +114,7 @@ export const useSingleItem = <
         update: (cache, { data }) => {
           const item = data?.[Object.keys(data)[0]]
           if (data && item) {
-            const cachedItem = cache.readQuery<RootQueryOrMutation<T>>({
+            const cachedItem = cache.readQuery<RootOperation<T>>({
               query,
               variables: { id: id() }
             })
@@ -141,7 +138,7 @@ export const useSingleItem = <
 
   let mutateInsert: MutateAction<T> | undefined
   if (insert) {
-    const { mutate, onError, onDone } = useMutation<RootQueryOrMutation<T>>(
+    const { mutate, onError, onDone } = useMutation<RootOperation<T>>(
       insert,
       () => ({
         variables: values.value,
@@ -149,7 +146,7 @@ export const useSingleItem = <
           // TODO cache one single element
           const item = data?.[Object.keys(data)[0]]
           if (item && list) {
-            const cacheQuery = cache.readQuery<RootQueryOrMutation<T[]>>({
+            const cacheQuery = cache.readQuery<RootOperation<T[]>>({
               query: list
             })
             if (cacheQuery) {

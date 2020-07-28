@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import { SingleItemOptions } from 'src/composables'
+import { ItemOptions } from 'src/composables'
 import { AreaOfInterest } from 'src/generated'
 
 export const AREA_OF_INTEREST_FRAGMENT = gql`
@@ -30,7 +30,7 @@ export const AREA_OF_INTEREST_FRAGMENT = gql`
   }
 `
 
-export const AREA_OF_INTEREST_CONFIG: SingleItemOptions<AreaOfInterest> = {
+export const AREA_OF_INTEREST_CONFIG: ItemOptions<AreaOfInterest> = {
   subscription: gql`
     subscription selectOneAreaOfInterest($id: uuid!) {
       areaOfInterest(id: $id) {

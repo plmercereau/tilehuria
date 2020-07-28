@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import { SingleItemOptions } from 'src/composables'
+import { ItemOptions } from 'src/composables'
 import { TileProvider } from 'src/generated'
 
 const PROVIDER_FRAGMENT = gql`
@@ -16,7 +16,7 @@ const PROVIDER_FRAGMENT = gql`
   }
 `
 
-export const PROVIDER_CONFIG: SingleItemOptions<TileProvider> = {
+export const PROVIDER_CONFIG: ItemOptions<TileProvider> = {
   subscription: gql`
     subscription selectOneProvider($id: uuid!) {
       tileProvider {

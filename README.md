@@ -4,51 +4,72 @@ TileHuria - a map tiles proxy
 
 ## TODO
 
-- [ ] Lerna package to use "platyplus" packages e.g. gis etc
+- ? Are zoom levels really part of the aoi or the tile set?
+- ? what png compression means? How does it work? See https://sharp.pixelplumbing.com/api-output#png
+- ! In dev, the tsconfig microservices are somehow linked. On a general basis, it is not properly configured
+
+### Features
+
+- upload mbtiles. see above
+- set a progress system when generating the aoi's coordinates. To do so:
+  - [x] estimate the number of tiles from the aoi boundaries and the zoom levels
+
+#### Frontend
+
+- Area of Interest
+  - create new aoi: use the same interface as the 'update' one
+  - edit aoi:
+    - [x] zoom levels
+    - source: import from file
+    - [x] source: edit with leaflet
+  - map buttons:
+    - fullscreen
+    - [x] center
+- Tileset
+  - create new tileset from aoi screen
+  - edit tileset from aoi screen
+- Navigation
+  - page titles
+  - fix the login/refresh token bug
+  - confirm when logout
+  - navigation guards
+  - home page
+    - unauthenticated
+    - authenticated -> redirect to aoi list?
+- Tile Providers
+  - delete (only if it has no tileset)
+  - "copy" link of the local server
+  - to be considered: when changing the slug, change the object keys and the mbtile files
+  - change name
+  - change url (only if it has no tileset?)
+
+#### Backend
+
 - get single tile: re-download after a certain period of time?
 - get single tile: compare with the existing tile. If the downloaded tile is of better quality, replace the tile.
   - Set a `quality` metadata field when creating the tile (from an mbtile). Then if quality < 100, re-download
   - but what if we want to generate mbtiles without downloading anything more than what's already in the server?
-- upload mbtiles. see above
-- set a progress system when generating the aoi's coordinates. To do so:
-  - [x] estimate the number of tiles from the aoi boundaries and the zoom levels
-- ? Are zoom levels really part of the aoi or the tile set?
-- [x] if format=png and quality=100 then don't run the image transformation when generating the mbtiles file
-- what png compression means? How does it work? See https://sharp.pixelplumbing.com/api-output#png
-- edit aoi:
-  - [x] zoom levels
-  - source: import from file
-  - [x] source: edit with leaflet
-- create new aoi: use the same interface as the 'update' one
-- create new tileset from the aoi screen
-- edit tileset from the aoi screen
-- remove components and pages that are not used anymore (e.g. new aoi, new tileset etc)
-- edit tile providers
-  - to be considered: when changing the slug, change the object keys and the mbtile files
-  - change the name
-  - change the url (only if it has no tileset?)
-- delete tile providers (only if it has no tileset)
-- [x] generic single item
-- [ ] generic item list
-- fix the login/refresh token bug
-- page titles
-- ! In dev, the tsconfig microservices are somehow linked. On a general basis, it is not properly configured
-- review the size limit of events sent to the hook service
-- confirm when logout
-- home page
-  - unauthenticated
-  - authenticated -> redirect to aoi list?
-- aoi map buttons:
-  - fullscreen
-  - [x] center
-- tile provider: "copy" link of the local server
-- remove unused Hasura actions in hooks
 - rename event hooks
 - ? split aoi source update / tileset update -> when finishing the aoi coordinates calculation from source, save the source, that will trigger an aoi xyz coordinates updates, that will queue tile set updates if some exist
-- next
-  - talk about user permissions with Ivan
-  - include a mapathon module?
-  - package the server to automate local installation
+
+### Refactor
+
+- [ ] Lerna package to use "platyplus" packages e.g. gis etc
+- remove unused Hasura actions in hooks
+- remove components and pages that are not used anymore (e.g. new aoi, new tileset etc)
+
+### Done
+
+- [x] if format=png and quality=100 then don't run the image transformation when generating the mbtiles file
+- [x] generic single item
+- [x] generic item list
+- [x] review the size limit of events sent to the hook service
+
+### Next
+
+- package the server to automate local installation
+- talk about user permissions with Ivan
+- include a mapathon module?
 
 ## Production
 
