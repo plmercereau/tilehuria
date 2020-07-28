@@ -1,10 +1,10 @@
 <template lang="pug">
-q-btn(@click="logout" round flat icon="exit_to_app")
+q-btn(@click='logout', round, flat, icon='exit_to_app')
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from '@vue/composition-api'
-import { useAuth } from '../compositions'
+import { useAuth } from '../composables'
 import { handleAxiosRequest } from '../utils'
 
 export default defineComponent({

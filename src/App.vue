@@ -10,7 +10,7 @@ import {
   provideStorage,
   useAuth,
   createApolloClient
-} from 'src/compositions'
+} from 'src/composables'
 import { provide } from '@vue/composition-api'
 import { HASURA_HTTP_ENDPOINT } from './config'
 import { DefaultApolloClient } from '@vue/apollo-composable'

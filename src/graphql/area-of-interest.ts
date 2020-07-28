@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import { SingleItemOptions } from 'src/compositions'
+import { SingleItemOptions } from 'src/composables'
 import { AreaOfInterest } from 'src/generated'
 
 export const AREA_OF_INTEREST_FRAGMENT = gql`

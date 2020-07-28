@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import { SingleItemOptions } from 'src/compositions'
+import { SingleItemOptions } from 'src/composables'
 import { TileProvider } from 'src/generated'
 
 const PROVIDER_FRAGMENT = gql`

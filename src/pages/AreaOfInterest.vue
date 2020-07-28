@@ -62,7 +62,7 @@ import PLeafletDraw from 'components/LeafletDraw.vue'
 import { TileSet } from '../generated'
 import { AREA_OF_INTEREST_CONFIG } from 'src/graphql'
 import { DEFAULT_TILE_LAYER, HBP_ENDPOINT } from 'src/config'
-import { useSingleItem } from 'src/compositions'
+import { useSingleItem } from 'src/composables'
 import { nbTilesEstimation } from 'src/utils'
 
 export default defineComponent({

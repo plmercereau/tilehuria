@@ -1,17 +1,29 @@
 <template lang="pug">
-q-layout(view="lHh Lpr lFf")
+q-layout(view='lHh Lpr lFf')
   q-header(elevated)
     q-toolbar
-      q-btn(v-if="connected"
-        flat dense round icon="menu" aria-label="Menu"
-        @click="leftDrawerOpen = !leftDrawerOpen")
+      q-btn(
+        v-if='connected',
+        flat,
+        dense,
+        round,
+        icon='menu',
+        aria-label='Menu',
+        @click='leftDrawerOpen = !leftDrawerOpen'
+      )
       q-toolbar-title TileHuria
-      p-logout(v-if="connected")
-      q-btn(v-else to="/login" round flat icon="login")
-  q-drawer(v-if="connected" v-model="leftDrawerOpen" show-if-above bordered content-class="bg-grey-1")
+      p-logout(v-if='connected')
+      q-btn(v-else, to='/login', round, flat, icon='login')
+  q-drawer(
+    v-if='connected',
+    v-model='leftDrawerOpen',
+    show-if-above,
+    bordered,
+    content-class='bg-grey-1'
+  )
     q-list
       q-item-label.text-grey-8(header) Menu
-      p-link(v-for="link in links" :key="link.title" v-bind="link")
+      p-link(v-for='link in links', :key='link.title', v-bind='link')
   q-page-container
     router-view
 </template>
@@ -20,7 +32,7 @@ q-layout(view="lHh Lpr lFf")
 import { defineComponent, ref } from '@vue/composition-api'
 import PLogout from 'components/Logout.vue'
 import PLink from 'components/Link.vue'
-import { useConnectionStatus } from 'src/compositions'
+import { useConnectionStatus } from 'src/composables'
 
 const links = [
   {

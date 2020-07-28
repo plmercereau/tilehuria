@@ -1,20 +1,43 @@
 <template lang="pug">
-validation-observer(v-slot="{ handleSubmit, reset }")
-  form(@submit.prevent="handleSubmit(register)" @reset.prevent="reset(); resetForm()")
-    validation-provider(rules="required|email" name="email" v-slot="{ errors, touched, invalid }")
-      q-input(v-model="email" label="email" autocomplete="username" autofocus
-        :error="touched && invalid" :error-message="errors[0]")
-    validation-provider(rules="required|min:6" name="password" v-slot="{ errors, touched, invalid }")
-      q-input(v-model="password" label="password" type="password" autocomplete="new-password"
-        :error="touched && invalid" :error-message="errors[0]")
-    div.text-negative(v-if="error") {{ error }}
-    q-btn(type="submit") Register
-    q-btn(type="reset") Reset
+validation-observer(v-slot='{ handleSubmit, reset }')
+  form(
+    @submit.prevent='handleSubmit(register)',
+    @reset.prevent='reset(); resetForm()'
+  )
+    validation-provider(
+      rules='required|email',
+      name='email',
+      v-slot='{ errors, touched, invalid }'
+    )
+      q-input(
+        v-model='email',
+        label='email',
+        autocomplete='username',
+        autofocus,
+        :error='touched && invalid',
+        :error-message='errors[0]'
+      )
+    validation-provider(
+      rules='required|min:6',
+      name='password',
+      v-slot='{ errors, touched, invalid }'
+    )
+      q-input(
+        v-model='password',
+        label='password',
+        type='password',
+        autocomplete='new-password',
+        :error='touched && invalid',
+        :error-message='errors[0]'
+      )
+    .text-negative(v-if='error') {{ error }}
+    q-btn(type='submit') Register
+    q-btn(type='reset') Reset
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from '@vue/composition-api'
-import { useAuth } from '../compositions'
+import { useAuth } from '../composables'
 import { handleAxiosRequest } from '../utils'
 import { extend } from 'vee-validate'
 import { required, email, min } from 'vee-validate/dist/rules'

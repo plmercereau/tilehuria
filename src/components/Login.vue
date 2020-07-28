@@ -1,19 +1,39 @@
 <template lang="pug">
-validation-observer(v-slot="{ handleSubmit }")
-  form(@submit.prevent="handleSubmit(login)")
-    validation-provider(rules="required|email" name="email" v-slot="{ errors, touched, invalid }")
-      q-input(v-model="email" label="email" autocomplete="username" autofocus
-        :error="touched && invalid" :error-message="errors[0]")
-    validation-provider(rules="required" name="password" v-slot="{ errors, touched, invalid }")
-      q-input(v-model="password" label="password" type="password" autocomplete="current-password"
-        :error="touched && invalid" :error-message="errors[0]")
-    div.text-negative(v-if="error") {{ error }}
-    q-btn(type="submit") Login
+validation-observer(v-slot='{ handleSubmit }')
+  form(@submit.prevent='handleSubmit(login)')
+    validation-provider(
+      rules='required|email',
+      name='email',
+      v-slot='{ errors, touched, invalid }'
+    )
+      q-input(
+        v-model='email',
+        label='email',
+        autocomplete='username',
+        autofocus,
+        :error='touched && invalid',
+        :error-message='errors[0]'
+      )
+    validation-provider(
+      rules='required',
+      name='password',
+      v-slot='{ errors, touched, invalid }'
+    )
+      q-input(
+        v-model='password',
+        label='password',
+        type='password',
+        autocomplete='current-password',
+        :error='touched && invalid',
+        :error-message='errors[0]'
+      )
+    .text-negative(v-if='error') {{ error }}
+    q-btn(type='submit') Login
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from '@vue/composition-api'
-import { useAuth } from '../compositions'
+import { useAuth } from '../composables'
 import { handleAxiosRequest } from '../utils'
 import { extend } from 'vee-validate'
 import { required, email } from 'vee-validate/dist/rules'

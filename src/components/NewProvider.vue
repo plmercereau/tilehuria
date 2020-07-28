@@ -52,7 +52,7 @@ q-card(style='width: 300px')
 
 <script lang="ts">
 import { defineComponent, ref } from '@vue/composition-api'
-import { useSingleItem } from 'src/compositions'
+import { useSingleItem } from 'src/composables'
 import { PROVIDER_CONFIG } from 'src/graphql'
 import { extend } from 'vee-validate'
 import { required, min } from 'vee-validate/dist/rules'
