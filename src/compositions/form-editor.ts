@@ -1,9 +1,12 @@
 import { ref, Ref, watch, computed, onMounted } from '@vue/composition-api'
 import { useResult, useMutation, useQuery } from '@vue/apollo-composable'
-import { DocumentNode } from 'graphql'
+import { DocumentNode, FieldNode } from 'graphql'
 import { PropType } from 'src/utils'
 import { FetchResult } from 'apollo-link'
-import { buildQueryFromSelectionSet } from 'apollo-utilities'
+import {
+  buildQueryFromSelectionSet,
+  getMutationDefinition
+} from 'apollo-utilities'
 
 type RootQueryOrMutation<T extends unknown> = { [key: string]: T } //Record<string, T>
 type DataObject = { [key: string]: unknown }
@@ -36,10 +39,11 @@ export const useFormEditor = <
     return previous
   }, {} as Fields)
 
-  const reset = () =>
+  const reset = () => {
     fieldNames.forEach(
       fieldName => (fields[fieldName].value = source.value?.[fieldName])
     )
+  }
 
   const edit = () => {
     reset()
@@ -60,8 +64,11 @@ export const useFormEditor = <
     reset()
   }
 
-  // * When the source changes, trigger a form reset
-  watch(() => source.value, reset)
+  // * When the source changes and the values are not being edited, trigger a form reset
+  watch(
+    () => source.value,
+    () => !editing.value && reset()
+  )
 
   const values = computed(() => {
     return fieldNames.reduce((previous, current) => {
@@ -130,6 +137,8 @@ export const useSingleItemSubscription = <
     }
   })
 
+  const updateMutationName = (getMutationDefinition(update).selectionSet
+    .selections[0] as FieldNode).name.value
   const {
     mutate: mutateUpdate,
     onError: onUpdateError,
@@ -137,7 +146,7 @@ export const useSingleItemSubscription = <
   } = useMutation<RootQueryOrMutation<T>>(update, () => ({
     variables: { id: id(), ...values.value },
     optimisticResponse: {
-      result: {
+      [updateMutationName]: {
         ...item.value,
         ...values.value
       }
