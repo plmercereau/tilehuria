@@ -9,7 +9,7 @@ import {
 } from './single-item'
 import { Ref, ref } from '@vue/composition-api'
 
-export const useItemList = <T extends DataObject, V extends keyof T>(
+export const useItemList = <T extends DataObject, V extends keyof T = keyof T>(
   options: ItemOptions<T, V>
 ) => {
   const singleItem = useSingleItem(options)

@@ -5,36 +5,33 @@ type DataObject = { [key: string]: unknown }
 
 export const useFormEditor = <
   T extends DataObject,
-  U extends { fieldName: V },
-  V extends keyof T
+  V extends keyof T = keyof T
 >(
   source: Readonly<Ref<Readonly<T> | undefined>>,
   fieldNames: V[],
   {
     save
   }: {
-    save: (values: Pick<T, U['fieldName']>) => Promise<unknown> | unknown
+    save: (values: Record<V, unknown>) => Promise<unknown> | unknown
   }
 ) => {
   const editing = ref(false)
 
-  type Fields = Pick<
-    Required<
-      {
-        [key in keyof T]: Ref<PropType<T, key> | undefined>
-      }
-    >,
-    U['fieldName']
-  >
-  const fields = fieldNames.reduce((previous, current) => {
-    previous[current] = ref()
-    return previous
-  }, {} as Fields)
+  const fields = fieldNames.reduce(
+    (previous, current: V) => (
+      (previous[current] = ref(source.value?.[current])), previous
+    ),
+    {} as Required<
+      { [key in typeof fieldNames[number]]: Ref<PropType<T, key> | undefined> }
+    >
+  )
 
   const reset = () => {
-    fieldNames.forEach(
-      fieldName => (fields[fieldName].value = source.value?.[fieldName])
-    )
+    fieldNames.forEach(fieldName => {
+      fields[fieldName].value
+      source.value?.[fieldName]
+      fields[fieldName].value = source.value?.[fieldName]
+    })
   }
 
   const edit = () => {
@@ -63,10 +60,12 @@ export const useFormEditor = <
   )
 
   const values = computed(() => {
-    return fieldNames.reduce((previous, current) => {
-      previous[current] = fields[current].value
-      return previous
-    }, {} as Partial<T>) as Pick<T, U['fieldName']>
+    return fieldNames.reduce(
+      (previous, current) => (
+        (previous[current] = fields[current].value), previous
+      ),
+      {} as Required<{ [key in V]: PropType<T, key> | undefined }>
+    )
   })
 
   return { editing, edit, save: _save, cancel, values, fields, reset }

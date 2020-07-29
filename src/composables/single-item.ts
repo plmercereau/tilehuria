@@ -1,11 +1,11 @@
-import { computed, onMounted } from '@vue/composition-api'
+import { computed, onMounted, ref, Ref } from '@vue/composition-api'
 import {
   useResult,
   useMutation,
   useQuery,
   MutateWithOptionalVariables
 } from '@vue/apollo-composable'
-import { FieldNode, DocumentNode } from 'graphql'
+import { DocumentNode, FieldNode } from 'graphql'
 import { FetchResult } from 'apollo-link'
 import {
   buildQueryFromSelectionSet,
@@ -41,58 +41,68 @@ type DoneFunction<T> = (
 }
 
 export type ItemOptions<T extends DataObject, V extends keyof T = keyof T> = {
-  subscription: DocumentNode
+  subscription?: DocumentNode
   insert?: DocumentNode
   update?: DocumentNode
   list?: DocumentNode
   remove?: DocumentNode
-  defaults?: T // ? Partial<T>
-  properties?: V[]
+  defaults?: Partial<T>
+  properties: V[]
   sort?: (a: T, b: T) => number
 }
-export const useSingleItem = <
-  T extends DataObject,
-  U extends { fieldName: V },
-  V extends keyof T
->(
+
+export const useSingleItem = <T extends DataObject>(
   {
     subscription,
     defaults = {} as T,
-    properties = Object.keys(defaults) as V[],
+    properties = Object.keys(defaults) as (keyof T)[],
     insert,
     update,
     list,
     sort
-  }: ItemOptions<T, V>,
+  }: ItemOptions<T>,
   id: () => Id | undefined = () => undefined // TODO pkfields
 ) => {
-  const query = buildQueryFromSelectionSet(subscription)
   const isNew = computed(() => !(id && id()))
+  const query = subscription && buildQueryFromSelectionSet(subscription)
+  let item = ref<Partial<T>>()
+  let loading = ref<boolean>(false)
+  let onLoadError: ErrorFunction = () => ({
+    off: () => 0
+  })
+  if (subscription && query) {
+    const {
+      result,
+      loading: queryLoading,
+      onError,
+      subscribeToMore
+    } = useQuery<RootOperation<T>>(
+      query,
+      { id: id() },
+      { enabled: !isNew.value }
+    )
 
-  const { result, loading, onError: onLoadError, subscribeToMore } = useQuery<
-    RootOperation<T>
-  >(query, { id: id() }, { enabled: !isNew.value })
-
-  subscribeToMore(() => ({
-    document: subscription,
-    variables: {
-      id: id()
-    }
-  }))
+    subscribeToMore(() => ({
+      document: subscription,
+      variables: {
+        id: id()
+      }
+    }))
+    loading = queryLoading
+    onLoadError = onError
+    item = useResult<RootOperation<T>, Partial<T>, Partial<T>>(
+      result,
+      defaults as T,
+      // * More generic than data => data.areaOfInterest
+      data => data[Object.keys(data)[0]] || defaults
+    )
+  }
 
   const onSaveErrors: ErrorFunction[] = []
   const onDones: DoneFunction<T>[] = []
-  const item = useResult<RootOperation<T>, T, T>(
-    result,
-    defaults,
-    // * More generic than data => data.areaOfInterest
-    data => data[Object.keys(data)[0]] || defaults
-  )
   const { editing, save, edit, cancel, fields, values, reset } = useFormEditor<
-    T,
-    U,
-    V
-  >(item, properties, {
+    T
+  >(item as Ref<T>, properties, {
     save: async () => {
       if (isNew.value) await mutateInsert?.()
       else await mutateUpdate?.()
@@ -109,13 +119,13 @@ export const useSingleItem = <
         variables: { id: id(), ...values.value },
         optimisticResponse: {
           [updateMutationName]: {
-            ...item.value,
+            ...item?.value,
             ...values.value
-          }
+          } as T
         },
         update: (cache, { data }) => {
           const item = data?.[Object.keys(data)[0]]
-          if (data && item) {
+          if (data && query && item) {
             const cachedItem = cache.readQuery<RootOperation<T>>({
               query,
               variables: { id: id() }

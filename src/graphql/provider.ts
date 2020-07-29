@@ -56,7 +56,9 @@ export const PROVIDER_CONFIG: ItemOptions<TileProvider> = {
     name: '',
     url: '',
     slug: ''
-  } as TileProvider, // TODO infer as Partial<TileProvider>
+  },
+
+  properties: ['name', 'url', 'slug'],
 
   sort: (a, b) =>
     a.name.toLowerCase() > b.name.toLowerCase()

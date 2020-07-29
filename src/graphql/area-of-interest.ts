@@ -53,6 +53,7 @@ export const AREA_OF_INTEREST_CONFIG: ItemOptions<AreaOfInterest> = {
     }
     ${AREA_OF_INTEREST_FRAGMENT}
   `,
+
   update: gql`
     mutation updateAoi(
       $id: uuid!
@@ -76,6 +77,7 @@ export const AREA_OF_INTEREST_CONFIG: ItemOptions<AreaOfInterest> = {
     }
     ${AREA_OF_INTEREST_FRAGMENT}
   `,
+
   list: gql`
     query listAllAreasOfInterest {
       areasOfInterest(order_by: { name: asc }) {
@@ -85,12 +87,14 @@ export const AREA_OF_INTEREST_CONFIG: ItemOptions<AreaOfInterest> = {
       }
     }
   `,
+
   properties: ['name', 'source', 'minZoom', 'maxZoom'],
-  defaults: ({
+
+  defaults: {
     name: '',
     tileSets: [],
     tilesCount: 0,
     minZoom: 1,
     maxZoom: 20
-  } as unknown) as AreaOfInterest // TODO do something about it
+  }
 }
