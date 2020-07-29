@@ -51,16 +51,19 @@ export type ItemOptions<T extends DataObject, V extends keyof T = keyof T> = {
   sort?: (a: T, b: T) => number
 }
 
-export const useSingleItem = <T extends DataObject>(
+export const useSingleItem = <
+  T extends DataObject,
+  V extends keyof T = keyof T
+>(
   {
     subscription,
     defaults = {} as T,
-    properties = Object.keys(defaults) as (keyof T)[],
+    properties = Object.keys(defaults) as V[],
     insert,
     update,
     list,
     sort
-  }: ItemOptions<T>,
+  }: ItemOptions<T, V>,
   id: () => Id | undefined = () => undefined // TODO pkfields
 ) => {
   const isNew = computed(() => !(id && id()))
@@ -101,7 +104,8 @@ export const useSingleItem = <T extends DataObject>(
   const onSaveErrors: ErrorFunction[] = []
   const onDones: DoneFunction<T>[] = []
   const { editing, save, edit, cancel, fields, values, reset } = useFormEditor<
-    T
+    T,
+    typeof properties[number]
   >(item as Ref<T>, properties, {
     save: async () => {
       if (isNew.value) await mutateInsert?.()

@@ -30,7 +30,10 @@ export const AREA_OF_INTEREST_FRAGMENT = gql`
   }
 `
 
-export const AREA_OF_INTEREST_CONFIG: ItemOptions<AreaOfInterest> = {
+export const AREA_OF_INTEREST_CONFIG: ItemOptions<
+  AreaOfInterest,
+  'name' | 'source' | 'minZoom' | 'maxZoom'
+> = {
   subscription: gql`
     subscription selectOneAreaOfInterest($id: uuid!) {
       areaOfInterest(id: $id) {
