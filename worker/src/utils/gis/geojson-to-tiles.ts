@@ -4,7 +4,7 @@ import bbox from '@turf/bbox'
 import { LngLatToXYZ } from './lng-lat-zoom-to-xyz'
 import { tileWidth } from './tile-width'
 
-export const geojsonToTiles = (geojson: GeoJSON, minZoom = 1, maxZoom = 19) => {
+export const geojsonToTiles = (geojson: GeoJSON, minZoom = 1, maxZoom = 20) => {
   const doneTiles: string[] = []
   const walkTiles = (geojson: GeoJSON, tiles: number[][] = []) => {
     if (geojson.type === 'FeatureCollection') {

@@ -105,6 +105,7 @@ Any change in the schema must be done through the Hasura console, that can be st
 - upload mbtiles. see above
 - set a progress system when generating the aoi's coordinates. To do so:
   - [x] estimate the number of tiles from the aoi boundaries and the zoom levels
+- [x] zoom level 20
 
 #### Frontend
 
@@ -137,6 +138,7 @@ Any change in the schema must be done through the Hasura console, that can be st
 
 #### Backend
 
+- get one tile per zoom level that found no tile, until reaching the given minZoom
 - get single tile: re-download after a certain period of time?
 - get single tile: compare with the existing tile. If the downloaded tile is of better quality, replace the tile.
   - Set a `quality` metadata field when creating the tile (from an mbtile). Then if quality < 100, re-download
@@ -146,7 +148,7 @@ Any change in the schema must be done through the Hasura console, that can be st
 ### Refactor/performance
 
 - rename event hooks
-- [ ] Lerna package to use "platyplus" packages e.g. gis etc
+- [ ] Lerna package to use "@platyplus" packages e.g. gis etc
 - remove unused Hasura actions in hooks
 - remove components and pages that are not used anymore (e.g. new aoi, new tileset etc)
 - GH action: build/deploy only when changes in the service

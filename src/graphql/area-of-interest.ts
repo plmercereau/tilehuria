@@ -91,6 +91,6 @@ export const AREA_OF_INTEREST_CONFIG: ItemOptions<AreaOfInterest> = {
     tileSets: [],
     tilesCount: 0,
     minZoom: 1,
-    maxZoom: 19
+    maxZoom: 20
   } as unknown) as AreaOfInterest // TODO do something about it
 }

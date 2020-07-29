@@ -24,7 +24,7 @@
               q-item-label(overline) &nbsp;
               q-item-label
                 q-range(v-model="zoomRange"
-                  :min="1" :max="19"
+                  :min="1" :max="20"
                   :label-always="!editing"
                   :label="editing"
                   :steps="1" markers
