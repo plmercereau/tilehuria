@@ -34,7 +34,8 @@ q-expansion-item(
             :max='100',
             :label-always='!editing',
             :label='editing',
-            :readonly='!editing'
+            :readonly='!editing',
+            @change='change'
           )
     q-item(v-if='source.size')
       q-item-section
@@ -53,7 +54,7 @@ import {
   PropType,
   computed,
   toRefs,
-  watchEffect
+  ref
 } from '@vue/composition-api'
 import { TileSet } from '../generated'
 import '../filters/pretty-bytes'
@@ -72,13 +73,10 @@ export default defineComponent({
     editing: {
       type: Boolean,
       default: false
-    },
-    expanded: {
-      type: Boolean,
-      default: false
     }
   },
   setup(props, ctx) {
+    const expanded = ref(false)
     const { source, editing } = toRefs(props)
     const {
       fields: { format, quality },
@@ -87,10 +85,10 @@ export default defineComponent({
       'format',
       'quality'
     ])
-    watchEffect(() => {
-      console.log('values changed. Emitting...')
+
+    const change = () => {
       ctx.emit('input', formValue.value)
-    })
+    }
 
     const label = computed(() => source.value.areaOfInterest?.name)
 
@@ -105,7 +103,7 @@ export default defineComponent({
       }
     })
 
-    return { label, format, quality, downloadLink }
+    return { label, format, quality, downloadLink, expanded, change }
   }
 })
 </script>

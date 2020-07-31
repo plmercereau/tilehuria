@@ -1,12 +1,7 @@
 import { ref, Ref } from '@vue/composition-api'
 import { useFormFragment } from './form-fragment'
 
-type DataObject = { [key: string]: unknown }
-
-export const useFormEditor = <
-  T extends DataObject,
-  V extends keyof T = keyof T
->(
+export const useFormEditor = <T, V extends keyof T = keyof T>(
   source: Readonly<Ref<Readonly<T> | undefined>>,
   fieldNames: V[],
   {

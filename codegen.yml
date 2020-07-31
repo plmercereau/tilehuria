@@ -3,7 +3,7 @@ schema:
   - "http://localhost:8080/v1/graphql":
       headers:
         x-hasura-admin-secret: ${HASURA_GRAPHQL_ADMIN_SECRET}
-documents: "src/**/*.graphql"
+documents: "src/graphql/**/*.graphql"
 hooks:
   afterAllFileWrite:
     - prettier --write
@@ -40,13 +40,14 @@ generates:
       - fragment-matcher
     config:
       apolloClientVersion: 2
-  src/generated/index.ts:
+  ./src/generated/index.ts:
     plugins:
       - typescript
       - typescript-operations
       - typed-document-node
       - named-operations-object
     config:
+      nonOptionalTypename: true
       maybeValue: T | undefined
       scalars:
         citext: string
@@ -56,6 +57,9 @@ generates:
       namingConvention:
         typeNames: pascal-case#pascalCase
         transformUnderscore: true
+  ./src/schema.graphql:
+    plugins:
+      - schema-ast
 
   # * Not working with typed-document-node
   # src/generated/vue.ts:

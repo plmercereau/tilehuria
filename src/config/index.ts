@@ -1,6 +1,13 @@
-export * from './area-of-interest'
-export * from './tile-provider'
-export * from './tile-set'
+import { tile_provider } from './tile-provider'
+import { tile_set } from './tile-set'
+import { area_of_interest } from './area-of-interest'
+
+export const GRAPHQL_CONFIG = {
+  area_of_interest,
+  tile_provider,
+  tile_set
+}
+
 // ! https://the-guild.dev/blog/graphql-codegen-best-practices
 
 const host = window.location.host

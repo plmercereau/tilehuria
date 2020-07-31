@@ -20,7 +20,7 @@
 import { defineComponent, ref } from '@vue/composition-api'
 import PNewProvider from 'components/NewProvider.vue'
 import { useItemList } from 'src/composables'
-import { PROVIDER_CONFIG } from 'src/config'
+import { GRAPHQL_CONFIG } from 'src/config'
 
 export default defineComponent({
   name: 'ListProviders',
@@ -28,13 +28,16 @@ export default defineComponent({
     PNewProvider
   },
   setup() {
-    const { list, loading, remove } = useItemList(PROVIDER_CONFIG, {
-      defaults: ref({
-        name: '',
-        url: '',
-        slug: ''
-      })
-    })
+    const { list, loading, remove } = useItemList(
+      GRAPHQL_CONFIG.tile_provider,
+      {
+        defaults: ref({
+          name: '',
+          url: '',
+          slug: ''
+        })
+      }
+    )
 
     const newProviderDialog = ref(false)
 

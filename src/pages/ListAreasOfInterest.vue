@@ -10,7 +10,7 @@
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
 import PItemArea from 'components/ItemAreaOfInterest.vue'
-import { AREA_OF_INTEREST_CONFIG } from 'src/config'
+import { GRAPHQL_CONFIG } from 'src/config'
 import { useItemList } from 'src/composables'
 
 export default defineComponent({
@@ -19,7 +19,7 @@ export default defineComponent({
     PItemArea
   },
   setup() {
-    const { list, loading } = useItemList(AREA_OF_INTEREST_CONFIG)
+    const { list, loading } = useItemList(GRAPHQL_CONFIG.area_of_interest)
 
     return { list, loading }
   }

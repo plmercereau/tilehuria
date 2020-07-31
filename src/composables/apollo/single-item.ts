@@ -12,13 +12,9 @@ import {
   getMutationDefinition
 } from 'apollo-utilities'
 import { OperationVariables } from 'apollo-client'
-import { TypedDocumentNode } from '@graphql-typed-document-node/core'
 
-import { useFormEditor } from './form'
-
-export type RootOperation<T extends unknown> = { [key: string]: T } //Record<string, T>
-export type DataObject = { [key: string]: unknown }
-export type Id = string // TODO pkfields
+import { useFormEditor } from '../form'
+import { RootOperation, FormOptions, ItemOptions } from 'src/utils'
 
 type MutateAction<T> = MutateWithOptionalVariables<
   RootOperation<T>,
@@ -41,25 +37,7 @@ type DoneFunction<T> = (
   off: () => void
 }
 
-export type ItemOptions<T extends DataObject, V extends keyof T = keyof T> = {
-  subscription?: TypedDocumentNode
-  insert?: TypedDocumentNode
-  update?: TypedDocumentNode
-  list?: TypedDocumentNode
-  remove?: TypedDocumentNode
-  properties: V[]
-  sort?: (a: T, b: T) => number
-}
-export type FormOptions<T> = {
-  // TODO id as part of defaults, or at least as a ref
-  id?: () => Id | undefined // TODO pkfields
-  defaults?: Readonly<Ref<Partial<T>>>
-  // TODO beforeSave (transform)
-}
-export const useSingleItem = <
-  T extends DataObject,
-  V extends keyof T = keyof T
->(
+export const useSingleItem = <T, V extends keyof T = keyof T>(
   { subscription, properties, insert, update, list, sort }: ItemOptions<T, V>,
   { id = () => undefined, defaults }: FormOptions<T> | undefined = {
     id: () => undefined
@@ -103,7 +81,11 @@ export const useSingleItem = <
     }))
     loading = queryLoading
     onLoadError = onError
-    item = useResult<RootOperation<T>, Partial<T>, Partial<T>>(
+    item = useResult<
+      RootOperation<T>,
+      Partial<T> | undefined,
+      Partial<T> | undefined
+    >(
       result,
       defaults?.value,
       // * More generic than data => data.areaOfInterest
@@ -146,6 +128,7 @@ export const useSingleItem = <
               query,
               variables: { id: id() }
             })
+
             if (cachedItem) {
               const key = Object.keys(cachedItem)[0]
               cache.writeQuery({

@@ -1,16 +1,12 @@
 import { useResult, useQuery, useMutation } from '@vue/apollo-composable'
 
 import {
-  ItemOptions,
   useSingleItem,
-  RootOperation,
-  DataObject,
-  Id,
-  FormOptions
 } from './single-item'
 import { Ref, ref } from '@vue/composition-api'
+import { ItemOptions, FormOptions, RootOperation, Id } from 'src/utils'
 
-export const useItemList = <T extends DataObject, V extends keyof T = keyof T>(
+export const useItemList = <T extends Record<string,unknown>, V extends keyof T = keyof T>(
   options: ItemOptions<T, V>,
   formOptions?: FormOptions<T>
 ) => {

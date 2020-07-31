@@ -6,7 +6,7 @@ type ErrorResponse = {
   error: string
   statusCode: number
 }
-
+// TODO review and move to composables
 export const handleAxiosRequest = async (
   request: () => Promise<unknown> | undefined,
   errorMessage: Ref<string>

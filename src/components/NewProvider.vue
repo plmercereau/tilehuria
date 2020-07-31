@@ -53,7 +53,7 @@ q-card(style='width: 300px')
 <script lang="ts">
 import { defineComponent, ref } from '@vue/composition-api'
 import { useSingleItem } from 'src/composables'
-import { PROVIDER_CONFIG } from 'src/config'
+import { GRAPHQL_CONFIG } from 'src/config'
 import { extend } from 'vee-validate'
 import { required, min } from 'vee-validate/dist/rules'
 extend('min', {
@@ -85,7 +85,7 @@ export default defineComponent({
       onSaveError,
       onSaved,
       reset: resetForm
-    } = useSingleItem(PROVIDER_CONFIG)
+    } = useSingleItem(GRAPHQL_CONFIG.tile_provider)
 
     const error = ref('')
     onSaveError(err => {

@@ -1,4 +1,4 @@
-import { ItemOptions } from 'src/composables'
+import { ItemOptions } from 'src/utils'
 import {
   TileProvider,
   SelectOneProviderDocument,
@@ -7,7 +7,7 @@ import {
   RemoveOneTileProviderDocument
 } from 'src/generated'
 
-export const PROVIDER_CONFIG: ItemOptions<TileProvider> = {
+export const tile_provider: ItemOptions<TileProvider> = {
   subscription: SelectOneProviderDocument,
   insert: InsertOneTileSetDocument,
   list: ListAllTileProvidersDocument,

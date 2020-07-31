@@ -27,12 +27,13 @@ export const useFormFragment = <T, U extends keyof T = keyof T>(
   )
 
   const values = computed(() => {
-    return properties.reduce(
+    const newValues = properties.reduce(
       (previous, current: U) => (
         (previous[current] = fields[current].value), previous
       ),
       {} as Required<{ [key in U]: PropType<T, key> | undefined }>
     )
+    return { ...source.value, ...newValues }
   })
 
   return { fields, reset, values }

@@ -5,7 +5,8 @@
     "baseUrl": ".",
     "skipLibCheck": true,
     "typeRoots": ["node_modules/@types", "src/@types"],
-    "types": ["quasar", "@graphql-typed-document-node/apollo-client-2"]
+    "types": ["quasar", "@graphql-typed-document-node/apollo-client-2"],
+    "strictPropertyInitialization": false
   },
   "files": ["src/@types/graphql.d.ts"]
 }

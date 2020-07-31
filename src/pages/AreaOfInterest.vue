@@ -42,9 +42,10 @@
             q-item-section(side)
               q-item-label(:lines="2")
                 q-btn(size='12px' flat dense round icon="add")
-          p-item-tile-set(v-for="set of item.tileSets"
+          p-item-tile-set(v-for="set, key of item.tileSets"
             :key="'item'+set.id"
             :source="set"
+            v-model="tileSets[key]"
             @show="select(set)"
             @hide="select(null)"
             :active="selection === set"
@@ -61,11 +62,7 @@ import { defineComponent, ref, computed } from '@vue/composition-api'
 import PItemTileSet from 'components/ItemTileSet.vue'
 import PLeafletDraw from 'components/LeafletDraw.vue'
 import { TileSet } from '../generated'
-import {
-  DEFAULT_TILE_LAYER,
-  AREA_OF_INTEREST_CONFIG,
-  HBP_ENDPOINT
-} from 'src/config'
+import { DEFAULT_TILE_LAYER, GRAPHQL_CONFIG, HBP_ENDPOINT } from 'src/config'
 import { useSingleItem } from 'src/composables'
 import { nbTilesEstimation } from 'src/utils'
 
@@ -90,8 +87,8 @@ export default defineComponent({
       edit,
       cancel,
       save,
-      fields: { minZoom, maxZoom, source, name }
-    } = useSingleItem(AREA_OF_INTEREST_CONFIG, {
+      fields: { minZoom, maxZoom, source, name, tileSets }
+    } = useSingleItem(GRAPHQL_CONFIG.area_of_interest, {
       id: () => props.id,
       defaults: ref({
         name: '',
@@ -111,7 +108,6 @@ export default defineComponent({
         selection.value &&
         `${HBP_ENDPOINT}/storage/o/tile/${selection.value.tileProvider.slug}/{z}/{x}/{y}.png`
     )
-
     const url = DEFAULT_TILE_LAYER
 
     onLoadError(err => console.warn(err))
@@ -151,7 +147,8 @@ export default defineComponent({
       save,
       name,
       source,
-      zoomRange
+      zoomRange,
+      tileSets
     }
   }
 })
