@@ -1,0 +1,8 @@
+#import "./fragment.graphql"
+query listAllAreasOfInterest {
+  areasOfInterest(order_by: { name: asc }) {
+    id
+    name
+    tilesCount
+  }
+}

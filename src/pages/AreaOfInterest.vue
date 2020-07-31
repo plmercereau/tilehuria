@@ -57,7 +57,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed, Ref } from '@vue/composition-api'
+import { defineComponent, ref, computed } from '@vue/composition-api'
 import PItemTileSet from 'components/ItemTileSet.vue'
 import PLeafletDraw from 'components/LeafletDraw.vue'
 import { TileSet } from '../generated'

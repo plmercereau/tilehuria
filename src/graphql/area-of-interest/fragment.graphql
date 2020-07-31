@@ -1,0 +1,26 @@
+fragment areaOfInterestFragment on area_of_interest {
+  id
+  name
+  source
+  minZoom
+  maxZoom
+  tilesCount
+  tileSets {
+    id
+    progress
+    size
+    format
+    quality
+    tileProvider {
+      id
+      name
+      slug
+      url
+    }
+    area_of_interest_id
+    areaOfInterest {
+      name
+      userId
+    }
+  }
+}

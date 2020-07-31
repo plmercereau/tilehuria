@@ -79,6 +79,14 @@ module.exports = configure(function(ctx) {
           test: /\.pug$/,
           loader: 'pug-plain-loader'
         })
+        cfg.module.rules.push({
+          test: /\.graphql?$/,
+          loader: 'webpack-graphql-loader',
+          options: {
+            output: 'document',
+            minify: true
+          }
+        })
       }
     },
 

@@ -12,7 +12,7 @@ import { Ref, ref } from '@vue/composition-api'
 
 export const useItemList = <T extends DataObject, V extends keyof T = keyof T>(
   options: ItemOptions<T, V>,
-  formOptions: FormOptions<T>
+  formOptions?: FormOptions<T>
 ) => {
   const singleItem = useSingleItem(options, formOptions)
   let loading: Ref<boolean> = ref(false)

@@ -1,0 +1,12 @@
+#import "./fragment.graphql"
+mutation insertAoi(
+  $name: String!
+  $source: jsonb!
+  $minZoom: Int!
+  $maxZoom: Int!
+) {
+  insertAreaOfInterest(object: { name: $name, source: $source }) {
+    # ? Optional, as optimisticResponse and subscribeToMore update the cache already
+    ...areaOfInterestFragment
+  }
+}

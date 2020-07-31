@@ -24,11 +24,6 @@ const routes: RouteConfig[] = [
       {
         path: 'tile-providers',
         component: () => import('pages/ListProviders.vue')
-      },
-      {
-        path: 'tile-sets/:id',
-        props: true,
-        component: () => import('pages/TileSet.vue')
       }
     ]
   },

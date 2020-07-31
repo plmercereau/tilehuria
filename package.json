@@ -57,7 +57,8 @@
     "eslint-loader": "^3.0.3",
     "eslint-plugin-vue": "^6.1.2",
     "pug": "^3.0.0",
-    "pug-plain-loader": "^1.0.0"
+    "pug-plain-loader": "^1.0.0",
+    "webpack-graphql-loader": "^1.0.2"
   },
   "browserslist": [
     "last 10 Chrome versions",
