@@ -1,5 +1,5 @@
 export * from './hbp'
 export * from './hasura'
-export * from './form-editor'
+export * from './form'
 export * from './single-item'
 export * from './item-list'
