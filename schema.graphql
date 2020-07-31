@@ -4058,7 +4058,7 @@ columns and relationships of "tile_set"
 type tile_set {
   """An object relationship"""
   areaOfInterest: area_of_interest!
-  area_of_interest_id: uuid!
+  areaOfInterestId: uuid!
   format: String!
   id: uuid!
   progress: Float
@@ -4067,7 +4067,7 @@ type tile_set {
 
   """An object relationship"""
   tileProvider: tile_provider!
-  tile_provider_id: uuid!
+  tileProviderId: uuid!
 }
 
 """
@@ -4144,14 +4144,14 @@ input tile_set_bool_exp {
   _not: tile_set_bool_exp
   _or: [tile_set_bool_exp]
   areaOfInterest: area_of_interest_bool_exp
-  area_of_interest_id: uuid_comparison_exp
+  areaOfInterestId: uuid_comparison_exp
   format: String_comparison_exp
   id: uuid_comparison_exp
   progress: Float_comparison_exp
   quality: smallint_comparison_exp
   size: Int_comparison_exp
   tileProvider: tile_provider_bool_exp
-  tile_provider_id: uuid_comparison_exp
+  tileProviderId: uuid_comparison_exp
 }
 
 """
@@ -4176,62 +4176,62 @@ input type for inserting data into table "tile_set"
 """
 input tile_set_insert_input {
   areaOfInterest: area_of_interest_obj_rel_insert_input
-  area_of_interest_id: uuid
+  areaOfInterestId: uuid
   format: String
   id: uuid
   progress: Float
   quality: smallint
   size: Int
   tileProvider: tile_provider_obj_rel_insert_input
-  tile_provider_id: uuid
+  tileProviderId: uuid
 }
 
 """aggregate max on columns"""
 type tile_set_max_fields {
-  area_of_interest_id: uuid
+  areaOfInterestId: uuid
   format: String
   id: uuid
   progress: Float
   quality: smallint
   size: Int
-  tile_provider_id: uuid
+  tileProviderId: uuid
 }
 
 """
 order by max() on columns of table "tile_set"
 """
 input tile_set_max_order_by {
-  area_of_interest_id: order_by
+  areaOfInterestId: order_by
   format: order_by
   id: order_by
   progress: order_by
   quality: order_by
   size: order_by
-  tile_provider_id: order_by
+  tileProviderId: order_by
 }
 
 """aggregate min on columns"""
 type tile_set_min_fields {
-  area_of_interest_id: uuid
+  areaOfInterestId: uuid
   format: String
   id: uuid
   progress: Float
   quality: smallint
   size: Int
-  tile_provider_id: uuid
+  tileProviderId: uuid
 }
 
 """
 order by min() on columns of table "tile_set"
 """
 input tile_set_min_order_by {
-  area_of_interest_id: order_by
+  areaOfInterestId: order_by
   format: order_by
   id: order_by
   progress: order_by
   quality: order_by
   size: order_by
-  tile_provider_id: order_by
+  tileProviderId: order_by
 }
 
 """
@@ -4267,14 +4267,14 @@ ordering options when selecting data from "tile_set"
 """
 input tile_set_order_by {
   areaOfInterest: area_of_interest_order_by
-  area_of_interest_id: order_by
+  areaOfInterestId: order_by
   format: order_by
   id: order_by
   progress: order_by
   quality: order_by
   size: order_by
   tileProvider: tile_provider_order_by
-  tile_provider_id: order_by
+  tileProviderId: order_by
 }
 
 """
@@ -4289,7 +4289,7 @@ select columns of table "tile_set"
 """
 enum tile_set_select_column {
   """column name"""
-  area_of_interest_id
+  areaOfInterestId
 
   """column name"""
   format
@@ -4307,20 +4307,20 @@ enum tile_set_select_column {
   size
 
   """column name"""
-  tile_provider_id
+  tileProviderId
 }
 
 """
 input type for updating data in table "tile_set"
 """
 input tile_set_set_input {
-  area_of_interest_id: uuid
+  areaOfInterestId: uuid
   format: String
   id: uuid
   progress: Float
   quality: smallint
   size: Int
-  tile_provider_id: uuid
+  tileProviderId: uuid
 }
 
 """aggregate stddev on columns"""
@@ -4392,7 +4392,7 @@ update columns of table "tile_set"
 """
 enum tile_set_update_column {
   """column name"""
-  area_of_interest_id
+  areaOfInterestId
 
   """column name"""
   format
@@ -4410,7 +4410,7 @@ enum tile_set_update_column {
   size
 
   """column name"""
-  tile_provider_id
+  tileProviderId
 }
 
 """aggregate var_pop on columns"""

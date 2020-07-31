@@ -5,7 +5,7 @@ import update from './update.graphql'
 
 export const NESTED_TILE_SET_CONFIG: ItemOptions<
   TileSet,
-  'format' | 'quality' | 'area_of_interest_id' // TODO underscores
+  'format' | 'quality' | 'areaOfInterestId'
 > = {
   insert,
   update,

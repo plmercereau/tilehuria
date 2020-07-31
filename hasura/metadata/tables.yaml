@@ -251,7 +251,9 @@
       update: updateTileSets
       delete_by_pk: deleteTileSet
       update_by_pk: updateTileSet
-    custom_column_names: {}
+    custom_column_names:
+      area_of_interest_id: areaOfInterestId
+      tile_provider_id: tileProviderId
   object_relationships:
   - name: areaOfInterest
     using:

@@ -1,5 +1,9 @@
+import gql from 'graphql-tag';
+import * as VueApolloComposable from '@vue/apollo-composable';
+import * as VueCompositionApi from '@vue/composition-api';
 export type Maybe<T> = T | undefined;
 export type Exact<T extends { [key: string]: any }> = { [K in keyof T]: T[K] };
+export type ReactiveFunction<TParam> = () => TParam;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -3330,7 +3334,7 @@ export type TileSet = {
   __typename?: 'tile_set';
   /** An object relationship */
   areaOfInterest: AreaOfInterest;
-  area_of_interest_id: Scalars['uuid'];
+  areaOfInterestId: Scalars['uuid'];
   format: Scalars['String'];
   id: Scalars['uuid'];
   progress?: Maybe<Scalars['Float']>;
@@ -3338,7 +3342,7 @@ export type TileSet = {
   size?: Maybe<Scalars['Int']>;
   /** An object relationship */
   tileProvider: TileProvider;
-  tile_provider_id: Scalars['uuid'];
+  tileProviderId: Scalars['uuid'];
 };
 
 /** aggregated selection of "tile_set" */
@@ -3413,14 +3417,14 @@ export type TileSetBoolExp = {
   _not?: Maybe<TileSetBoolExp>;
   _or?: Maybe<Array<Maybe<TileSetBoolExp>>>;
   areaOfInterest?: Maybe<AreaOfInterestBoolExp>;
-  area_of_interest_id?: Maybe<UuidComparisonExp>;
+  areaOfInterestId?: Maybe<UuidComparisonExp>;
   format?: Maybe<StringComparisonExp>;
   id?: Maybe<UuidComparisonExp>;
   progress?: Maybe<FloatComparisonExp>;
   quality?: Maybe<SmallintComparisonExp>;
   size?: Maybe<IntComparisonExp>;
   tileProvider?: Maybe<TileProviderBoolExp>;
-  tile_provider_id?: Maybe<UuidComparisonExp>;
+  tileProviderId?: Maybe<UuidComparisonExp>;
 };
 
 /** unique or primary key constraints on table "tile_set" */
@@ -3439,60 +3443,60 @@ export type TileSetIncInput = {
 /** input type for inserting data into table "tile_set" */
 export type TileSetInsertInput = {
   areaOfInterest?: Maybe<AreaOfInterestObjRelInsertInput>;
-  area_of_interest_id?: Maybe<Scalars['uuid']>;
+  areaOfInterestId?: Maybe<Scalars['uuid']>;
   format?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   progress?: Maybe<Scalars['Float']>;
   quality?: Maybe<Scalars['smallint']>;
   size?: Maybe<Scalars['Int']>;
   tileProvider?: Maybe<TileProviderObjRelInsertInput>;
-  tile_provider_id?: Maybe<Scalars['uuid']>;
+  tileProviderId?: Maybe<Scalars['uuid']>;
 };
 
 /** aggregate max on columns */
 export type TileSetMaxFields = {
   __typename?: 'tile_set_max_fields';
-  area_of_interest_id?: Maybe<Scalars['uuid']>;
+  areaOfInterestId?: Maybe<Scalars['uuid']>;
   format?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   progress?: Maybe<Scalars['Float']>;
   quality?: Maybe<Scalars['smallint']>;
   size?: Maybe<Scalars['Int']>;
-  tile_provider_id?: Maybe<Scalars['uuid']>;
+  tileProviderId?: Maybe<Scalars['uuid']>;
 };
 
 /** order by max() on columns of table "tile_set" */
 export type TileSetMaxOrderBy = {
-  area_of_interest_id?: Maybe<OrderBy>;
+  areaOfInterestId?: Maybe<OrderBy>;
   format?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   progress?: Maybe<OrderBy>;
   quality?: Maybe<OrderBy>;
   size?: Maybe<OrderBy>;
-  tile_provider_id?: Maybe<OrderBy>;
+  tileProviderId?: Maybe<OrderBy>;
 };
 
 /** aggregate min on columns */
 export type TileSetMinFields = {
   __typename?: 'tile_set_min_fields';
-  area_of_interest_id?: Maybe<Scalars['uuid']>;
+  areaOfInterestId?: Maybe<Scalars['uuid']>;
   format?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   progress?: Maybe<Scalars['Float']>;
   quality?: Maybe<Scalars['smallint']>;
   size?: Maybe<Scalars['Int']>;
-  tile_provider_id?: Maybe<Scalars['uuid']>;
+  tileProviderId?: Maybe<Scalars['uuid']>;
 };
 
 /** order by min() on columns of table "tile_set" */
 export type TileSetMinOrderBy = {
-  area_of_interest_id?: Maybe<OrderBy>;
+  areaOfInterestId?: Maybe<OrderBy>;
   format?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   progress?: Maybe<OrderBy>;
   quality?: Maybe<OrderBy>;
   size?: Maybe<OrderBy>;
-  tile_provider_id?: Maybe<OrderBy>;
+  tileProviderId?: Maybe<OrderBy>;
 };
 
 /** response of any mutation on the table "tile_set" */
@@ -3520,14 +3524,14 @@ export type TileSetOnConflict = {
 /** ordering options when selecting data from "tile_set" */
 export type TileSetOrderBy = {
   areaOfInterest?: Maybe<AreaOfInterestOrderBy>;
-  area_of_interest_id?: Maybe<OrderBy>;
+  areaOfInterestId?: Maybe<OrderBy>;
   format?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   progress?: Maybe<OrderBy>;
   quality?: Maybe<OrderBy>;
   size?: Maybe<OrderBy>;
   tileProvider?: Maybe<TileProviderOrderBy>;
-  tile_provider_id?: Maybe<OrderBy>;
+  tileProviderId?: Maybe<OrderBy>;
 };
 
 /** primary key columns input for table: "tile_set" */
@@ -3538,7 +3542,7 @@ export type TileSetPkColumnsInput = {
 /** select columns of table "tile_set" */
 export enum TileSetSelectColumn {
   /** column name */
-  AreaOfInterestId = 'area_of_interest_id',
+  AreaOfInterestId = 'areaOfInterestId',
   /** column name */
   Format = 'format',
   /** column name */
@@ -3550,18 +3554,18 @@ export enum TileSetSelectColumn {
   /** column name */
   Size = 'size',
   /** column name */
-  TileProviderId = 'tile_provider_id'
+  TileProviderId = 'tileProviderId'
 }
 
 /** input type for updating data in table "tile_set" */
 export type TileSetSetInput = {
-  area_of_interest_id?: Maybe<Scalars['uuid']>;
+  areaOfInterestId?: Maybe<Scalars['uuid']>;
   format?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   progress?: Maybe<Scalars['Float']>;
   quality?: Maybe<Scalars['smallint']>;
   size?: Maybe<Scalars['Int']>;
-  tile_provider_id?: Maybe<Scalars['uuid']>;
+  tileProviderId?: Maybe<Scalars['uuid']>;
 };
 
 /** aggregate stddev on columns */
@@ -3627,7 +3631,7 @@ export type TileSetSumOrderBy = {
 /** update columns of table "tile_set" */
 export enum TileSetUpdateColumn {
   /** column name */
-  AreaOfInterestId = 'area_of_interest_id',
+  AreaOfInterestId = 'areaOfInterestId',
   /** column name */
   Format = 'format',
   /** column name */
@@ -3639,7 +3643,7 @@ export enum TileSetUpdateColumn {
   /** column name */
   Size = 'size',
   /** column name */
-  TileProviderId = 'tile_provider_id'
+  TileProviderId = 'tileProviderId'
 }
 
 /** aggregate var_pop on columns */
@@ -3929,3 +3933,542 @@ export type UuidComparisonExp = {
   _neq?: Maybe<Scalars['uuid']>;
   _nin?: Maybe<Array<Scalars['uuid']>>;
 };
+
+export type AreaOfInterestFragmentFragment = (
+  { __typename?: 'area_of_interest' }
+  & Pick<AreaOfInterest, 'id' | 'name' | 'source' | 'minZoom' | 'maxZoom' | 'tilesCount'>
+  & { tileSets: Array<(
+    { __typename?: 'tile_set' }
+    & Pick<TileSet, 'id' | 'progress' | 'size' | 'format' | 'quality' | 'areaOfInterestId'>
+    & { tileProvider: (
+      { __typename?: 'tile_provider' }
+      & Pick<TileProvider, 'id' | 'name' | 'slug' | 'url'>
+    ), areaOfInterest: (
+      { __typename?: 'area_of_interest' }
+      & Pick<AreaOfInterest, 'name' | 'userId'>
+    ) }
+  )> }
+);
+
+export type InsertAoiMutationVariables = Exact<{
+  name: Scalars['String'];
+  source: Scalars['jsonb'];
+  minZoom: Scalars['Int'];
+  maxZoom: Scalars['Int'];
+}>;
+
+
+export type InsertAoiMutation = (
+  { __typename?: 'mutation_root' }
+  & { insertAreaOfInterest?: Maybe<(
+    { __typename?: 'area_of_interest' }
+    & AreaOfInterestFragmentFragment
+  )> }
+);
+
+export type ListAllAreasOfInterestQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ListAllAreasOfInterestQuery = (
+  { __typename?: 'query_root' }
+  & { areasOfInterest: Array<(
+    { __typename?: 'area_of_interest' }
+    & Pick<AreaOfInterest, 'id' | 'name' | 'tilesCount'>
+  )> }
+);
+
+export type SelectOneAreaOfInterestSubscriptionVariables = Exact<{
+  id: Scalars['uuid'];
+}>;
+
+
+export type SelectOneAreaOfInterestSubscription = (
+  { __typename?: 'subscription_root' }
+  & { areaOfInterest?: Maybe<(
+    { __typename?: 'area_of_interest' }
+    & AreaOfInterestFragmentFragment
+  )> }
+);
+
+export type UpdateAoiMutationVariables = Exact<{
+  id: Scalars['uuid'];
+  name: Scalars['String'];
+  source: Scalars['jsonb'];
+  minZoom: Scalars['Int'];
+  maxZoom: Scalars['Int'];
+}>;
+
+
+export type UpdateAoiMutation = (
+  { __typename?: 'mutation_root' }
+  & { updateAreaOfInterest?: Maybe<(
+    { __typename?: 'area_of_interest' }
+    & AreaOfInterestFragmentFragment
+  )> }
+);
+
+export type ProviderFragmentFragment = (
+  { __typename?: 'tile_provider' }
+  & Pick<TileProvider, 'id' | 'name' | 'slug' | 'url'>
+  & { tileSets_aggregate: (
+    { __typename?: 'tile_set_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'tile_set_aggregate_fields' }
+      & Pick<TileSetAggregateFields, 'count'>
+    )> }
+  ) }
+);
+
+export type InsertProviderMutationVariables = Exact<{
+  name: Scalars['String'];
+  slug: Scalars['String'];
+  url: Scalars['String'];
+}>;
+
+
+export type InsertProviderMutation = (
+  { __typename?: 'mutation_root' }
+  & { insertTileProvider?: Maybe<(
+    { __typename?: 'tile_provider' }
+    & ProviderFragmentFragment
+  )> }
+);
+
+export type ListAllTileProvidersQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ListAllTileProvidersQuery = (
+  { __typename?: 'query_root' }
+  & { tileProviders: Array<(
+    { __typename?: 'tile_provider' }
+    & ProviderFragmentFragment
+  )> }
+);
+
+export type RemoveOneTileProviderMutationVariables = Exact<{
+  id: Scalars['uuid'];
+}>;
+
+
+export type RemoveOneTileProviderMutation = (
+  { __typename?: 'mutation_root' }
+  & { deleteTileProvider?: Maybe<(
+    { __typename?: 'tile_provider' }
+    & Pick<TileProvider, 'id'>
+  )> }
+);
+
+export type SelectOneProviderSubscriptionVariables = Exact<{
+  id: Scalars['uuid'];
+}>;
+
+
+export type SelectOneProviderSubscription = (
+  { __typename?: 'subscription_root' }
+  & { tileProvider?: Maybe<(
+    { __typename?: 'tile_provider' }
+    & ProviderFragmentFragment
+  )> }
+);
+
+export type TileSetFragmentFragment = (
+  { __typename?: 'tile_set' }
+  & Pick<TileSet, 'id' | 'progress' | 'size' | 'format' | 'quality'>
+  & { tileProvider: (
+    { __typename?: 'tile_provider' }
+    & Pick<TileProvider, 'id' | 'name' | 'slug' | 'url'>
+  ), areaOfInterest: (
+    { __typename?: 'area_of_interest' }
+    & Pick<AreaOfInterest, 'name' | 'userId'>
+  ) }
+);
+
+export type InsertOneTileSetMutationVariables = Exact<{
+  format: Scalars['String'];
+  quality: Scalars['smallint'];
+  areaOfInterestId: Scalars['uuid'];
+}>;
+
+
+export type InsertOneTileSetMutation = (
+  { __typename?: 'mutation_root' }
+  & { insertTileSet?: Maybe<(
+    { __typename?: 'tile_set' }
+    & TileSetFragmentFragment
+  )> }
+);
+
+export type UpdateOneTileSetMutationVariables = Exact<{
+  id: Scalars['uuid'];
+  format: Scalars['String'];
+  quality: Scalars['smallint'];
+}>;
+
+
+export type UpdateOneTileSetMutation = (
+  { __typename?: 'mutation_root' }
+  & { updateTileSet?: Maybe<(
+    { __typename?: 'tile_set' }
+    & TileSetFragmentFragment
+  )> }
+);
+
+export const AreaOfInterestFragment = gql`
+    fragment areaOfInterestFragment on area_of_interest {
+  id
+  name
+  source
+  minZoom
+  maxZoom
+  tilesCount
+  tileSets {
+    id
+    progress
+    size
+    format
+    quality
+    tileProvider {
+      id
+      name
+      slug
+      url
+    }
+    areaOfInterestId
+    areaOfInterest {
+      name
+      userId
+    }
+  }
+}
+    `;
+export const ProviderFragment = gql`
+    fragment providerFragment on tile_provider {
+  id
+  name
+  slug
+  url
+  tileSets_aggregate {
+    aggregate {
+      count
+    }
+  }
+}
+    `;
+export const TileSetFragment = gql`
+    fragment tileSetFragment on tile_set {
+  id
+  progress
+  size
+  format
+  quality
+  tileProvider {
+    id
+    name
+    slug
+    url
+  }
+  areaOfInterest {
+    name
+    userId
+  }
+}
+    `;
+export const InsertAoiDocument = gql`
+    mutation insertAoi($name: String!, $source: jsonb!, $minZoom: Int!, $maxZoom: Int!) {
+  insertAreaOfInterest(object: {name: $name, source: $source}) {
+    ...areaOfInterestFragment
+  }
+}
+    ${AreaOfInterestFragment}`;
+
+/**
+ * __useInsertAoiMutation__
+ *
+ * To run a mutation, you first call `useInsertAoiMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useInsertAoiMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useInsertAoiMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      source: // value for 'source'
+ *      minZoom: // value for 'minZoom'
+ *      maxZoom: // value for 'maxZoom'
+ *   },
+ * });
+ */
+export function useInsertAoiMutation(options: VueApolloComposable.UseMutationOptionsWithVariables<InsertAoiMutation, InsertAoiMutationVariables>) {
+            return VueApolloComposable.useMutation<InsertAoiMutation, InsertAoiMutationVariables>(InsertAoiDocument, options);
+          }
+export type InsertAoiMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<InsertAoiMutation, InsertAoiMutationVariables>;
+export const ListAllAreasOfInterestDocument = gql`
+    query listAllAreasOfInterest {
+  areasOfInterest(order_by: {name: asc}) {
+    id
+    name
+    tilesCount
+  }
+}
+    `;
+
+/**
+ * __useListAllAreasOfInterestQuery__
+ *
+ * To run a query within a Vue component, call `useListAllAreasOfInterestQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListAllAreasOfInterestQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useListAllAreasOfInterestQuery(
+ *   {
+ *   }
+ * );
+ */
+export function useListAllAreasOfInterestQuery(options: VueApolloComposable.UseQueryOptions<ListAllAreasOfInterestQuery, ListAllAreasOfInterestQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<ListAllAreasOfInterestQuery, ListAllAreasOfInterestQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<ListAllAreasOfInterestQuery, ListAllAreasOfInterestQueryVariables>> = {}) {
+            return VueApolloComposable.useQuery<ListAllAreasOfInterestQuery, undefined>(ListAllAreasOfInterestDocument, undefined, options);
+          }
+export type ListAllAreasOfInterestQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<ListAllAreasOfInterestQuery, ListAllAreasOfInterestQueryVariables>;
+export const SelectOneAreaOfInterestDocument = gql`
+    subscription selectOneAreaOfInterest($id: uuid!) {
+  areaOfInterest(id: $id) {
+    ...areaOfInterestFragment
+  }
+}
+    ${AreaOfInterestFragment}`;
+
+/**
+ * __useSelectOneAreaOfInterestSubscription__
+ *
+ * To run a query within a Vue component, call `useSelectOneAreaOfInterestSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useSelectOneAreaOfInterestSubscription` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param options that will be passed into the subscription, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/subscription.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useSelectOneAreaOfInterestSubscription(
+ *   {
+ *      id: // value for 'id'
+ *   }
+ * );
+ */
+export function useSelectOneAreaOfInterestSubscription(variables: SelectOneAreaOfInterestSubscriptionVariables | VueCompositionApi.Ref<SelectOneAreaOfInterestSubscriptionVariables> | ReactiveFunction<SelectOneAreaOfInterestSubscriptionVariables>, options: VueApolloComposable.UseSubscriptionOptions<SelectOneAreaOfInterestSubscription, SelectOneAreaOfInterestSubscriptionVariables> | VueCompositionApi.Ref<VueApolloComposable.UseSubscriptionOptions<SelectOneAreaOfInterestSubscription, SelectOneAreaOfInterestSubscriptionVariables>> | ReactiveFunction<VueApolloComposable.UseSubscriptionOptions<SelectOneAreaOfInterestSubscription, SelectOneAreaOfInterestSubscriptionVariables>> = {}) {
+          return VueApolloComposable.useSubscription<SelectOneAreaOfInterestSubscription, SelectOneAreaOfInterestSubscriptionVariables>(SelectOneAreaOfInterestDocument, variables, options);
+        }
+export type SelectOneAreaOfInterestSubscriptionCompositionFunctionResult = VueApolloComposable.UseSubscriptionReturn<SelectOneAreaOfInterestSubscription, SelectOneAreaOfInterestSubscriptionVariables>;
+export const UpdateAoiDocument = gql`
+    mutation updateAoi($id: uuid!, $name: String!, $source: jsonb!, $minZoom: Int!, $maxZoom: Int!) {
+  updateAreaOfInterest(pk_columns: {id: $id}, _set: {name: $name, source: $source, minZoom: $minZoom, maxZoom: $maxZoom}) {
+    ...areaOfInterestFragment
+  }
+}
+    ${AreaOfInterestFragment}`;
+
+/**
+ * __useUpdateAoiMutation__
+ *
+ * To run a mutation, you first call `useUpdateAoiMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateAoiMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useUpdateAoiMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *      source: // value for 'source'
+ *      minZoom: // value for 'minZoom'
+ *      maxZoom: // value for 'maxZoom'
+ *   },
+ * });
+ */
+export function useUpdateAoiMutation(options: VueApolloComposable.UseMutationOptionsWithVariables<UpdateAoiMutation, UpdateAoiMutationVariables>) {
+            return VueApolloComposable.useMutation<UpdateAoiMutation, UpdateAoiMutationVariables>(UpdateAoiDocument, options);
+          }
+export type UpdateAoiMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<UpdateAoiMutation, UpdateAoiMutationVariables>;
+export const InsertProviderDocument = gql`
+    mutation insertProvider($name: String!, $slug: String!, $url: String!) {
+  insertTileProvider(object: {name: $name, slug: $slug, url: $url}) {
+    ...providerFragment
+  }
+}
+    ${ProviderFragment}`;
+
+/**
+ * __useInsertProviderMutation__
+ *
+ * To run a mutation, you first call `useInsertProviderMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useInsertProviderMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useInsertProviderMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      slug: // value for 'slug'
+ *      url: // value for 'url'
+ *   },
+ * });
+ */
+export function useInsertProviderMutation(options: VueApolloComposable.UseMutationOptionsWithVariables<InsertProviderMutation, InsertProviderMutationVariables>) {
+            return VueApolloComposable.useMutation<InsertProviderMutation, InsertProviderMutationVariables>(InsertProviderDocument, options);
+          }
+export type InsertProviderMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<InsertProviderMutation, InsertProviderMutationVariables>;
+export const ListAllTileProvidersDocument = gql`
+    query listAllTileProviders {
+  tileProviders(order_by: {name: asc}) {
+    ...providerFragment
+  }
+}
+    ${ProviderFragment}`;
+
+/**
+ * __useListAllTileProvidersQuery__
+ *
+ * To run a query within a Vue component, call `useListAllTileProvidersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListAllTileProvidersQuery` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useListAllTileProvidersQuery(
+ *   {
+ *   }
+ * );
+ */
+export function useListAllTileProvidersQuery(options: VueApolloComposable.UseQueryOptions<ListAllTileProvidersQuery, ListAllTileProvidersQueryVariables> | VueCompositionApi.Ref<VueApolloComposable.UseQueryOptions<ListAllTileProvidersQuery, ListAllTileProvidersQueryVariables>> | ReactiveFunction<VueApolloComposable.UseQueryOptions<ListAllTileProvidersQuery, ListAllTileProvidersQueryVariables>> = {}) {
+            return VueApolloComposable.useQuery<ListAllTileProvidersQuery, undefined>(ListAllTileProvidersDocument, undefined, options);
+          }
+export type ListAllTileProvidersQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<ListAllTileProvidersQuery, ListAllTileProvidersQueryVariables>;
+export const RemoveOneTileProviderDocument = gql`
+    mutation removeOneTileProvider($id: uuid!) {
+  deleteTileProvider(id: $id) {
+    id
+  }
+}
+    `;
+
+/**
+ * __useRemoveOneTileProviderMutation__
+ *
+ * To run a mutation, you first call `useRemoveOneTileProviderMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveOneTileProviderMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useRemoveOneTileProviderMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useRemoveOneTileProviderMutation(options: VueApolloComposable.UseMutationOptionsWithVariables<RemoveOneTileProviderMutation, RemoveOneTileProviderMutationVariables>) {
+            return VueApolloComposable.useMutation<RemoveOneTileProviderMutation, RemoveOneTileProviderMutationVariables>(RemoveOneTileProviderDocument, options);
+          }
+export type RemoveOneTileProviderMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<RemoveOneTileProviderMutation, RemoveOneTileProviderMutationVariables>;
+export const SelectOneProviderDocument = gql`
+    subscription selectOneProvider($id: uuid!) {
+  tileProvider(id: $id) {
+    ...providerFragment
+  }
+}
+    ${ProviderFragment}`;
+
+/**
+ * __useSelectOneProviderSubscription__
+ *
+ * To run a query within a Vue component, call `useSelectOneProviderSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useSelectOneProviderSubscription` returns an object from Apollo Client that contains result, loading and error properties
+ * you can use to render your UI.
+ *
+ * @param options that will be passed into the subscription, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/subscription.html#options;
+ *
+ * @example
+ * const { result, loading, error } = useSelectOneProviderSubscription(
+ *   {
+ *      id: // value for 'id'
+ *   }
+ * );
+ */
+export function useSelectOneProviderSubscription(variables: SelectOneProviderSubscriptionVariables | VueCompositionApi.Ref<SelectOneProviderSubscriptionVariables> | ReactiveFunction<SelectOneProviderSubscriptionVariables>, options: VueApolloComposable.UseSubscriptionOptions<SelectOneProviderSubscription, SelectOneProviderSubscriptionVariables> | VueCompositionApi.Ref<VueApolloComposable.UseSubscriptionOptions<SelectOneProviderSubscription, SelectOneProviderSubscriptionVariables>> | ReactiveFunction<VueApolloComposable.UseSubscriptionOptions<SelectOneProviderSubscription, SelectOneProviderSubscriptionVariables>> = {}) {
+          return VueApolloComposable.useSubscription<SelectOneProviderSubscription, SelectOneProviderSubscriptionVariables>(SelectOneProviderDocument, variables, options);
+        }
+export type SelectOneProviderSubscriptionCompositionFunctionResult = VueApolloComposable.UseSubscriptionReturn<SelectOneProviderSubscription, SelectOneProviderSubscriptionVariables>;
+export const InsertOneTileSetDocument = gql`
+    mutation insertOneTileSet($format: String!, $quality: smallint!, $areaOfInterestId: uuid!) {
+  insertTileSet(object: {format: $format, quality: $quality, areaOfInterestId: $areaOfInterestId}) {
+    ...tileSetFragment
+  }
+}
+    ${TileSetFragment}`;
+
+/**
+ * __useInsertOneTileSetMutation__
+ *
+ * To run a mutation, you first call `useInsertOneTileSetMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useInsertOneTileSetMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useInsertOneTileSetMutation({
+ *   variables: {
+ *      format: // value for 'format'
+ *      quality: // value for 'quality'
+ *      areaOfInterestId: // value for 'areaOfInterestId'
+ *   },
+ * });
+ */
+export function useInsertOneTileSetMutation(options: VueApolloComposable.UseMutationOptionsWithVariables<InsertOneTileSetMutation, InsertOneTileSetMutationVariables>) {
+            return VueApolloComposable.useMutation<InsertOneTileSetMutation, InsertOneTileSetMutationVariables>(InsertOneTileSetDocument, options);
+          }
+export type InsertOneTileSetMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<InsertOneTileSetMutation, InsertOneTileSetMutationVariables>;
+export const UpdateOneTileSetDocument = gql`
+    mutation updateOneTileSet($id: uuid!, $format: String!, $quality: smallint!) {
+  updateTileSet(pk_columns: {id: $id}, _set: {format: $format, quality: $quality}) {
+    ...tileSetFragment
+  }
+}
+    ${TileSetFragment}`;
+
+/**
+ * __useUpdateOneTileSetMutation__
+ *
+ * To run a mutation, you first call `useUpdateOneTileSetMutation` within a Vue component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateOneTileSetMutation` returns an object that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
+ *
+ * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
+ *
+ * @example
+ * const { mutate, loading, error, onDone } = useUpdateOneTileSetMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      format: // value for 'format'
+ *      quality: // value for 'quality'
+ *   },
+ * });
+ */
+export function useUpdateOneTileSetMutation(options: VueApolloComposable.UseMutationOptionsWithVariables<UpdateOneTileSetMutation, UpdateOneTileSetMutationVariables>) {
+            return VueApolloComposable.useMutation<UpdateOneTileSetMutation, UpdateOneTileSetMutationVariables>(UpdateOneTileSetDocument, options);
+          }
+export type UpdateOneTileSetMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<UpdateOneTileSetMutation, UpdateOneTileSetMutationVariables>;

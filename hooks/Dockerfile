@@ -16,4 +16,4 @@ COPY package*.json ./
 RUN yarn && yarn cache clean
 COPY --from=builder /usr/src/app/dist/ dist/
 EXPOSE 3000
-ENTRYPOINT [ "/sbin/tini","--", "node", "dist/index.js" ]
+CMD [ "/sbin/tini","--", "node", "dist/index.js" ]

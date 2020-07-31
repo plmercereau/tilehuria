@@ -1,5 +1,5 @@
 subscription selectOneProvider($id: uuid!) {
-  tileProvider {
+  tileProvider(id: $id) {
     ...providerFragment
   }
 }

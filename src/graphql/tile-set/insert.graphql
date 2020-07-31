@@ -1,9 +1,9 @@
 mutation insertOneTileSet(
   $format: String!
-  $quality: Int!
+  $quality: smallint!
   $areaOfInterestId: uuid!
 ) {
-  insertAreaOfInterest(
+  insertTileSet(
     object: {
       format: $format
       quality: $quality

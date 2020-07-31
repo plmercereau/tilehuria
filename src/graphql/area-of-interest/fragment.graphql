@@ -17,7 +17,7 @@ fragment areaOfInterestFragment on area_of_interest {
       slug
       url
     }
-    area_of_interest_id
+    areaOfInterestId
     areaOfInterest {
       name
       userId

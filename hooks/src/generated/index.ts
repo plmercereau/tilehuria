@@ -3330,7 +3330,7 @@ export type TileSet = {
   __typename?: 'tile_set';
   /** An object relationship */
   areaOfInterest: AreaOfInterest;
-  area_of_interest_id: Scalars['uuid'];
+  areaOfInterestId: Scalars['uuid'];
   format: Scalars['String'];
   id: Scalars['uuid'];
   progress?: Maybe<Scalars['Float']>;
@@ -3338,7 +3338,7 @@ export type TileSet = {
   size?: Maybe<Scalars['Int']>;
   /** An object relationship */
   tileProvider: TileProvider;
-  tile_provider_id: Scalars['uuid'];
+  tileProviderId: Scalars['uuid'];
 };
 
 /** aggregated selection of "tile_set" */
@@ -3413,14 +3413,14 @@ export type TileSetBoolExp = {
   _not?: Maybe<TileSetBoolExp>;
   _or?: Maybe<Array<Maybe<TileSetBoolExp>>>;
   areaOfInterest?: Maybe<AreaOfInterestBoolExp>;
-  area_of_interest_id?: Maybe<UuidComparisonExp>;
+  areaOfInterestId?: Maybe<UuidComparisonExp>;
   format?: Maybe<StringComparisonExp>;
   id?: Maybe<UuidComparisonExp>;
   progress?: Maybe<FloatComparisonExp>;
   quality?: Maybe<SmallintComparisonExp>;
   size?: Maybe<IntComparisonExp>;
   tileProvider?: Maybe<TileProviderBoolExp>;
-  tile_provider_id?: Maybe<UuidComparisonExp>;
+  tileProviderId?: Maybe<UuidComparisonExp>;
 };
 
 /** unique or primary key constraints on table "tile_set" */
@@ -3439,60 +3439,60 @@ export type TileSetIncInput = {
 /** input type for inserting data into table "tile_set" */
 export type TileSetInsertInput = {
   areaOfInterest?: Maybe<AreaOfInterestObjRelInsertInput>;
-  area_of_interest_id?: Maybe<Scalars['uuid']>;
+  areaOfInterestId?: Maybe<Scalars['uuid']>;
   format?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   progress?: Maybe<Scalars['Float']>;
   quality?: Maybe<Scalars['smallint']>;
   size?: Maybe<Scalars['Int']>;
   tileProvider?: Maybe<TileProviderObjRelInsertInput>;
-  tile_provider_id?: Maybe<Scalars['uuid']>;
+  tileProviderId?: Maybe<Scalars['uuid']>;
 };
 
 /** aggregate max on columns */
 export type TileSetMaxFields = {
   __typename?: 'tile_set_max_fields';
-  area_of_interest_id?: Maybe<Scalars['uuid']>;
+  areaOfInterestId?: Maybe<Scalars['uuid']>;
   format?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   progress?: Maybe<Scalars['Float']>;
   quality?: Maybe<Scalars['smallint']>;
   size?: Maybe<Scalars['Int']>;
-  tile_provider_id?: Maybe<Scalars['uuid']>;
+  tileProviderId?: Maybe<Scalars['uuid']>;
 };
 
 /** order by max() on columns of table "tile_set" */
 export type TileSetMaxOrderBy = {
-  area_of_interest_id?: Maybe<OrderBy>;
+  areaOfInterestId?: Maybe<OrderBy>;
   format?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   progress?: Maybe<OrderBy>;
   quality?: Maybe<OrderBy>;
   size?: Maybe<OrderBy>;
-  tile_provider_id?: Maybe<OrderBy>;
+  tileProviderId?: Maybe<OrderBy>;
 };
 
 /** aggregate min on columns */
 export type TileSetMinFields = {
   __typename?: 'tile_set_min_fields';
-  area_of_interest_id?: Maybe<Scalars['uuid']>;
+  areaOfInterestId?: Maybe<Scalars['uuid']>;
   format?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   progress?: Maybe<Scalars['Float']>;
   quality?: Maybe<Scalars['smallint']>;
   size?: Maybe<Scalars['Int']>;
-  tile_provider_id?: Maybe<Scalars['uuid']>;
+  tileProviderId?: Maybe<Scalars['uuid']>;
 };
 
 /** order by min() on columns of table "tile_set" */
 export type TileSetMinOrderBy = {
-  area_of_interest_id?: Maybe<OrderBy>;
+  areaOfInterestId?: Maybe<OrderBy>;
   format?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   progress?: Maybe<OrderBy>;
   quality?: Maybe<OrderBy>;
   size?: Maybe<OrderBy>;
-  tile_provider_id?: Maybe<OrderBy>;
+  tileProviderId?: Maybe<OrderBy>;
 };
 
 /** response of any mutation on the table "tile_set" */
@@ -3520,14 +3520,14 @@ export type TileSetOnConflict = {
 /** ordering options when selecting data from "tile_set" */
 export type TileSetOrderBy = {
   areaOfInterest?: Maybe<AreaOfInterestOrderBy>;
-  area_of_interest_id?: Maybe<OrderBy>;
+  areaOfInterestId?: Maybe<OrderBy>;
   format?: Maybe<OrderBy>;
   id?: Maybe<OrderBy>;
   progress?: Maybe<OrderBy>;
   quality?: Maybe<OrderBy>;
   size?: Maybe<OrderBy>;
   tileProvider?: Maybe<TileProviderOrderBy>;
-  tile_provider_id?: Maybe<OrderBy>;
+  tileProviderId?: Maybe<OrderBy>;
 };
 
 /** primary key columns input for table: "tile_set" */
@@ -3538,7 +3538,7 @@ export type TileSetPkColumnsInput = {
 /** select columns of table "tile_set" */
 export enum TileSetSelectColumn {
   /** column name */
-  AreaOfInterestId = 'area_of_interest_id',
+  AreaOfInterestId = 'areaOfInterestId',
   /** column name */
   Format = 'format',
   /** column name */
@@ -3550,18 +3550,18 @@ export enum TileSetSelectColumn {
   /** column name */
   Size = 'size',
   /** column name */
-  TileProviderId = 'tile_provider_id'
+  TileProviderId = 'tileProviderId'
 }
 
 /** input type for updating data in table "tile_set" */
 export type TileSetSetInput = {
-  area_of_interest_id?: Maybe<Scalars['uuid']>;
+  areaOfInterestId?: Maybe<Scalars['uuid']>;
   format?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   progress?: Maybe<Scalars['Float']>;
   quality?: Maybe<Scalars['smallint']>;
   size?: Maybe<Scalars['Int']>;
-  tile_provider_id?: Maybe<Scalars['uuid']>;
+  tileProviderId?: Maybe<Scalars['uuid']>;
 };
 
 /** aggregate stddev on columns */
@@ -3627,7 +3627,7 @@ export type TileSetSumOrderBy = {
 /** update columns of table "tile_set" */
 export enum TileSetUpdateColumn {
   /** column name */
-  AreaOfInterestId = 'area_of_interest_id',
+  AreaOfInterestId = 'areaOfInterestId',
   /** column name */
   Format = 'format',
   /** column name */
@@ -3639,7 +3639,7 @@ export enum TileSetUpdateColumn {
   /** column name */
   Size = 'size',
   /** column name */
-  TileProviderId = 'tile_provider_id'
+  TileProviderId = 'tileProviderId'
 }
 
 /** aggregate var_pop on columns */

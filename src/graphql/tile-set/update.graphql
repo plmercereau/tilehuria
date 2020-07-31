@@ -1,4 +1,4 @@
-mutation updateOneTileSet($id: uuid!, $format: String!, $quality: Int!) {
+mutation updateOneTileSet($id: uuid!, $format: String!, $quality: smallint!) {
   updateTileSet(
     pk_columns: { id: $id }
     _set: { format: $format, quality: $quality }
