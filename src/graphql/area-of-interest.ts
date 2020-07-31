@@ -22,6 +22,7 @@ export const AREA_OF_INTEREST_FRAGMENT = gql`
         slug
         url
       }
+      area_of_interest_id
       areaOfInterest {
         name
         userId
@@ -91,13 +92,5 @@ export const AREA_OF_INTEREST_CONFIG: ItemOptions<
     }
   `,
 
-  properties: ['name', 'source', 'minZoom', 'maxZoom'],
-
-  defaults: {
-    name: '',
-    tileSets: [],
-    tilesCount: 0,
-    minZoom: 1,
-    maxZoom: 20
-  }
+  properties: ['name', 'source', 'minZoom', 'maxZoom']
 }

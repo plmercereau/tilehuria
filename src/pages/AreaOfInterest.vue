@@ -44,10 +44,11 @@
                 q-btn(size='12px' flat dense round icon="add")
           p-item-tile-set(v-for="set of item.tileSets"
             :key="'item'+set.id"
-            :tileSet="set"
+            :source="set"
             @show="select(set)"
             @hide="select(null)"
-            :active="selection === set")
+            :active="selection === set"
+            :editing="editing")
       div.col-12.col-sm-6.col-md-8.q-px-xs
         l-map(:options="{ zoomSnap: 0.5 }" style="height: 100%" :zoom="2")
           p-leaflet-draw(v-model="source" :readonly="!editing")
@@ -56,7 +57,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, computed } from '@vue/composition-api'
+import { defineComponent, ref, computed, Ref } from '@vue/composition-api'
 import PItemTileSet from 'components/ItemTileSet.vue'
 import PLeafletDraw from 'components/LeafletDraw.vue'
 import { TileSet } from '../generated'
@@ -87,7 +88,16 @@ export default defineComponent({
       cancel,
       save,
       fields: { minZoom, maxZoom, source, name }
-    } = useSingleItem(AREA_OF_INTEREST_CONFIG, () => props.id)
+    } = useSingleItem(AREA_OF_INTEREST_CONFIG, {
+      id: () => props.id,
+      defaults: ref({
+        name: '',
+        tileSets: [],
+        tilesCount: 0,
+        minZoom: 1,
+        maxZoom: 20
+      })
+    })
 
     const selection = ref<TileSet>()
     const select = (tileSet?: TileSet) => {

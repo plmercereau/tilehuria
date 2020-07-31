@@ -52,12 +52,6 @@ export const PROVIDER_CONFIG: ItemOptions<TileProvider> = {
     }
   `,
 
-  defaults: {
-    name: '',
-    url: '',
-    slug: ''
-  },
-
   properties: ['name', 'url', 'slug'],
 
   sort: (a, b) =>

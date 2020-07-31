@@ -28,7 +28,13 @@ export default defineComponent({
     PNewProvider
   },
   setup() {
-    const { list, loading, remove } = useItemList(PROVIDER_CONFIG)
+    const { list, loading, remove } = useItemList(PROVIDER_CONFIG, {
+      defaults: ref({
+        name: '',
+        url: '',
+        slug: ''
+      })
+    })
 
     const newProviderDialog = ref(false)
 

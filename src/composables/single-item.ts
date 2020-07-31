@@ -13,7 +13,7 @@ import {
 } from 'apollo-utilities'
 import { OperationVariables } from 'apollo-client'
 
-import { useFormEditor } from './form-editor'
+import { useFormEditor } from './form'
 
 export type RootOperation<T extends unknown> = { [key: string]: T } //Record<string, T>
 export type DataObject = { [key: string]: unknown }
@@ -46,25 +46,23 @@ export type ItemOptions<T extends DataObject, V extends keyof T = keyof T> = {
   update?: DocumentNode
   list?: DocumentNode
   remove?: DocumentNode
-  defaults?: Partial<T>
   properties: V[]
   sort?: (a: T, b: T) => number
 }
-
+export type FormOptions<T> = {
+  // TODO id as part of defaults, or at least as a ref
+  id?: () => Id | undefined // TODO pkfields
+  defaults?: Readonly<Ref<Partial<T>>>
+  // TODO beforeSave (transform)
+}
 export const useSingleItem = <
   T extends DataObject,
   V extends keyof T = keyof T
 >(
-  {
-    subscription,
-    defaults = {} as T,
-    properties = Object.keys(defaults) as V[],
-    insert,
-    update,
-    list,
-    sort
-  }: ItemOptions<T, V>,
-  id: () => Id | undefined = () => undefined // TODO pkfields
+  { subscription, properties, insert, update, list, sort }: ItemOptions<T, V>,
+  { id = () => undefined, defaults }: FormOptions<T> | undefined = {
+    id: () => undefined
+  }
 ) => {
   const isNew = computed(() => !(id && id()))
   const query = subscription && buildQueryFromSelectionSet(subscription)
@@ -95,10 +93,12 @@ export const useSingleItem = <
     onLoadError = onError
     item = useResult<RootOperation<T>, Partial<T>, Partial<T>>(
       result,
-      defaults as T,
+      defaults?.value,
       // * More generic than data => data.areaOfInterest
-      data => data[Object.keys(data)[0]] || defaults
+      data => data[Object.keys(data)[0]] || defaults?.value
     )
+  } else if (defaults) {
+    item = defaults
   }
 
   const onSaveErrors: ErrorFunction[] = []

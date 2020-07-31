@@ -11,77 +11,102 @@ q-expansion-item(
   template(#header)
     q-item-section
       q-item-label(overline) {{ label }}
-      q-item-label(v-if='!expanded && tileSet.progress != 1')
-        q-linear-progress.q-mt-md(:value='tileSet.progress')
+      q-item-label(v-if='!expanded && source.progress != 1')
+        q-linear-progress.q-mt-md(:value='source.progress')
     q-item-section(
       side,
-      v-if='!expanded && tileSet.progress == 1 && tileSet.size'
+      v-if='!expanded && source.progress == 1 && source.size'
     )
-      q-badge {{ tileSet.size | prettyBytes }}
+      q-badge {{ source.size | prettyBytes }}
   template(#default)
     q-item
       q-item-section(top)
         q-item-label(overline) Format
         q-item-label
-          q-badge {{ tileSet.format }}
+          q-badge {{ format }}
       q-item-section(top)
         q-item-label(overline) Quality
         q-item-label(overline) &nbsp;
         q-item-label 
           q-slider(
-            :value='tileSet.quality',
+            v-model='quality',
             :min='0',
             :max='100',
-            label-always,
-            readonly
+            :label-always='!editing',
+            :label='editing',
+            :readonly='!editing'
           )
-    q-item(v-if='tileSet.size')
+    q-item(v-if='source.size')
       q-item-section
         q-item-label(overline) MBTile file
         q-item-label
-          q-badge(v-if='tileSet.progress === 1') {{ tileSet.size | prettyBytes }}
-          q-linear-progress.q-mt-md(v-else, :value='tileSet.progress')
-      q-item-section(v-if='tileSet.progress === 1')
+          q-badge(v-if='source.progress === 1') {{ source.size | prettyBytes }}
+          q-linear-progress.q-mt-md(v-else, :value='source.progress')
+      q-item-section(v-if='source.progress === 1')
         q-item-label
           q-btn.q-ma-md(type='a', :href='downloadLink') Download
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, computed, ref } from '@vue/composition-api'
+import {
+  defineComponent,
+  PropType,
+  computed,
+  ref,
+  toRefs,
+  watchEffect
+} from '@vue/composition-api'
 import { TileSet } from '../generated'
 import '../filters/pretty-bytes'
 import { HBP_ENDPOINT } from 'src/config'
+import { useSingleItem, useFormFragment } from 'src/composables'
+import { NESTED_TILE_SET_CONFIG } from 'src/graphql'
 export default defineComponent({
   name: 'ItemTileSet',
   props: {
-    tileSet: {
+    source: {
       type: Object as PropType<TileSet>,
       required: true
     },
-    title: {
-      type: String as PropType<'areaOfInterest' | 'tileProvider'>,
-      default: 'tileProvider'
+    value: {
+      type: Object as PropType<TileSet>
+    },
+    editing: {
+      type: Boolean,
+      default: false
+    },
+    expanded: {
+      type: Boolean,
+      default: false
     }
   },
-  setup(props) {
-    const expanded = ref(false)
-
-    const label = computed(() => {
-      return props.title === 'areaOfInterest'
-        ? props.tileSet.areaOfInterest.name
-        : props.tileSet.tileProvider.name
+  setup(props, ctx) {
+    const { source, editing } = toRefs(props)
+    const {
+      fields: { format, quality },
+      values: formValue
+    } = useFormFragment<TileSet, 'format' | 'quality'>(source, editing, [
+      'format',
+      'quality'
+    ])
+    watchEffect(() => {
+      console.log('values changed. Emitting...')
+      ctx.emit('input', formValue.value)
     })
+
+    const label = computed(() => source.value.areaOfInterest?.name)
 
     const downloadLink = computed(() => {
-      const {
-        areaOfInterest: { name, userId },
-        tileProvider: { slug }
-      } = props.tileSet
-      if (userId)
+      if (source.value) {
+        const {
+          areaOfInterest: { name, userId },
+          tileProvider: { slug }
+        } = source.value
         return `${HBP_ENDPOINT}/storage/o/mbtiles/${userId}/${slug}/${name}.mbtiles`
+      }
     })
 
-    return { label, expanded, downloadLink }
+    return { label, format, quality, downloadLink }
   }
 })
 </script>
