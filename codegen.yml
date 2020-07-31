@@ -1,9 +1,9 @@
 overwrite: true
 schema:
-  - 'http://localhost:8080/v1/graphql':
+  - "http://localhost:8080/v1/graphql":
       headers:
         x-hasura-admin-secret: ${HASURA_GRAPHQL_ADMIN_SECRET}
-documents: 'src/**/*.graphql'
+documents: "src/**/*.graphql"
 hooks:
   afterAllFileWrite:
     - prettier --write
@@ -18,7 +18,7 @@ generates:
         citext: string
         uuid: string
         timestamptz: Date
-        jsonb: '{ [key: string]: any }'
+        jsonb: "{ [key: string]: any }"
       namingConvention:
         typeNames: pascal-case#pascalCase
         transformUnderscore: true
@@ -31,7 +31,7 @@ generates:
         citext: string
         uuid: string
         timestamptz: Date
-        jsonb: '{ [key: string]: any }'
+        jsonb: "{ [key: string]: any }"
       namingConvention:
         typeNames: pascal-case#pascalCase
         transformUnderscore: true
@@ -44,7 +44,7 @@ generates:
     plugins:
       - typescript
       - typescript-operations
-      - typescript-vue-apollo
+      - typed-document-node
       - named-operations-object
     config:
       maybeValue: T | undefined
@@ -52,12 +52,22 @@ generates:
         citext: string
         uuid: string
         timestamptz: Date
-        jsonb: '{ [key: string]: any }'
+        jsonb: "{ [key: string]: any }"
       namingConvention:
         typeNames: pascal-case#pascalCase
         transformUnderscore: true
-      fragmentVariableSuffix: ''
-      documentVariableSuffix: ''
+
+  # * Not working with typed-document-node
+  # src/generated/vue.ts:
+  #   plugins:
+  #     - typescript-vue-apollo
+  #   config:
+  #     namingConvention:
+  #       typeNames: pascal-case#pascalCase
+  #       transformUnderscore: true
+  #     documentMode: external
+  #     importDocumentNodeExternallyFrom: ./index
+  #     importOperationTypesFrom: Operations
 
   ./schema.graphql:
     plugins:

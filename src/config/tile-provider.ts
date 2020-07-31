@@ -1,17 +1,17 @@
 import { ItemOptions } from 'src/composables'
 import {
   TileProvider,
-  RemoveOneTileProvider,
-  InsertOneTileSet,
-  ListAllTileProviders,
-  SelectOneProvider
+  SelectOneProviderDocument,
+  InsertOneTileSetDocument,
+  ListAllTileProvidersDocument,
+  RemoveOneTileProviderDocument
 } from 'src/generated'
 
 export const PROVIDER_CONFIG: ItemOptions<TileProvider> = {
-  subscription: SelectOneProvider,
-  insert: InsertOneTileSet,
-  list: ListAllTileProviders,
-  remove: RemoveOneTileProvider,
+  subscription: SelectOneProviderDocument,
+  insert: InsertOneTileSetDocument,
+  list: ListAllTileProvidersDocument,
+  remove: RemoveOneTileProviderDocument,
 
   properties: ['name', 'url', 'slug'],
 

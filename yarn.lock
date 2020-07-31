@@ -1156,6 +1156,17 @@
     "@graphql-tools/utils" "^6.0.0"
     tslib "~2.0.0"
 
+"@graphql-codegen/typed-document-node@^1.17.6":
+  version "1.17.6"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/typed-document-node/-/typed-document-node-1.17.6.tgz#8502cf811c7fbd5aa55a5a601d6e3b64eff4733a"
+  integrity sha512-W5uTTDXpVW8UfIV2m5b5WSxARaqRkj0xM8wix1U+aVY9+fALaPn80sTsuBz2oPJHkEwHMaQB/EyOkg9CkTn++w==
+  dependencies:
+    "@graphql-codegen/plugin-helpers" "1.17.6"
+    "@graphql-codegen/visitor-plugin-common" "1.17.6"
+    auto-bind "~4.0.0"
+    change-case "4.1.1"
+    tslib "~2.0.0"
+
 "@graphql-codegen/typescript-operations@^1.17.6":
   version "1.17.6"
   resolved "https://registry.yarnpkg.com/@graphql-codegen/typescript-operations/-/typescript-operations-1.17.6.tgz#bdb94a9dd20cd46d586919bf4762c67b073758b6"
@@ -1397,6 +1408,18 @@
     "@graphql-tools/utils" "6.0.15"
     aggregate-error "3.0.1"
     tslib "~2.0.0"
+
+"@graphql-typed-document-node/apollo-client-2@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@graphql-typed-document-node/apollo-client-2/-/apollo-client-2-1.0.0.tgz#304847178089e3af372ed2348f818b5b7d960642"
+  integrity sha512-xsyM9n6s8EsOU+wxKHiH/NMyloLtoDwYtkMRRU0ONuc9vK1eQisQ4M8BPcWVSH86q7leiNkAhuZ/COKwaR6vBQ==
+  dependencies:
+    "@graphql-typed-document-node/core" "1.0.0"
+
+"@graphql-typed-document-node/core@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@graphql-typed-document-node/core/-/core-1.0.0.tgz#10d431057a3a268aba2c670a83de1a60bb4db1aa"
+  integrity sha512-2YMEVS0Sla73AtRe7H/uo4W3xKj0cvtCYeLJe8ZMP44YKWEcowy9mr4r4H5d/SDO1hLqOccSgJaHmokciML3nw==
 
 "@nodelib/fs.scandir@2.1.3":
   version "2.1.3"

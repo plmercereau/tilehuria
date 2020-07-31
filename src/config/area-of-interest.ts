@@ -1,19 +1,19 @@
 import { ItemOptions } from 'src/composables'
 import {
   AreaOfInterest,
-  SelectOneAreaOfInterest,
-  InsertAoi,
-  UpdateAoi,
-  ListAllAreasOfInterest
+  SelectOneAreaOfInterestDocument,
+  InsertAoiDocument,
+  UpdateAoiDocument,
+  ListAllAreasOfInterestDocument
 } from 'src/generated'
 
 export const AREA_OF_INTEREST_CONFIG: ItemOptions<
   AreaOfInterest,
   'name' | 'source' | 'minZoom' | 'maxZoom'
 > = {
-  subscription: SelectOneAreaOfInterest,
-  insert: InsertAoi,
-  update: UpdateAoi,
-  list: ListAllAreasOfInterest,
+  subscription: SelectOneAreaOfInterestDocument,
+  insert: InsertAoiDocument,
+  update: UpdateAoiDocument,
+  list: ListAllAreasOfInterestDocument,
   properties: ['name', 'source', 'minZoom', 'maxZoom']
 }

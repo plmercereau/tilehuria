@@ -5,13 +5,14 @@ import {
   useQuery,
   MutateWithOptionalVariables
 } from '@vue/apollo-composable'
-import { DocumentNode, FieldNode } from 'graphql'
+import { FieldNode } from 'graphql'
 import { FetchResult } from 'apollo-link'
 import {
   buildQueryFromSelectionSet,
   getMutationDefinition
 } from 'apollo-utilities'
 import { OperationVariables } from 'apollo-client'
+import { TypedDocumentNode } from '@graphql-typed-document-node/core'
 
 import { useFormEditor } from './form'
 
@@ -41,11 +42,11 @@ type DoneFunction<T> = (
 }
 
 export type ItemOptions<T extends DataObject, V extends keyof T = keyof T> = {
-  subscription?: DocumentNode
-  insert?: DocumentNode
-  update?: DocumentNode
-  list?: DocumentNode
-  remove?: DocumentNode
+  subscription?: TypedDocumentNode
+  insert?: TypedDocumentNode
+  update?: TypedDocumentNode
+  list?: TypedDocumentNode
+  remove?: TypedDocumentNode
   properties: V[]
   sort?: (a: T, b: T) => number
 }
@@ -72,6 +73,17 @@ export const useSingleItem = <
     off: () => 0
   })
   if (subscription && query) {
+    // TODO use TypedDocumentNode?
+    // const gqlFetch = <TData, TVariables = Record<string, unknown>>(
+    //   operation: TypedDocumentNode<TData, TVariables>,
+    //   variables: TVariables,
+    //   options:
+    //     | UseQueryOptions<TData, TVariables>
+    //     | Ref<UseQueryOptions<TData, TVariables>>
+    //     | ReactiveFunction<UseQueryOptions<TData, TVariables>>
+    // ): UseQueryReturn<TData, TVariables> =>
+    //   useQuery<TData, TVariables>(operation, variables, options)
+
     const {
       result,
       loading: queryLoading,

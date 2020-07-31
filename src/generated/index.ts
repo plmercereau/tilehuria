@@ -1,9 +1,7 @@
-import gql from 'graphql-tag'
-import * as VueApolloComposable from '@vue/apollo-composable'
-import * as VueCompositionApi from '@vue/composition-api'
+import { DocumentNode } from 'graphql'
+import { TypedDocumentNode } from '@graphql-typed-document-node/core'
 export type Maybe<T> = T | undefined
 export type Exact<T extends { [key: string]: any }> = { [K in keyof T]: T[K] }
-export type ReactiveFunction<TParam> = () => TParam
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string
@@ -3943,577 +3941,1206 @@ export type UpdateOneTileSetMutation = { __typename?: 'mutation_root' } & {
   updateTileSet?: Maybe<{ __typename?: 'tile_set' } & TileSetFragmentFragment>
 }
 
-export const AreaOfInterestFragment = gql`
-  fragment areaOfInterestFragment on area_of_interest {
-    id
-    name
-    source
-    minZoom
-    maxZoom
-    tilesCount
-    tileSets {
-      id
-      progress
-      size
-      format
-      quality
-      tileProvider {
-        id
-        name
-        slug
-        url
+export const AreaOfInterestFragmentFragmentDoc: DocumentNode = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'areaOfInterestFragment' },
+      typeCondition: {
+        kind: 'NamedType',
+        name: { kind: 'Name', value: 'area_of_interest' }
+      },
+      directives: [],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'id' },
+            arguments: [],
+            directives: []
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'name' },
+            arguments: [],
+            directives: []
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'source' },
+            arguments: [],
+            directives: []
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'minZoom' },
+            arguments: [],
+            directives: []
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'maxZoom' },
+            arguments: [],
+            directives: []
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'tilesCount' },
+            arguments: [],
+            directives: []
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'tileSets' },
+            arguments: [],
+            directives: [],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'id' },
+                  arguments: [],
+                  directives: []
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'progress' },
+                  arguments: [],
+                  directives: []
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'size' },
+                  arguments: [],
+                  directives: []
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'format' },
+                  arguments: [],
+                  directives: []
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'quality' },
+                  arguments: [],
+                  directives: []
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'tileProvider' },
+                  arguments: [],
+                  directives: [],
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'id' },
+                        arguments: [],
+                        directives: []
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'name' },
+                        arguments: [],
+                        directives: []
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'slug' },
+                        arguments: [],
+                        directives: []
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'url' },
+                        arguments: [],
+                        directives: []
+                      }
+                    ]
+                  }
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'areaOfInterestId' },
+                  arguments: [],
+                  directives: []
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'areaOfInterest' },
+                  arguments: [],
+                  directives: [],
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'name' },
+                        arguments: [],
+                        directives: []
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'userId' },
+                        arguments: [],
+                        directives: []
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
       }
-      areaOfInterestId
-      areaOfInterest {
-        name
-        userId
-      }
     }
-  }
-`
-export const ProviderFragment = gql`
-  fragment providerFragment on tile_provider {
-    id
-    name
-    slug
-    url
-    tileSets_aggregate {
-      aggregate {
-        count
-      }
-    }
-  }
-`
-export const TileSetFragment = gql`
-  fragment tileSetFragment on tile_set {
-    id
-    progress
-    size
-    format
-    quality
-    tileProvider {
-      id
-      name
-      slug
-      url
-    }
-    areaOfInterest {
-      name
-      userId
-    }
-  }
-`
-export const InsertAoi = gql`
-  mutation insertAoi(
-    $name: String!
-    $source: jsonb!
-    $minZoom: Int!
-    $maxZoom: Int!
-  ) {
-    insertAreaOfInterest(object: { name: $name, source: $source }) {
-      ...areaOfInterestFragment
-    }
-  }
-  ${AreaOfInterestFragment}
-`
-
-/**
- * __useInsertAoiMutation__
- *
- * To run a mutation, you first call `useInsertAoiMutation` within a Vue component and pass it any options that fit your needs.
- * When your component renders, `useInsertAoiMutation` returns an object that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
- *
- * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
- *
- * @example
- * const { mutate, loading, error, onDone } = useInsertAoiMutation({
- *   variables: {
- *      name: // value for 'name'
- *      source: // value for 'source'
- *      minZoom: // value for 'minZoom'
- *      maxZoom: // value for 'maxZoom'
- *   },
- * });
- */
-export function useInsertAoiMutation(
-  options: VueApolloComposable.UseMutationOptionsWithVariables<
-    InsertAoiMutation,
-    InsertAoiMutationVariables
-  >
-) {
-  return VueApolloComposable.useMutation<
-    InsertAoiMutation,
-    InsertAoiMutationVariables
-  >(InsertAoi, options)
+  ]
 }
-export type InsertAoiMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<
+export const ProviderFragmentFragmentDoc: DocumentNode = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'providerFragment' },
+      typeCondition: {
+        kind: 'NamedType',
+        name: { kind: 'Name', value: 'tile_provider' }
+      },
+      directives: [],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'id' },
+            arguments: [],
+            directives: []
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'name' },
+            arguments: [],
+            directives: []
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'slug' },
+            arguments: [],
+            directives: []
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'url' },
+            arguments: [],
+            directives: []
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'tileSets_aggregate' },
+            arguments: [],
+            directives: [],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'aggregate' },
+                  arguments: [],
+                  directives: [],
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'count' },
+                        arguments: [],
+                        directives: []
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+export const TileSetFragmentFragmentDoc: DocumentNode = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'FragmentDefinition',
+      name: { kind: 'Name', value: 'tileSetFragment' },
+      typeCondition: {
+        kind: 'NamedType',
+        name: { kind: 'Name', value: 'tile_set' }
+      },
+      directives: [],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'id' },
+            arguments: [],
+            directives: []
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'progress' },
+            arguments: [],
+            directives: []
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'size' },
+            arguments: [],
+            directives: []
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'format' },
+            arguments: [],
+            directives: []
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'quality' },
+            arguments: [],
+            directives: []
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'tileProvider' },
+            arguments: [],
+            directives: [],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'id' },
+                  arguments: [],
+                  directives: []
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'name' },
+                  arguments: [],
+                  directives: []
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'slug' },
+                  arguments: [],
+                  directives: []
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'url' },
+                  arguments: [],
+                  directives: []
+                }
+              ]
+            }
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'areaOfInterest' },
+            arguments: [],
+            directives: [],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'name' },
+                  arguments: [],
+                  directives: []
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'userId' },
+                  arguments: [],
+                  directives: []
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+export const InsertAoiDocument: TypedDocumentNode<
   InsertAoiMutation,
   InsertAoiMutationVariables
->
-export const ListAllAreasOfInterest = gql`
-  query listAllAreasOfInterest {
-    areasOfInterest(order_by: { name: asc }) {
-      id
-      name
-      tilesCount
-    }
-  }
-`
-
-/**
- * __useListAllAreasOfInterestQuery__
- *
- * To run a query within a Vue component, call `useListAllAreasOfInterestQuery` and pass it any options that fit your needs.
- * When your component renders, `useListAllAreasOfInterestQuery` returns an object from Apollo Client that contains result, loading and error properties
- * you can use to render your UI.
- *
- * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
- *
- * @example
- * const { result, loading, error } = useListAllAreasOfInterestQuery(
- *   {
- *   }
- * );
- */
-export function useListAllAreasOfInterestQuery(
-  options:
-    | VueApolloComposable.UseQueryOptions<
-        ListAllAreasOfInterestQuery,
-        ListAllAreasOfInterestQueryVariables
-      >
-    | VueCompositionApi.Ref<
-        VueApolloComposable.UseQueryOptions<
-          ListAllAreasOfInterestQuery,
-          ListAllAreasOfInterestQueryVariables
-        >
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseQueryOptions<
-          ListAllAreasOfInterestQuery,
-          ListAllAreasOfInterestQueryVariables
-        >
-      > = {}
-) {
-  return VueApolloComposable.useQuery<ListAllAreasOfInterestQuery, undefined>(
-    ListAllAreasOfInterest,
-    undefined,
-    options
-  )
+> = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'insertAoi' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'name' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } }
+          },
+          directives: []
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'source' }
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'jsonb' } }
+          },
+          directives: []
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'minZoom' }
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } }
+          },
+          directives: []
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'maxZoom' }
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } }
+          },
+          directives: []
+        }
+      ],
+      directives: [],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'insertAreaOfInterest' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'object' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'name' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'name' }
+                      }
+                    },
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'source' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'source' }
+                      }
+                    }
+                  ]
+                }
+              }
+            ],
+            directives: [],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'FragmentSpread',
+                  name: { kind: 'Name', value: 'areaOfInterestFragment' },
+                  directives: []
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    ...AreaOfInterestFragmentFragmentDoc.definitions
+  ]
 }
-export type ListAllAreasOfInterestQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<
+export const ListAllAreasOfInterestDocument: TypedDocumentNode<
   ListAllAreasOfInterestQuery,
   ListAllAreasOfInterestQueryVariables
->
-export const SelectOneAreaOfInterest = gql`
-  subscription selectOneAreaOfInterest($id: uuid!) {
-    areaOfInterest(id: $id) {
-      ...areaOfInterestFragment
+> = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'listAllAreasOfInterest' },
+      variableDefinitions: [],
+      directives: [],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'areasOfInterest' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'order_by' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'name' },
+                      value: { kind: 'EnumValue', value: 'asc' }
+                    }
+                  ]
+                }
+              }
+            ],
+            directives: [],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'id' },
+                  arguments: [],
+                  directives: []
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'name' },
+                  arguments: [],
+                  directives: []
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'tilesCount' },
+                  arguments: [],
+                  directives: []
+                }
+              ]
+            }
+          }
+        ]
+      }
     }
-  }
-  ${AreaOfInterestFragment}
-`
-
-/**
- * __useSelectOneAreaOfInterestSubscription__
- *
- * To run a query within a Vue component, call `useSelectOneAreaOfInterestSubscription` and pass it any options that fit your needs.
- * When your component renders, `useSelectOneAreaOfInterestSubscription` returns an object from Apollo Client that contains result, loading and error properties
- * you can use to render your UI.
- *
- * @param options that will be passed into the subscription, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/subscription.html#options;
- *
- * @example
- * const { result, loading, error } = useSelectOneAreaOfInterestSubscription(
- *   {
- *      id: // value for 'id'
- *   }
- * );
- */
-export function useSelectOneAreaOfInterestSubscription(
-  variables:
-    | SelectOneAreaOfInterestSubscriptionVariables
-    | VueCompositionApi.Ref<SelectOneAreaOfInterestSubscriptionVariables>
-    | ReactiveFunction<SelectOneAreaOfInterestSubscriptionVariables>,
-  options:
-    | VueApolloComposable.UseSubscriptionOptions<
-        SelectOneAreaOfInterestSubscription,
-        SelectOneAreaOfInterestSubscriptionVariables
-      >
-    | VueCompositionApi.Ref<
-        VueApolloComposable.UseSubscriptionOptions<
-          SelectOneAreaOfInterestSubscription,
-          SelectOneAreaOfInterestSubscriptionVariables
-        >
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseSubscriptionOptions<
-          SelectOneAreaOfInterestSubscription,
-          SelectOneAreaOfInterestSubscriptionVariables
-        >
-      > = {}
-) {
-  return VueApolloComposable.useSubscription<
-    SelectOneAreaOfInterestSubscription,
-    SelectOneAreaOfInterestSubscriptionVariables
-  >(SelectOneAreaOfInterest, variables, options)
+  ]
 }
-export type SelectOneAreaOfInterestSubscriptionCompositionFunctionResult = VueApolloComposable.UseSubscriptionReturn<
+export const SelectOneAreaOfInterestDocument: TypedDocumentNode<
   SelectOneAreaOfInterestSubscription,
   SelectOneAreaOfInterestSubscriptionVariables
->
-export const UpdateAoi = gql`
-  mutation updateAoi(
-    $id: uuid!
-    $name: String!
-    $source: jsonb!
-    $minZoom: Int!
-    $maxZoom: Int!
-  ) {
-    updateAreaOfInterest(
-      pk_columns: { id: $id }
-      _set: {
-        name: $name
-        source: $source
-        minZoom: $minZoom
-        maxZoom: $maxZoom
+> = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'subscription',
+      name: { kind: 'Name', value: 'selectOneAreaOfInterest' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'uuid' } }
+          },
+          directives: []
+        }
+      ],
+      directives: [],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'areaOfInterest' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'id' } }
+              }
+            ],
+            directives: [],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'FragmentSpread',
+                  name: { kind: 'Name', value: 'areaOfInterestFragment' },
+                  directives: []
+                }
+              ]
+            }
+          }
+        ]
       }
-    ) {
-      ...areaOfInterestFragment
-    }
-  }
-  ${AreaOfInterestFragment}
-`
-
-/**
- * __useUpdateAoiMutation__
- *
- * To run a mutation, you first call `useUpdateAoiMutation` within a Vue component and pass it any options that fit your needs.
- * When your component renders, `useUpdateAoiMutation` returns an object that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
- *
- * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
- *
- * @example
- * const { mutate, loading, error, onDone } = useUpdateAoiMutation({
- *   variables: {
- *      id: // value for 'id'
- *      name: // value for 'name'
- *      source: // value for 'source'
- *      minZoom: // value for 'minZoom'
- *      maxZoom: // value for 'maxZoom'
- *   },
- * });
- */
-export function useUpdateAoiMutation(
-  options: VueApolloComposable.UseMutationOptionsWithVariables<
-    UpdateAoiMutation,
-    UpdateAoiMutationVariables
-  >
-) {
-  return VueApolloComposable.useMutation<
-    UpdateAoiMutation,
-    UpdateAoiMutationVariables
-  >(UpdateAoi, options)
+    },
+    ...AreaOfInterestFragmentFragmentDoc.definitions
+  ]
 }
-export type UpdateAoiMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<
+export const UpdateAoiDocument: TypedDocumentNode<
   UpdateAoiMutation,
   UpdateAoiMutationVariables
->
-export const InsertProvider = gql`
-  mutation insertProvider($name: String!, $slug: String!, $url: String!) {
-    insertTileProvider(object: { name: $name, slug: $slug, url: $url }) {
-      ...providerFragment
-    }
-  }
-  ${ProviderFragment}
-`
-
-/**
- * __useInsertProviderMutation__
- *
- * To run a mutation, you first call `useInsertProviderMutation` within a Vue component and pass it any options that fit your needs.
- * When your component renders, `useInsertProviderMutation` returns an object that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
- *
- * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
- *
- * @example
- * const { mutate, loading, error, onDone } = useInsertProviderMutation({
- *   variables: {
- *      name: // value for 'name'
- *      slug: // value for 'slug'
- *      url: // value for 'url'
- *   },
- * });
- */
-export function useInsertProviderMutation(
-  options: VueApolloComposable.UseMutationOptionsWithVariables<
-    InsertProviderMutation,
-    InsertProviderMutationVariables
-  >
-) {
-  return VueApolloComposable.useMutation<
-    InsertProviderMutation,
-    InsertProviderMutationVariables
-  >(InsertProvider, options)
+> = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'updateAoi' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'uuid' } }
+          },
+          directives: []
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'name' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } }
+          },
+          directives: []
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'source' }
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'jsonb' } }
+          },
+          directives: []
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'minZoom' }
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } }
+          },
+          directives: []
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'maxZoom' }
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } }
+          },
+          directives: []
+        }
+      ],
+      directives: [],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'updateAreaOfInterest' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'pk_columns' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'id' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'id' }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: '_set' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'name' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'name' }
+                      }
+                    },
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'source' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'source' }
+                      }
+                    },
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'minZoom' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'minZoom' }
+                      }
+                    },
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'maxZoom' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'maxZoom' }
+                      }
+                    }
+                  ]
+                }
+              }
+            ],
+            directives: [],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'FragmentSpread',
+                  name: { kind: 'Name', value: 'areaOfInterestFragment' },
+                  directives: []
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    ...AreaOfInterestFragmentFragmentDoc.definitions
+  ]
 }
-export type InsertProviderMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<
+export const InsertProviderDocument: TypedDocumentNode<
   InsertProviderMutation,
   InsertProviderMutationVariables
->
-export const ListAllTileProviders = gql`
-  query listAllTileProviders {
-    tileProviders(order_by: { name: asc }) {
-      ...providerFragment
-    }
-  }
-  ${ProviderFragment}
-`
-
-/**
- * __useListAllTileProvidersQuery__
- *
- * To run a query within a Vue component, call `useListAllTileProvidersQuery` and pass it any options that fit your needs.
- * When your component renders, `useListAllTileProvidersQuery` returns an object from Apollo Client that contains result, loading and error properties
- * you can use to render your UI.
- *
- * @param options that will be passed into the query, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/query.html#options;
- *
- * @example
- * const { result, loading, error } = useListAllTileProvidersQuery(
- *   {
- *   }
- * );
- */
-export function useListAllTileProvidersQuery(
-  options:
-    | VueApolloComposable.UseQueryOptions<
-        ListAllTileProvidersQuery,
-        ListAllTileProvidersQueryVariables
-      >
-    | VueCompositionApi.Ref<
-        VueApolloComposable.UseQueryOptions<
-          ListAllTileProvidersQuery,
-          ListAllTileProvidersQueryVariables
-        >
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseQueryOptions<
-          ListAllTileProvidersQuery,
-          ListAllTileProvidersQueryVariables
-        >
-      > = {}
-) {
-  return VueApolloComposable.useQuery<ListAllTileProvidersQuery, undefined>(
-    ListAllTileProviders,
-    undefined,
-    options
-  )
+> = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'insertProvider' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'name' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } }
+          },
+          directives: []
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'slug' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } }
+          },
+          directives: []
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'url' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } }
+          },
+          directives: []
+        }
+      ],
+      directives: [],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'insertTileProvider' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'object' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'name' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'name' }
+                      }
+                    },
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'slug' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'slug' }
+                      }
+                    },
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'url' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'url' }
+                      }
+                    }
+                  ]
+                }
+              }
+            ],
+            directives: [],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'FragmentSpread',
+                  name: { kind: 'Name', value: 'providerFragment' },
+                  directives: []
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    ...ProviderFragmentFragmentDoc.definitions
+  ]
 }
-export type ListAllTileProvidersQueryCompositionFunctionResult = VueApolloComposable.UseQueryReturn<
+export const ListAllTileProvidersDocument: TypedDocumentNode<
   ListAllTileProvidersQuery,
   ListAllTileProvidersQueryVariables
->
-export const RemoveOneTileProvider = gql`
-  mutation removeOneTileProvider($id: uuid!) {
-    deleteTileProvider(id: $id) {
-      id
-    }
-  }
-`
-
-/**
- * __useRemoveOneTileProviderMutation__
- *
- * To run a mutation, you first call `useRemoveOneTileProviderMutation` within a Vue component and pass it any options that fit your needs.
- * When your component renders, `useRemoveOneTileProviderMutation` returns an object that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
- *
- * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
- *
- * @example
- * const { mutate, loading, error, onDone } = useRemoveOneTileProviderMutation({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useRemoveOneTileProviderMutation(
-  options: VueApolloComposable.UseMutationOptionsWithVariables<
-    RemoveOneTileProviderMutation,
-    RemoveOneTileProviderMutationVariables
-  >
-) {
-  return VueApolloComposable.useMutation<
-    RemoveOneTileProviderMutation,
-    RemoveOneTileProviderMutationVariables
-  >(RemoveOneTileProvider, options)
+> = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'listAllTileProviders' },
+      variableDefinitions: [],
+      directives: [],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'tileProviders' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'order_by' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'name' },
+                      value: { kind: 'EnumValue', value: 'asc' }
+                    }
+                  ]
+                }
+              }
+            ],
+            directives: [],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'FragmentSpread',
+                  name: { kind: 'Name', value: 'providerFragment' },
+                  directives: []
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    ...ProviderFragmentFragmentDoc.definitions
+  ]
 }
-export type RemoveOneTileProviderMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<
+export const RemoveOneTileProviderDocument: TypedDocumentNode<
   RemoveOneTileProviderMutation,
   RemoveOneTileProviderMutationVariables
->
-export const SelectOneProvider = gql`
-  subscription selectOneProvider($id: uuid!) {
-    tileProvider(id: $id) {
-      ...providerFragment
+> = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'removeOneTileProvider' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'uuid' } }
+          },
+          directives: []
+        }
+      ],
+      directives: [],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'deleteTileProvider' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'id' } }
+              }
+            ],
+            directives: [],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'id' },
+                  arguments: [],
+                  directives: []
+                }
+              ]
+            }
+          }
+        ]
+      }
     }
-  }
-  ${ProviderFragment}
-`
-
-/**
- * __useSelectOneProviderSubscription__
- *
- * To run a query within a Vue component, call `useSelectOneProviderSubscription` and pass it any options that fit your needs.
- * When your component renders, `useSelectOneProviderSubscription` returns an object from Apollo Client that contains result, loading and error properties
- * you can use to render your UI.
- *
- * @param options that will be passed into the subscription, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/subscription.html#options;
- *
- * @example
- * const { result, loading, error } = useSelectOneProviderSubscription(
- *   {
- *      id: // value for 'id'
- *   }
- * );
- */
-export function useSelectOneProviderSubscription(
-  variables:
-    | SelectOneProviderSubscriptionVariables
-    | VueCompositionApi.Ref<SelectOneProviderSubscriptionVariables>
-    | ReactiveFunction<SelectOneProviderSubscriptionVariables>,
-  options:
-    | VueApolloComposable.UseSubscriptionOptions<
-        SelectOneProviderSubscription,
-        SelectOneProviderSubscriptionVariables
-      >
-    | VueCompositionApi.Ref<
-        VueApolloComposable.UseSubscriptionOptions<
-          SelectOneProviderSubscription,
-          SelectOneProviderSubscriptionVariables
-        >
-      >
-    | ReactiveFunction<
-        VueApolloComposable.UseSubscriptionOptions<
-          SelectOneProviderSubscription,
-          SelectOneProviderSubscriptionVariables
-        >
-      > = {}
-) {
-  return VueApolloComposable.useSubscription<
-    SelectOneProviderSubscription,
-    SelectOneProviderSubscriptionVariables
-  >(SelectOneProvider, variables, options)
+  ]
 }
-export type SelectOneProviderSubscriptionCompositionFunctionResult = VueApolloComposable.UseSubscriptionReturn<
+export const SelectOneProviderDocument: TypedDocumentNode<
   SelectOneProviderSubscription,
   SelectOneProviderSubscriptionVariables
->
-export const InsertOneTileSet = gql`
-  mutation insertOneTileSet(
-    $format: String!
-    $quality: smallint!
-    $areaOfInterestId: uuid!
-  ) {
-    insertTileSet(
-      object: {
-        format: $format
-        quality: $quality
-        areaOfInterestId: $areaOfInterestId
+> = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'subscription',
+      name: { kind: 'Name', value: 'selectOneProvider' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'uuid' } }
+          },
+          directives: []
+        }
+      ],
+      directives: [],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'tileProvider' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'id' } }
+              }
+            ],
+            directives: [],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'FragmentSpread',
+                  name: { kind: 'Name', value: 'providerFragment' },
+                  directives: []
+                }
+              ]
+            }
+          }
+        ]
       }
-    ) {
-      ...tileSetFragment
-    }
-  }
-  ${TileSetFragment}
-`
-
-/**
- * __useInsertOneTileSetMutation__
- *
- * To run a mutation, you first call `useInsertOneTileSetMutation` within a Vue component and pass it any options that fit your needs.
- * When your component renders, `useInsertOneTileSetMutation` returns an object that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
- *
- * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
- *
- * @example
- * const { mutate, loading, error, onDone } = useInsertOneTileSetMutation({
- *   variables: {
- *      format: // value for 'format'
- *      quality: // value for 'quality'
- *      areaOfInterestId: // value for 'areaOfInterestId'
- *   },
- * });
- */
-export function useInsertOneTileSetMutation(
-  options: VueApolloComposable.UseMutationOptionsWithVariables<
-    InsertOneTileSetMutation,
-    InsertOneTileSetMutationVariables
-  >
-) {
-  return VueApolloComposable.useMutation<
-    InsertOneTileSetMutation,
-    InsertOneTileSetMutationVariables
-  >(InsertOneTileSet, options)
+    },
+    ...ProviderFragmentFragmentDoc.definitions
+  ]
 }
-export type InsertOneTileSetMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<
+export const InsertOneTileSetDocument: TypedDocumentNode<
   InsertOneTileSetMutation,
   InsertOneTileSetMutationVariables
->
-export const UpdateOneTileSet = gql`
-  mutation updateOneTileSet($id: uuid!, $format: String!, $quality: smallint!) {
-    updateTileSet(
-      pk_columns: { id: $id }
-      _set: { format: $format, quality: $quality }
-    ) {
-      ...tileSetFragment
-    }
-  }
-  ${TileSetFragment}
-`
-
-/**
- * __useUpdateOneTileSetMutation__
- *
- * To run a mutation, you first call `useUpdateOneTileSetMutation` within a Vue component and pass it any options that fit your needs.
- * When your component renders, `useUpdateOneTileSetMutation` returns an object that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - Several other properties: https://v4.apollo.vuejs.org/api/use-mutation.html#return
- *
- * @param options that will be passed into the mutation, supported options are listed on: https://v4.apollo.vuejs.org/guide-composable/mutation.html#options;
- *
- * @example
- * const { mutate, loading, error, onDone } = useUpdateOneTileSetMutation({
- *   variables: {
- *      id: // value for 'id'
- *      format: // value for 'format'
- *      quality: // value for 'quality'
- *   },
- * });
- */
-export function useUpdateOneTileSetMutation(
-  options: VueApolloComposable.UseMutationOptionsWithVariables<
-    UpdateOneTileSetMutation,
-    UpdateOneTileSetMutationVariables
-  >
-) {
-  return VueApolloComposable.useMutation<
-    UpdateOneTileSetMutation,
-    UpdateOneTileSetMutationVariables
-  >(UpdateOneTileSet, options)
+> = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'insertOneTileSet' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'format' }
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } }
+          },
+          directives: []
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'quality' }
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'smallint' }
+            }
+          },
+          directives: []
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'areaOfInterestId' }
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'uuid' } }
+          },
+          directives: []
+        }
+      ],
+      directives: [],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'insertTileSet' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'object' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'format' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'format' }
+                      }
+                    },
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'quality' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'quality' }
+                      }
+                    },
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'areaOfInterestId' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'areaOfInterestId' }
+                      }
+                    }
+                  ]
+                }
+              }
+            ],
+            directives: [],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'FragmentSpread',
+                  name: { kind: 'Name', value: 'tileSetFragment' },
+                  directives: []
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    ...TileSetFragmentFragmentDoc.definitions
+  ]
 }
-export type UpdateOneTileSetMutationCompositionFunctionResult = VueApolloComposable.UseMutationReturn<
+export const UpdateOneTileSetDocument: TypedDocumentNode<
   UpdateOneTileSetMutation,
   UpdateOneTileSetMutationVariables
->
+> = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'updateOneTileSet' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'uuid' } }
+          },
+          directives: []
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'format' }
+          },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'String' } }
+          },
+          directives: []
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'quality' }
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'smallint' }
+            }
+          },
+          directives: []
+        }
+      ],
+      directives: [],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'updateTileSet' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'pk_columns' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'id' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'id' }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: '_set' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'format' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'format' }
+                      }
+                    },
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'quality' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'quality' }
+                      }
+                    }
+                  ]
+                }
+              }
+            ],
+            directives: [],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'FragmentSpread',
+                  name: { kind: 'Name', value: 'tileSetFragment' },
+                  directives: []
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    ...TileSetFragmentFragmentDoc.definitions
+  ]
+}
 export const namedOperations = {
   Query: {
     listAllAreasOfInterest: 'listAllAreasOfInterest',
