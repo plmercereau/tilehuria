@@ -52,15 +52,13 @@ import {
   defineComponent,
   PropType,
   computed,
-  ref,
   toRefs,
   watchEffect
 } from '@vue/composition-api'
 import { TileSet } from '../generated'
 import '../filters/pretty-bytes'
 import { HBP_ENDPOINT } from 'src/config'
-import { useSingleItem, useFormFragment } from 'src/composables'
-import { NESTED_TILE_SET_CONFIG } from 'src/graphql'
+import { useFormFragment } from 'src/composables'
 export default defineComponent({
   name: 'ItemTileSet',
   props: {
@@ -102,7 +100,8 @@ export default defineComponent({
           areaOfInterest: { name, userId },
           tileProvider: { slug }
         } = source.value
-        return `${HBP_ENDPOINT}/storage/o/mbtiles/${userId}/${slug}/${name}.mbtiles`
+        if (userId)
+          return `${HBP_ENDPOINT}/storage/o/mbtiles/${userId}/${slug}/${name}.mbtiles`
       }
     })
 
