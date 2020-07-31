@@ -41,6 +41,8 @@
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^1.16.0",
+    "@graphql-codegen/fragment-matcher": "^1.17.6",
+    "@graphql-codegen/named-operations-object": "^1.17.6",
     "@graphql-codegen/schema-ast": "^1.16.0",
     "@graphql-codegen/typescript": "^1.16.0",
     "@graphql-codegen/typescript-operations": "^1.17.6",

@@ -1,14 +1,12 @@
 import { ItemOptions } from 'src/composables'
-import { TileSet } from 'src/generated'
-import insert from './insert.graphql'
-import update from './update.graphql'
+import { TileSet, UpdateOneTileSet, InsertOneTileSet } from 'src/generated'
 
 export const NESTED_TILE_SET_CONFIG: ItemOptions<
   TileSet,
   'format' | 'quality' | 'areaOfInterestId'
 > = {
-  insert,
-  update,
+  insert: InsertOneTileSet,
+  update: UpdateOneTileSet,
 
   properties: ['format', 'quality']
 }

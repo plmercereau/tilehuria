@@ -20,7 +20,7 @@
 import { defineComponent, ref } from '@vue/composition-api'
 import PNewProvider from 'components/NewProvider.vue'
 import { useItemList } from 'src/composables'
-import { PROVIDER_CONFIG } from 'src/graphql'
+import { PROVIDER_CONFIG } from 'src/config'
 
 export default defineComponent({
   name: 'ListProviders',

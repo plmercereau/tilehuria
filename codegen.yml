@@ -4,6 +4,9 @@ schema:
       headers:
         x-hasura-admin-secret: ${HASURA_GRAPHQL_ADMIN_SECRET}
 documents: 'src/**/*.graphql'
+hooks:
+  afterAllFileWrite:
+    - prettier --write
 # TODO single config for everyone
 generates:
   hooks/src/generated/index.ts:
@@ -32,11 +35,17 @@ generates:
       namingConvention:
         typeNames: pascal-case#pascalCase
         transformUnderscore: true
+  ./src/generated/fragment-matcher.ts:
+    plugins:
+      - fragment-matcher
+    config:
+      apolloClientVersion: 2
   src/generated/index.ts:
     plugins:
       - typescript
       - typescript-operations
       - typescript-vue-apollo
+      - named-operations-object
     config:
       maybeValue: T | undefined
       scalars:

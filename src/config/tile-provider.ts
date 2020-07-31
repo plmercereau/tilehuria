@@ -1,15 +1,17 @@
 import { ItemOptions } from 'src/composables'
-import { TileProvider } from 'src/generated'
-import subscription from './subscription.graphql'
-import insert from './insert.graphql'
-import remove from './remove.graphql'
-import list from './list.graphql'
+import {
+  TileProvider,
+  RemoveOneTileProvider,
+  InsertOneTileSet,
+  ListAllTileProviders,
+  SelectOneProvider
+} from 'src/generated'
 
 export const PROVIDER_CONFIG: ItemOptions<TileProvider> = {
-  subscription,
-  insert,
-  list,
-  remove,
+  subscription: SelectOneProvider,
+  insert: InsertOneTileSet,
+  list: ListAllTileProviders,
+  remove: RemoveOneTileProvider,
 
   properties: ['name', 'url', 'slug'],
 

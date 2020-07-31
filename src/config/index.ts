@@ -1,3 +1,8 @@
+export * from './area-of-interest'
+export * from './tile-provider'
+export * from './tile-set'
+// ! https://the-guild.dev/blog/graphql-codegen-best-practices
+
 const host = window.location.host
 
 export const HBP_ENDPOINT = process.env.PROD

@@ -1,6 +1,9 @@
 import { ApolloClient } from 'apollo-client'
 import { createHttpLink } from 'apollo-link-http'
-import { InMemoryCache } from 'apollo-cache-inmemory'
+import {
+  InMemoryCache,
+  IntrospectionFragmentMatcher
+} from 'apollo-cache-inmemory'
 import { WebSocketLink } from 'apollo-link-ws'
 import { onError } from 'apollo-link-error'
 import { setContext } from 'apollo-link-context'
@@ -9,6 +12,10 @@ import { from, split, ApolloLink } from 'apollo-link'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
 import Auth from 'nhost-js-sdk/dist/Auth'
 
+import introspectionResult from 'src/generated/fragment-matcher'
+const fragmentMatcher = new IntrospectionFragmentMatcher({
+  introspectionQueryResultData: introspectionResult
+})
 export const createApolloClient = (httpUri: string, auth: Auth | undefined) => {
   const wsUri = httpUri.replace('http', 'ws')
 
@@ -104,7 +111,8 @@ export const createApolloClient = (httpUri: string, auth: Auth | undefined) => {
     // eslint-disable-next-line
     link: from([errorLink.concat(link)]),
     cache: new InMemoryCache({
-      addTypename: true
+      addTypename: true,
+      fragmentMatcher
     }),
     defaultOptions: {
       watchQuery: {

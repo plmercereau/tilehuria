@@ -90,52 +90,82 @@ type area_of_interest {
   minZoom: Int
   name: String!
   source(
-    """JSON select path"""
+    """
+    JSON select path
+    """
     path: String
   ): jsonb!
 
-  """An array relationship"""
+  """
+  An array relationship
+  """
   tileSets(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [tile_set_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [tile_set_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: tile_set_bool_exp
   ): [tile_set!]!
 
-  """An aggregated array relationship"""
+  """
+  An aggregated array relationship
+  """
   tileSets_aggregate(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [tile_set_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [tile_set_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: tile_set_bool_exp
   ): tile_set_aggregate!
   tilesCount: Int!
 
-  """An object relationship"""
+  """
+  An object relationship
+  """
   user: users
   userId: uuid
   xyzCoordinates(
-    """JSON select path"""
+    """
+    JSON select path
+    """
     path: String
   ): jsonb
 }
@@ -182,7 +212,9 @@ input area_of_interest_aggregate_order_by {
   variance: area_of_interest_variance_order_by
 }
 
-"""append existing jsonb value of filtered columns with new jsonb value"""
+"""
+append existing jsonb value of filtered columns with new jsonb value
+"""
 input area_of_interest_append_input {
   source: jsonb
   xyzCoordinates: jsonb
@@ -196,7 +228,9 @@ input area_of_interest_arr_rel_insert_input {
   on_conflict: area_of_interest_on_conflict
 }
 
-"""aggregate avg on columns"""
+"""
+aggregate avg on columns
+"""
 type area_of_interest_avg_fields {
   maxZoom: Float
   minZoom: Float
@@ -235,7 +269,9 @@ input area_of_interest_bool_exp {
 unique or primary key constraints on table "area_of_interest"
 """
 enum area_of_interest_constraint {
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint
+  """
   area_of_interest_pkey
 }
 
@@ -288,7 +324,9 @@ input area_of_interest_insert_input {
   xyzCoordinates: jsonb
 }
 
-"""aggregate max on columns"""
+"""
+aggregate max on columns
+"""
 type area_of_interest_max_fields {
   id: uuid
   maxZoom: Int
@@ -310,7 +348,9 @@ input area_of_interest_max_order_by {
   userId: order_by
 }
 
-"""aggregate min on columns"""
+"""
+aggregate min on columns
+"""
 type area_of_interest_min_fields {
   id: uuid
   maxZoom: Int
@@ -336,10 +376,14 @@ input area_of_interest_min_order_by {
 response of any mutation on the table "area_of_interest"
 """
 type area_of_interest_mutation_response {
-  """number of affected rows by the mutation"""
+  """
+  number of affected rows by the mutation
+  """
   affected_rows: Int!
 
-  """data of the affected rows by the mutation"""
+  """
+  data of the affected rows by the mutation
+  """
   returning: [area_of_interest!]!
 }
 
@@ -383,7 +427,9 @@ input area_of_interest_pk_columns_input {
   id: uuid!
 }
 
-"""prepend existing jsonb value of filtered columns with new jsonb value"""
+"""
+prepend existing jsonb value of filtered columns with new jsonb value
+"""
 input area_of_interest_prepend_input {
   source: jsonb
   xyzCoordinates: jsonb
@@ -393,28 +439,44 @@ input area_of_interest_prepend_input {
 select columns of table "area_of_interest"
 """
 enum area_of_interest_select_column {
-  """column name"""
+  """
+  column name
+  """
   id
 
-  """column name"""
+  """
+  column name
+  """
   maxZoom
 
-  """column name"""
+  """
+  column name
+  """
   minZoom
 
-  """column name"""
+  """
+  column name
+  """
   name
 
-  """column name"""
+  """
+  column name
+  """
   source
 
-  """column name"""
+  """
+  column name
+  """
   tilesCount
 
-  """column name"""
+  """
+  column name
+  """
   userId
 
-  """column name"""
+  """
+  column name
+  """
   xyzCoordinates
 }
 
@@ -432,7 +494,9 @@ input area_of_interest_set_input {
   xyzCoordinates: jsonb
 }
 
-"""aggregate stddev on columns"""
+"""
+aggregate stddev on columns
+"""
 type area_of_interest_stddev_fields {
   maxZoom: Float
   minZoom: Float
@@ -448,7 +512,9 @@ input area_of_interest_stddev_order_by {
   tilesCount: order_by
 }
 
-"""aggregate stddev_pop on columns"""
+"""
+aggregate stddev_pop on columns
+"""
 type area_of_interest_stddev_pop_fields {
   maxZoom: Float
   minZoom: Float
@@ -464,7 +530,9 @@ input area_of_interest_stddev_pop_order_by {
   tilesCount: order_by
 }
 
-"""aggregate stddev_samp on columns"""
+"""
+aggregate stddev_samp on columns
+"""
 type area_of_interest_stddev_samp_fields {
   maxZoom: Float
   minZoom: Float
@@ -480,7 +548,9 @@ input area_of_interest_stddev_samp_order_by {
   tilesCount: order_by
 }
 
-"""aggregate sum on columns"""
+"""
+aggregate sum on columns
+"""
 type area_of_interest_sum_fields {
   maxZoom: Int
   minZoom: Int
@@ -500,32 +570,50 @@ input area_of_interest_sum_order_by {
 update columns of table "area_of_interest"
 """
 enum area_of_interest_update_column {
-  """column name"""
+  """
+  column name
+  """
   id
 
-  """column name"""
+  """
+  column name
+  """
   maxZoom
 
-  """column name"""
+  """
+  column name
+  """
   minZoom
 
-  """column name"""
+  """
+  column name
+  """
   name
 
-  """column name"""
+  """
+  column name
+  """
   source
 
-  """column name"""
+  """
+  column name
+  """
   tilesCount
 
-  """column name"""
+  """
+  column name
+  """
   userId
 
-  """column name"""
+  """
+  column name
+  """
   xyzCoordinates
 }
 
-"""aggregate var_pop on columns"""
+"""
+aggregate var_pop on columns
+"""
 type area_of_interest_var_pop_fields {
   maxZoom: Float
   minZoom: Float
@@ -541,7 +629,9 @@ input area_of_interest_var_pop_order_by {
   tilesCount: order_by
 }
 
-"""aggregate var_samp on columns"""
+"""
+aggregate var_samp on columns
+"""
 type area_of_interest_var_samp_fields {
   maxZoom: Float
   minZoom: Float
@@ -557,7 +647,9 @@ input area_of_interest_var_samp_order_by {
   tilesCount: order_by
 }
 
-"""aggregate variance on columns"""
+"""
+aggregate variance on columns
+"""
 type area_of_interest_variance_fields {
   maxZoom: Float
   minZoom: Float
@@ -577,7 +669,9 @@ input area_of_interest_variance_order_by {
 columns and relationships of "auth.account_providers"
 """
 type auth_account_providers {
-  """An object relationship"""
+  """
+  An object relationship
+  """
   account: auth_accounts!
   account_id: uuid!
   auth_provider: String!
@@ -585,7 +679,9 @@ type auth_account_providers {
   created_at: timestamptz!
   id: uuid!
 
-  """An object relationship"""
+  """
+  An object relationship
+  """
   provider: auth_providers!
   updated_at: timestamptz!
 }
@@ -602,7 +698,10 @@ type auth_account_providers_aggregate {
 aggregate fields of "auth.account_providers"
 """
 type auth_account_providers_aggregate_fields {
-  count(columns: [auth_account_providers_select_column!], distinct: Boolean): Int
+  count(
+    columns: [auth_account_providers_select_column!]
+    distinct: Boolean
+  ): Int
   max: auth_account_providers_max_fields
   min: auth_account_providers_min_fields
 }
@@ -645,13 +744,19 @@ input auth_account_providers_bool_exp {
 unique or primary key constraints on table "auth.account_providers"
 """
 enum auth_account_providers_constraint {
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint
+  """
   account_providers_account_id_auth_provider_key
 
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint
+  """
   account_providers_auth_provider_auth_provider_unique_id_key
 
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint
+  """
   account_providers_pkey
 }
 
@@ -669,7 +774,9 @@ input auth_account_providers_insert_input {
   updated_at: timestamptz
 }
 
-"""aggregate max on columns"""
+"""
+aggregate max on columns
+"""
 type auth_account_providers_max_fields {
   account_id: uuid
   auth_provider: String
@@ -691,7 +798,9 @@ input auth_account_providers_max_order_by {
   updated_at: order_by
 }
 
-"""aggregate min on columns"""
+"""
+aggregate min on columns
+"""
 type auth_account_providers_min_fields {
   account_id: uuid
   auth_provider: String
@@ -717,10 +826,14 @@ input auth_account_providers_min_order_by {
 response of any mutation on the table "auth.account_providers"
 """
 type auth_account_providers_mutation_response {
-  """number of affected rows by the mutation"""
+  """
+  number of affected rows by the mutation
+  """
   affected_rows: Int!
 
-  """data of the affected rows by the mutation"""
+  """
+  data of the affected rows by the mutation
+  """
   returning: [auth_account_providers!]!
 }
 
@@ -766,22 +879,34 @@ input auth_account_providers_pk_columns_input {
 select columns of table "auth.account_providers"
 """
 enum auth_account_providers_select_column {
-  """column name"""
+  """
+  column name
+  """
   account_id
 
-  """column name"""
+  """
+  column name
+  """
   auth_provider
 
-  """column name"""
+  """
+  column name
+  """
   auth_provider_unique_id
 
-  """column name"""
+  """
+  column name
+  """
   created_at
 
-  """column name"""
+  """
+  column name
+  """
   id
 
-  """column name"""
+  """
+  column name
+  """
   updated_at
 }
 
@@ -801,22 +926,34 @@ input auth_account_providers_set_input {
 update columns of table "auth.account_providers"
 """
 enum auth_account_providers_update_column {
-  """column name"""
+  """
+  column name
+  """
   account_id
 
-  """column name"""
+  """
+  column name
+  """
   auth_provider
 
-  """column name"""
+  """
+  column name
+  """
   auth_provider_unique_id
 
-  """column name"""
+  """
+  column name
+  """
   created_at
 
-  """column name"""
+  """
+  column name
+  """
   id
 
-  """column name"""
+  """
+  column name
+  """
   updated_at
 }
 
@@ -824,14 +961,18 @@ enum auth_account_providers_update_column {
 columns and relationships of "auth.account_roles"
 """
 type auth_account_roles {
-  """An object relationship"""
+  """
+  An object relationship
+  """
   account: auth_accounts!
   account_id: uuid!
   created_at: timestamptz!
   id: uuid!
   role: String!
 
-  """An object relationship"""
+  """
+  An object relationship
+  """
   roleByRole: auth_roles!
 }
 
@@ -888,10 +1029,14 @@ input auth_account_roles_bool_exp {
 unique or primary key constraints on table "auth.account_roles"
 """
 enum auth_account_roles_constraint {
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint
+  """
   account_roles_pkey
 
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint
+  """
   user_roles_account_id_role_key
 }
 
@@ -907,7 +1052,9 @@ input auth_account_roles_insert_input {
   roleByRole: auth_roles_obj_rel_insert_input
 }
 
-"""aggregate max on columns"""
+"""
+aggregate max on columns
+"""
 type auth_account_roles_max_fields {
   account_id: uuid
   created_at: timestamptz
@@ -925,7 +1072,9 @@ input auth_account_roles_max_order_by {
   role: order_by
 }
 
-"""aggregate min on columns"""
+"""
+aggregate min on columns
+"""
 type auth_account_roles_min_fields {
   account_id: uuid
   created_at: timestamptz
@@ -947,10 +1096,14 @@ input auth_account_roles_min_order_by {
 response of any mutation on the table "auth.account_roles"
 """
 type auth_account_roles_mutation_response {
-  """number of affected rows by the mutation"""
+  """
+  number of affected rows by the mutation
+  """
   affected_rows: Int!
 
-  """data of the affected rows by the mutation"""
+  """
+  data of the affected rows by the mutation
+  """
   returning: [auth_account_roles!]!
 }
 
@@ -994,16 +1147,24 @@ input auth_account_roles_pk_columns_input {
 select columns of table "auth.account_roles"
 """
 enum auth_account_roles_select_column {
-  """column name"""
+  """
+  column name
+  """
   account_id
 
-  """column name"""
+  """
+  column name
+  """
   created_at
 
-  """column name"""
+  """
+  column name
+  """
   id
 
-  """column name"""
+  """
+  column name
+  """
   role
 }
 
@@ -1021,16 +1182,24 @@ input auth_account_roles_set_input {
 update columns of table "auth.account_roles"
 """
 enum auth_account_roles_update_column {
-  """column name"""
+  """
+  column name
+  """
   account_id
 
-  """column name"""
+  """
+  column name
+  """
   created_at
 
-  """column name"""
+  """
+  column name
+  """
   id
 
-  """column name"""
+  """
+  column name
+  """
   role
 }
 
@@ -1038,81 +1207,131 @@ enum auth_account_roles_update_column {
 columns and relationships of "auth.accounts"
 """
 type auth_accounts {
-  """An array relationship"""
+  """
+  An array relationship
+  """
   account_providers(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_account_providers_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_account_providers_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_account_providers_bool_exp
   ): [auth_account_providers!]!
 
-  """An aggregated array relationship"""
+  """
+  An aggregated array relationship
+  """
   account_providers_aggregate(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_account_providers_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_account_providers_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_account_providers_bool_exp
   ): auth_account_providers_aggregate!
 
-  """An array relationship"""
+  """
+  An array relationship
+  """
   account_roles(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_account_roles_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_account_roles_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_account_roles_bool_exp
   ): [auth_account_roles!]!
 
-  """An aggregated array relationship"""
+  """
+  An aggregated array relationship
+  """
   account_roles_aggregate(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_account_roles_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_account_roles_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_account_roles_bool_exp
   ): auth_account_roles_aggregate!
   active: Boolean!
   created_at: timestamptz!
   custom_register_data(
-    """JSON select path"""
+    """
+    JSON select path
+    """
     path: String
   ): jsonb
   default_role: String!
@@ -1124,49 +1343,77 @@ type auth_accounts {
   otp_secret: String
   password_hash: String
 
-  """An array relationship"""
+  """
+  An array relationship
+  """
   refresh_tokens(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_refresh_tokens_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_refresh_tokens_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_refresh_tokens_bool_exp
   ): [auth_refresh_tokens!]!
 
-  """An aggregated array relationship"""
+  """
+  An aggregated array relationship
+  """
   refresh_tokens_aggregate(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_refresh_tokens_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_refresh_tokens_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_refresh_tokens_bool_exp
   ): auth_refresh_tokens_aggregate!
 
-  """An object relationship"""
+  """
+  An object relationship
+  """
   role: auth_roles!
   ticket: uuid!
   ticket_expires_at: timestamptz!
   updated_at: timestamptz!
 
-  """An object relationship"""
+  """
+  An object relationship
+  """
   user: users!
   user_id: uuid!
 }
@@ -1197,7 +1444,9 @@ input auth_accounts_aggregate_order_by {
   min: auth_accounts_min_order_by
 }
 
-"""append existing jsonb value of filtered columns with new jsonb value"""
+"""
+append existing jsonb value of filtered columns with new jsonb value
+"""
 input auth_accounts_append_input {
   custom_register_data: jsonb
 }
@@ -1243,16 +1492,24 @@ input auth_accounts_bool_exp {
 unique or primary key constraints on table "auth.accounts"
 """
 enum auth_accounts_constraint {
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint
+  """
   accounts_email_key
 
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint
+  """
   accounts_new_email_key
 
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint
+  """
   accounts_pkey
 
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint
+  """
   accounts_user_id_key
 }
 
@@ -1303,7 +1560,9 @@ input auth_accounts_insert_input {
   user_id: uuid
 }
 
-"""aggregate max on columns"""
+"""
+aggregate max on columns
+"""
 type auth_accounts_max_fields {
   created_at: timestamptz
   default_role: String
@@ -1335,7 +1594,9 @@ input auth_accounts_max_order_by {
   user_id: order_by
 }
 
-"""aggregate min on columns"""
+"""
+aggregate min on columns
+"""
 type auth_accounts_min_fields {
   created_at: timestamptz
   default_role: String
@@ -1371,10 +1632,14 @@ input auth_accounts_min_order_by {
 response of any mutation on the table "auth.accounts"
 """
 type auth_accounts_mutation_response {
-  """number of affected rows by the mutation"""
+  """
+  number of affected rows by the mutation
+  """
   affected_rows: Int!
 
-  """data of the affected rows by the mutation"""
+  """
+  data of the affected rows by the mutation
+  """
   returning: [auth_accounts!]!
 }
 
@@ -1428,7 +1693,9 @@ input auth_accounts_pk_columns_input {
   id: uuid!
 }
 
-"""prepend existing jsonb value of filtered columns with new jsonb value"""
+"""
+prepend existing jsonb value of filtered columns with new jsonb value
+"""
 input auth_accounts_prepend_input {
   custom_register_data: jsonb
 }
@@ -1437,49 +1704,79 @@ input auth_accounts_prepend_input {
 select columns of table "auth.accounts"
 """
 enum auth_accounts_select_column {
-  """column name"""
+  """
+  column name
+  """
   active
 
-  """column name"""
+  """
+  column name
+  """
   created_at
 
-  """column name"""
+  """
+  column name
+  """
   custom_register_data
 
-  """column name"""
+  """
+  column name
+  """
   default_role
 
-  """column name"""
+  """
+  column name
+  """
   email
 
-  """column name"""
+  """
+  column name
+  """
   id
 
-  """column name"""
+  """
+  column name
+  """
   is_anonymous
 
-  """column name"""
+  """
+  column name
+  """
   mfa_enabled
 
-  """column name"""
+  """
+  column name
+  """
   new_email
 
-  """column name"""
+  """
+  column name
+  """
   otp_secret
 
-  """column name"""
+  """
+  column name
+  """
   password_hash
 
-  """column name"""
+  """
+  column name
+  """
   ticket
 
-  """column name"""
+  """
+  column name
+  """
   ticket_expires_at
 
-  """column name"""
+  """
+  column name
+  """
   updated_at
 
-  """column name"""
+  """
+  column name
+  """
   user_id
 }
 
@@ -1508,49 +1805,79 @@ input auth_accounts_set_input {
 update columns of table "auth.accounts"
 """
 enum auth_accounts_update_column {
-  """column name"""
+  """
+  column name
+  """
   active
 
-  """column name"""
+  """
+  column name
+  """
   created_at
 
-  """column name"""
+  """
+  column name
+  """
   custom_register_data
 
-  """column name"""
+  """
+  column name
+  """
   default_role
 
-  """column name"""
+  """
+  column name
+  """
   email
 
-  """column name"""
+  """
+  column name
+  """
   id
 
-  """column name"""
+  """
+  column name
+  """
   is_anonymous
 
-  """column name"""
+  """
+  column name
+  """
   mfa_enabled
 
-  """column name"""
+  """
+  column name
+  """
   new_email
 
-  """column name"""
+  """
+  column name
+  """
   otp_secret
 
-  """column name"""
+  """
+  column name
+  """
   password_hash
 
-  """column name"""
+  """
+  column name
+  """
   ticket
 
-  """column name"""
+  """
+  column name
+  """
   ticket_expires_at
 
-  """column name"""
+  """
+  column name
+  """
   updated_at
 
-  """column name"""
+  """
+  column name
+  """
   user_id
 }
 
@@ -1558,39 +1885,63 @@ enum auth_accounts_update_column {
 columns and relationships of "auth.providers"
 """
 type auth_providers {
-  """An array relationship"""
+  """
+  An array relationship
+  """
   account_providers(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_account_providers_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_account_providers_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_account_providers_bool_exp
   ): [auth_account_providers!]!
 
-  """An aggregated array relationship"""
+  """
+  An aggregated array relationship
+  """
   account_providers_aggregate(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_account_providers_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_account_providers_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_account_providers_bool_exp
   ): auth_account_providers_aggregate!
   provider: String!
@@ -1645,7 +1996,9 @@ input auth_providers_bool_exp {
 unique or primary key constraints on table "auth.providers"
 """
 enum auth_providers_constraint {
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint
+  """
   providers_pkey
 }
 
@@ -1657,7 +2010,9 @@ input auth_providers_insert_input {
   provider: String
 }
 
-"""aggregate max on columns"""
+"""
+aggregate max on columns
+"""
 type auth_providers_max_fields {
   provider: String
 }
@@ -1669,7 +2024,9 @@ input auth_providers_max_order_by {
   provider: order_by
 }
 
-"""aggregate min on columns"""
+"""
+aggregate min on columns
+"""
 type auth_providers_min_fields {
   provider: String
 }
@@ -1685,10 +2042,14 @@ input auth_providers_min_order_by {
 response of any mutation on the table "auth.providers"
 """
 type auth_providers_mutation_response {
-  """number of affected rows by the mutation"""
+  """
+  number of affected rows by the mutation
+  """
   affected_rows: Int!
 
-  """data of the affected rows by the mutation"""
+  """
+  data of the affected rows by the mutation
+  """
   returning: [auth_providers!]!
 }
 
@@ -1728,7 +2089,9 @@ input auth_providers_pk_columns_input {
 select columns of table "auth.providers"
 """
 enum auth_providers_select_column {
-  """column name"""
+  """
+  column name
+  """
   provider
 }
 
@@ -1743,7 +2106,9 @@ input auth_providers_set_input {
 update columns of table "auth.providers"
 """
 enum auth_providers_update_column {
-  """column name"""
+  """
+  column name
+  """
   provider
 }
 
@@ -1751,7 +2116,9 @@ enum auth_providers_update_column {
 columns and relationships of "auth.refresh_tokens"
 """
 type auth_refresh_tokens {
-  """An object relationship"""
+  """
+  An object relationship
+  """
   account: auth_accounts!
   account_id: uuid!
   created_at: timestamptz!
@@ -1811,7 +2178,9 @@ input auth_refresh_tokens_bool_exp {
 unique or primary key constraints on table "auth.refresh_tokens"
 """
 enum auth_refresh_tokens_constraint {
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint
+  """
   refresh_tokens_pkey
 }
 
@@ -1826,7 +2195,9 @@ input auth_refresh_tokens_insert_input {
   refresh_token: uuid
 }
 
-"""aggregate max on columns"""
+"""
+aggregate max on columns
+"""
 type auth_refresh_tokens_max_fields {
   account_id: uuid
   created_at: timestamptz
@@ -1844,7 +2215,9 @@ input auth_refresh_tokens_max_order_by {
   refresh_token: order_by
 }
 
-"""aggregate min on columns"""
+"""
+aggregate min on columns
+"""
 type auth_refresh_tokens_min_fields {
   account_id: uuid
   created_at: timestamptz
@@ -1866,10 +2239,14 @@ input auth_refresh_tokens_min_order_by {
 response of any mutation on the table "auth.refresh_tokens"
 """
 type auth_refresh_tokens_mutation_response {
-  """number of affected rows by the mutation"""
+  """
+  number of affected rows by the mutation
+  """
   affected_rows: Int!
 
-  """data of the affected rows by the mutation"""
+  """
+  data of the affected rows by the mutation
+  """
   returning: [auth_refresh_tokens!]!
 }
 
@@ -1912,16 +2289,24 @@ input auth_refresh_tokens_pk_columns_input {
 select columns of table "auth.refresh_tokens"
 """
 enum auth_refresh_tokens_select_column {
-  """column name"""
+  """
+  column name
+  """
   account_id
 
-  """column name"""
+  """
+  column name
+  """
   created_at
 
-  """column name"""
+  """
+  column name
+  """
   expires_at
 
-  """column name"""
+  """
+  column name
+  """
   refresh_token
 }
 
@@ -1939,16 +2324,24 @@ input auth_refresh_tokens_set_input {
 update columns of table "auth.refresh_tokens"
 """
 enum auth_refresh_tokens_update_column {
-  """column name"""
+  """
+  column name
+  """
   account_id
 
-  """column name"""
+  """
+  column name
+  """
   created_at
 
-  """column name"""
+  """
+  column name
+  """
   expires_at
 
-  """column name"""
+  """
+  column name
+  """
   refresh_token
 }
 
@@ -1956,75 +2349,123 @@ enum auth_refresh_tokens_update_column {
 columns and relationships of "auth.roles"
 """
 type auth_roles {
-  """An array relationship"""
+  """
+  An array relationship
+  """
   account_roles(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_account_roles_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_account_roles_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_account_roles_bool_exp
   ): [auth_account_roles!]!
 
-  """An aggregated array relationship"""
+  """
+  An aggregated array relationship
+  """
   account_roles_aggregate(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_account_roles_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_account_roles_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_account_roles_bool_exp
   ): auth_account_roles_aggregate!
 
-  """An array relationship"""
+  """
+  An array relationship
+  """
   accounts(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_accounts_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_accounts_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_accounts_bool_exp
   ): [auth_accounts!]!
 
-  """An aggregated array relationship"""
+  """
+  An aggregated array relationship
+  """
   accounts_aggregate(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_accounts_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_accounts_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_accounts_bool_exp
   ): auth_accounts_aggregate!
   role: String!
@@ -2080,7 +2521,9 @@ input auth_roles_bool_exp {
 unique or primary key constraints on table "auth.roles"
 """
 enum auth_roles_constraint {
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint
+  """
   roles_pkey
 }
 
@@ -2093,7 +2536,9 @@ input auth_roles_insert_input {
   role: String
 }
 
-"""aggregate max on columns"""
+"""
+aggregate max on columns
+"""
 type auth_roles_max_fields {
   role: String
 }
@@ -2105,7 +2550,9 @@ input auth_roles_max_order_by {
   role: order_by
 }
 
-"""aggregate min on columns"""
+"""
+aggregate min on columns
+"""
 type auth_roles_min_fields {
   role: String
 }
@@ -2121,10 +2568,14 @@ input auth_roles_min_order_by {
 response of any mutation on the table "auth.roles"
 """
 type auth_roles_mutation_response {
-  """number of affected rows by the mutation"""
+  """
+  number of affected rows by the mutation
+  """
   affected_rows: Int!
 
-  """data of the affected rows by the mutation"""
+  """
+  data of the affected rows by the mutation
+  """
   returning: [auth_roles!]!
 }
 
@@ -2165,7 +2616,9 @@ input auth_roles_pk_columns_input {
 select columns of table "auth.roles"
 """
 enum auth_roles_select_column {
-  """column name"""
+  """
+  column name
+  """
   role
 }
 
@@ -2180,7 +2633,9 @@ input auth_roles_set_input {
 update columns of table "auth.roles"
 """
 enum auth_roles_update_column {
-  """column name"""
+  """
+  column name
+  """
   role
 }
 
@@ -2213,22 +2668,32 @@ scalar jsonb
 expression to compare columns of type jsonb. All fields are combined with logical 'AND'.
 """
 input jsonb_comparison_exp {
-  """is the column contained in the given json value"""
+  """
+  is the column contained in the given json value
+  """
   _contained_in: jsonb
 
-  """does the column contain the given json value at the top level"""
+  """
+  does the column contain the given json value at the top level
+  """
   _contains: jsonb
   _eq: jsonb
   _gt: jsonb
   _gte: jsonb
 
-  """does the string exist as a top-level key in the column"""
+  """
+  does the string exist as a top-level key in the column
+  """
   _has_key: String
 
-  """do all of these strings exist as top-level keys in the column"""
+  """
+  do all of these strings exist as top-level keys in the column
+  """
   _has_keys_all: [String!]
 
-  """do any of these strings exist as top-level keys in the column"""
+  """
+  do any of these strings exist as top-level keys in the column
+  """
   _has_keys_any: [String!]
   _in: [jsonb!]
   _is_null: Boolean
@@ -2238,7 +2703,9 @@ input jsonb_comparison_exp {
   _nin: [jsonb!]
 }
 
-"""mutation root"""
+"""
+mutation root
+"""
 type mutation_root {
   """
   delete single row from the table: "area_of_interest"
@@ -2249,7 +2716,9 @@ type mutation_root {
   delete data from the table: "area_of_interest"
   """
   deleteAreaOfInterests(
-    """filter the rows which have to be deleted"""
+    """
+    filter the rows which have to be deleted
+    """
     where: area_of_interest_bool_exp!
   ): area_of_interest_mutation_response
 
@@ -2262,7 +2731,9 @@ type mutation_root {
   delete data from the table: "tile_provider"
   """
   deleteTileProviders(
-    """filter the rows which have to be deleted"""
+    """
+    filter the rows which have to be deleted
+    """
     where: tile_provider_bool_exp!
   ): tile_provider_mutation_response
 
@@ -2275,7 +2746,9 @@ type mutation_root {
   delete data from the table: "tile_set"
   """
   deleteTileSets(
-    """filter the rows which have to be deleted"""
+    """
+    filter the rows which have to be deleted
+    """
     where: tile_set_bool_exp!
   ): tile_set_mutation_response
 
@@ -2283,7 +2756,9 @@ type mutation_root {
   delete data from the table: "auth.account_providers"
   """
   delete_auth_account_providers(
-    """filter the rows which have to be deleted"""
+    """
+    filter the rows which have to be deleted
+    """
     where: auth_account_providers_bool_exp!
   ): auth_account_providers_mutation_response
 
@@ -2296,7 +2771,9 @@ type mutation_root {
   delete data from the table: "auth.account_roles"
   """
   delete_auth_account_roles(
-    """filter the rows which have to be deleted"""
+    """
+    filter the rows which have to be deleted
+    """
     where: auth_account_roles_bool_exp!
   ): auth_account_roles_mutation_response
 
@@ -2309,7 +2786,9 @@ type mutation_root {
   delete data from the table: "auth.accounts"
   """
   delete_auth_accounts(
-    """filter the rows which have to be deleted"""
+    """
+    filter the rows which have to be deleted
+    """
     where: auth_accounts_bool_exp!
   ): auth_accounts_mutation_response
 
@@ -2322,7 +2801,9 @@ type mutation_root {
   delete data from the table: "auth.providers"
   """
   delete_auth_providers(
-    """filter the rows which have to be deleted"""
+    """
+    filter the rows which have to be deleted
+    """
     where: auth_providers_bool_exp!
   ): auth_providers_mutation_response
 
@@ -2335,7 +2816,9 @@ type mutation_root {
   delete data from the table: "auth.refresh_tokens"
   """
   delete_auth_refresh_tokens(
-    """filter the rows which have to be deleted"""
+    """
+    filter the rows which have to be deleted
+    """
     where: auth_refresh_tokens_bool_exp!
   ): auth_refresh_tokens_mutation_response
 
@@ -2348,7 +2831,9 @@ type mutation_root {
   delete data from the table: "auth.roles"
   """
   delete_auth_roles(
-    """filter the rows which have to be deleted"""
+    """
+    filter the rows which have to be deleted
+    """
     where: auth_roles_bool_exp!
   ): auth_roles_mutation_response
 
@@ -2361,7 +2846,9 @@ type mutation_root {
   delete data from the table: "users"
   """
   delete_users(
-    """filter the rows which have to be deleted"""
+    """
+    filter the rows which have to be deleted
+    """
     where: users_bool_exp!
   ): users_mutation_response
 
@@ -2374,10 +2861,14 @@ type mutation_root {
   insert a single row into the table: "area_of_interest"
   """
   insertAreaOfInterest(
-    """the row to be inserted"""
+    """
+    the row to be inserted
+    """
     object: area_of_interest_insert_input!
 
-    """on conflict condition"""
+    """
+    on conflict condition
+    """
     on_conflict: area_of_interest_on_conflict
   ): area_of_interest
 
@@ -2385,10 +2876,14 @@ type mutation_root {
   insert data into the table: "area_of_interest"
   """
   insertAreasOfInterest(
-    """the rows to be inserted"""
+    """
+    the rows to be inserted
+    """
     objects: [area_of_interest_insert_input!]!
 
-    """on conflict condition"""
+    """
+    on conflict condition
+    """
     on_conflict: area_of_interest_on_conflict
   ): area_of_interest_mutation_response
 
@@ -2396,10 +2891,14 @@ type mutation_root {
   insert a single row into the table: "tile_provider"
   """
   insertTileProvider(
-    """the row to be inserted"""
+    """
+    the row to be inserted
+    """
     object: tile_provider_insert_input!
 
-    """on conflict condition"""
+    """
+    on conflict condition
+    """
     on_conflict: tile_provider_on_conflict
   ): tile_provider
 
@@ -2407,10 +2906,14 @@ type mutation_root {
   insert data into the table: "tile_provider"
   """
   insertTileProviders(
-    """the rows to be inserted"""
+    """
+    the rows to be inserted
+    """
     objects: [tile_provider_insert_input!]!
 
-    """on conflict condition"""
+    """
+    on conflict condition
+    """
     on_conflict: tile_provider_on_conflict
   ): tile_provider_mutation_response
 
@@ -2418,10 +2921,14 @@ type mutation_root {
   insert a single row into the table: "tile_set"
   """
   insertTileSet(
-    """the row to be inserted"""
+    """
+    the row to be inserted
+    """
     object: tile_set_insert_input!
 
-    """on conflict condition"""
+    """
+    on conflict condition
+    """
     on_conflict: tile_set_on_conflict
   ): tile_set
 
@@ -2429,10 +2936,14 @@ type mutation_root {
   insert data into the table: "tile_set"
   """
   insertTileSets(
-    """the rows to be inserted"""
+    """
+    the rows to be inserted
+    """
     objects: [tile_set_insert_input!]!
 
-    """on conflict condition"""
+    """
+    on conflict condition
+    """
     on_conflict: tile_set_on_conflict
   ): tile_set_mutation_response
 
@@ -2440,10 +2951,14 @@ type mutation_root {
   insert data into the table: "auth.account_providers"
   """
   insert_auth_account_providers(
-    """the rows to be inserted"""
+    """
+    the rows to be inserted
+    """
     objects: [auth_account_providers_insert_input!]!
 
-    """on conflict condition"""
+    """
+    on conflict condition
+    """
     on_conflict: auth_account_providers_on_conflict
   ): auth_account_providers_mutation_response
 
@@ -2451,10 +2966,14 @@ type mutation_root {
   insert a single row into the table: "auth.account_providers"
   """
   insert_auth_account_providers_one(
-    """the row to be inserted"""
+    """
+    the row to be inserted
+    """
     object: auth_account_providers_insert_input!
 
-    """on conflict condition"""
+    """
+    on conflict condition
+    """
     on_conflict: auth_account_providers_on_conflict
   ): auth_account_providers
 
@@ -2462,10 +2981,14 @@ type mutation_root {
   insert data into the table: "auth.account_roles"
   """
   insert_auth_account_roles(
-    """the rows to be inserted"""
+    """
+    the rows to be inserted
+    """
     objects: [auth_account_roles_insert_input!]!
 
-    """on conflict condition"""
+    """
+    on conflict condition
+    """
     on_conflict: auth_account_roles_on_conflict
   ): auth_account_roles_mutation_response
 
@@ -2473,10 +2996,14 @@ type mutation_root {
   insert a single row into the table: "auth.account_roles"
   """
   insert_auth_account_roles_one(
-    """the row to be inserted"""
+    """
+    the row to be inserted
+    """
     object: auth_account_roles_insert_input!
 
-    """on conflict condition"""
+    """
+    on conflict condition
+    """
     on_conflict: auth_account_roles_on_conflict
   ): auth_account_roles
 
@@ -2484,10 +3011,14 @@ type mutation_root {
   insert data into the table: "auth.accounts"
   """
   insert_auth_accounts(
-    """the rows to be inserted"""
+    """
+    the rows to be inserted
+    """
     objects: [auth_accounts_insert_input!]!
 
-    """on conflict condition"""
+    """
+    on conflict condition
+    """
     on_conflict: auth_accounts_on_conflict
   ): auth_accounts_mutation_response
 
@@ -2495,10 +3026,14 @@ type mutation_root {
   insert a single row into the table: "auth.accounts"
   """
   insert_auth_accounts_one(
-    """the row to be inserted"""
+    """
+    the row to be inserted
+    """
     object: auth_accounts_insert_input!
 
-    """on conflict condition"""
+    """
+    on conflict condition
+    """
     on_conflict: auth_accounts_on_conflict
   ): auth_accounts
 
@@ -2506,10 +3041,14 @@ type mutation_root {
   insert data into the table: "auth.providers"
   """
   insert_auth_providers(
-    """the rows to be inserted"""
+    """
+    the rows to be inserted
+    """
     objects: [auth_providers_insert_input!]!
 
-    """on conflict condition"""
+    """
+    on conflict condition
+    """
     on_conflict: auth_providers_on_conflict
   ): auth_providers_mutation_response
 
@@ -2517,10 +3056,14 @@ type mutation_root {
   insert a single row into the table: "auth.providers"
   """
   insert_auth_providers_one(
-    """the row to be inserted"""
+    """
+    the row to be inserted
+    """
     object: auth_providers_insert_input!
 
-    """on conflict condition"""
+    """
+    on conflict condition
+    """
     on_conflict: auth_providers_on_conflict
   ): auth_providers
 
@@ -2528,10 +3071,14 @@ type mutation_root {
   insert data into the table: "auth.refresh_tokens"
   """
   insert_auth_refresh_tokens(
-    """the rows to be inserted"""
+    """
+    the rows to be inserted
+    """
     objects: [auth_refresh_tokens_insert_input!]!
 
-    """on conflict condition"""
+    """
+    on conflict condition
+    """
     on_conflict: auth_refresh_tokens_on_conflict
   ): auth_refresh_tokens_mutation_response
 
@@ -2539,10 +3086,14 @@ type mutation_root {
   insert a single row into the table: "auth.refresh_tokens"
   """
   insert_auth_refresh_tokens_one(
-    """the row to be inserted"""
+    """
+    the row to be inserted
+    """
     object: auth_refresh_tokens_insert_input!
 
-    """on conflict condition"""
+    """
+    on conflict condition
+    """
     on_conflict: auth_refresh_tokens_on_conflict
   ): auth_refresh_tokens
 
@@ -2550,10 +3101,14 @@ type mutation_root {
   insert data into the table: "auth.roles"
   """
   insert_auth_roles(
-    """the rows to be inserted"""
+    """
+    the rows to be inserted
+    """
     objects: [auth_roles_insert_input!]!
 
-    """on conflict condition"""
+    """
+    on conflict condition
+    """
     on_conflict: auth_roles_on_conflict
   ): auth_roles_mutation_response
 
@@ -2561,10 +3116,14 @@ type mutation_root {
   insert a single row into the table: "auth.roles"
   """
   insert_auth_roles_one(
-    """the row to be inserted"""
+    """
+    the row to be inserted
+    """
     object: auth_roles_insert_input!
 
-    """on conflict condition"""
+    """
+    on conflict condition
+    """
     on_conflict: auth_roles_on_conflict
   ): auth_roles
 
@@ -2572,10 +3131,14 @@ type mutation_root {
   insert data into the table: "users"
   """
   insert_users(
-    """the rows to be inserted"""
+    """
+    the rows to be inserted
+    """
     objects: [users_insert_input!]!
 
-    """on conflict condition"""
+    """
+    on conflict condition
+    """
     on_conflict: users_on_conflict
   ): users_mutation_response
 
@@ -2583,10 +3146,14 @@ type mutation_root {
   insert a single row into the table: "users"
   """
   insert_users_one(
-    """the row to be inserted"""
+    """
+    the row to be inserted
+    """
     object: users_insert_input!
 
-    """on conflict condition"""
+    """
+    on conflict condition
+    """
     on_conflict: users_on_conflict
   ): users
 
@@ -2594,7 +3161,9 @@ type mutation_root {
   update single row of the table: "area_of_interest"
   """
   updateAreaOfInterest(
-    """append existing jsonb value of filtered columns with new jsonb value"""
+    """
+    append existing jsonb value of filtered columns with new jsonb value
+    """
     _append: area_of_interest_append_input
 
     """
@@ -2612,13 +3181,19 @@ type mutation_root {
     """
     _delete_key: area_of_interest_delete_key_input
 
-    """increments the integer columns with given value of the filtered values"""
+    """
+    increments the integer columns with given value of the filtered values
+    """
     _inc: area_of_interest_inc_input
 
-    """prepend existing jsonb value of filtered columns with new jsonb value"""
+    """
+    prepend existing jsonb value of filtered columns with new jsonb value
+    """
     _prepend: area_of_interest_prepend_input
 
-    """sets the columns of the filtered rows to the given values"""
+    """
+    sets the columns of the filtered rows to the given values
+    """
     _set: area_of_interest_set_input
     pk_columns: area_of_interest_pk_columns_input!
   ): area_of_interest
@@ -2627,7 +3202,9 @@ type mutation_root {
   update data of the table: "area_of_interest"
   """
   updateAreasOfInterest(
-    """append existing jsonb value of filtered columns with new jsonb value"""
+    """
+    append existing jsonb value of filtered columns with new jsonb value
+    """
     _append: area_of_interest_append_input
 
     """
@@ -2645,16 +3222,24 @@ type mutation_root {
     """
     _delete_key: area_of_interest_delete_key_input
 
-    """increments the integer columns with given value of the filtered values"""
+    """
+    increments the integer columns with given value of the filtered values
+    """
     _inc: area_of_interest_inc_input
 
-    """prepend existing jsonb value of filtered columns with new jsonb value"""
+    """
+    prepend existing jsonb value of filtered columns with new jsonb value
+    """
     _prepend: area_of_interest_prepend_input
 
-    """sets the columns of the filtered rows to the given values"""
+    """
+    sets the columns of the filtered rows to the given values
+    """
     _set: area_of_interest_set_input
 
-    """filter the rows which have to be updated"""
+    """
+    filter the rows which have to be updated
+    """
     where: area_of_interest_bool_exp!
   ): area_of_interest_mutation_response
 
@@ -2662,7 +3247,9 @@ type mutation_root {
   update single row of the table: "tile_provider"
   """
   updateTileProvider(
-    """sets the columns of the filtered rows to the given values"""
+    """
+    sets the columns of the filtered rows to the given values
+    """
     _set: tile_provider_set_input
     pk_columns: tile_provider_pk_columns_input!
   ): tile_provider
@@ -2671,10 +3258,14 @@ type mutation_root {
   update data of the table: "tile_provider"
   """
   updateTileProviders(
-    """sets the columns of the filtered rows to the given values"""
+    """
+    sets the columns of the filtered rows to the given values
+    """
     _set: tile_provider_set_input
 
-    """filter the rows which have to be updated"""
+    """
+    filter the rows which have to be updated
+    """
     where: tile_provider_bool_exp!
   ): tile_provider_mutation_response
 
@@ -2682,10 +3273,14 @@ type mutation_root {
   update single row of the table: "tile_set"
   """
   updateTileSet(
-    """increments the integer columns with given value of the filtered values"""
+    """
+    increments the integer columns with given value of the filtered values
+    """
     _inc: tile_set_inc_input
 
-    """sets the columns of the filtered rows to the given values"""
+    """
+    sets the columns of the filtered rows to the given values
+    """
     _set: tile_set_set_input
     pk_columns: tile_set_pk_columns_input!
   ): tile_set
@@ -2694,13 +3289,19 @@ type mutation_root {
   update data of the table: "tile_set"
   """
   updateTileSets(
-    """increments the integer columns with given value of the filtered values"""
+    """
+    increments the integer columns with given value of the filtered values
+    """
     _inc: tile_set_inc_input
 
-    """sets the columns of the filtered rows to the given values"""
+    """
+    sets the columns of the filtered rows to the given values
+    """
     _set: tile_set_set_input
 
-    """filter the rows which have to be updated"""
+    """
+    filter the rows which have to be updated
+    """
     where: tile_set_bool_exp!
   ): tile_set_mutation_response
 
@@ -2708,10 +3309,14 @@ type mutation_root {
   update data of the table: "auth.account_providers"
   """
   update_auth_account_providers(
-    """sets the columns of the filtered rows to the given values"""
+    """
+    sets the columns of the filtered rows to the given values
+    """
     _set: auth_account_providers_set_input
 
-    """filter the rows which have to be updated"""
+    """
+    filter the rows which have to be updated
+    """
     where: auth_account_providers_bool_exp!
   ): auth_account_providers_mutation_response
 
@@ -2719,7 +3324,9 @@ type mutation_root {
   update single row of the table: "auth.account_providers"
   """
   update_auth_account_providers_by_pk(
-    """sets the columns of the filtered rows to the given values"""
+    """
+    sets the columns of the filtered rows to the given values
+    """
     _set: auth_account_providers_set_input
     pk_columns: auth_account_providers_pk_columns_input!
   ): auth_account_providers
@@ -2728,10 +3335,14 @@ type mutation_root {
   update data of the table: "auth.account_roles"
   """
   update_auth_account_roles(
-    """sets the columns of the filtered rows to the given values"""
+    """
+    sets the columns of the filtered rows to the given values
+    """
     _set: auth_account_roles_set_input
 
-    """filter the rows which have to be updated"""
+    """
+    filter the rows which have to be updated
+    """
     where: auth_account_roles_bool_exp!
   ): auth_account_roles_mutation_response
 
@@ -2739,7 +3350,9 @@ type mutation_root {
   update single row of the table: "auth.account_roles"
   """
   update_auth_account_roles_by_pk(
-    """sets the columns of the filtered rows to the given values"""
+    """
+    sets the columns of the filtered rows to the given values
+    """
     _set: auth_account_roles_set_input
     pk_columns: auth_account_roles_pk_columns_input!
   ): auth_account_roles
@@ -2748,7 +3361,9 @@ type mutation_root {
   update data of the table: "auth.accounts"
   """
   update_auth_accounts(
-    """append existing jsonb value of filtered columns with new jsonb value"""
+    """
+    append existing jsonb value of filtered columns with new jsonb value
+    """
     _append: auth_accounts_append_input
 
     """
@@ -2766,13 +3381,19 @@ type mutation_root {
     """
     _delete_key: auth_accounts_delete_key_input
 
-    """prepend existing jsonb value of filtered columns with new jsonb value"""
+    """
+    prepend existing jsonb value of filtered columns with new jsonb value
+    """
     _prepend: auth_accounts_prepend_input
 
-    """sets the columns of the filtered rows to the given values"""
+    """
+    sets the columns of the filtered rows to the given values
+    """
     _set: auth_accounts_set_input
 
-    """filter the rows which have to be updated"""
+    """
+    filter the rows which have to be updated
+    """
     where: auth_accounts_bool_exp!
   ): auth_accounts_mutation_response
 
@@ -2780,7 +3401,9 @@ type mutation_root {
   update single row of the table: "auth.accounts"
   """
   update_auth_accounts_by_pk(
-    """append existing jsonb value of filtered columns with new jsonb value"""
+    """
+    append existing jsonb value of filtered columns with new jsonb value
+    """
     _append: auth_accounts_append_input
 
     """
@@ -2798,10 +3421,14 @@ type mutation_root {
     """
     _delete_key: auth_accounts_delete_key_input
 
-    """prepend existing jsonb value of filtered columns with new jsonb value"""
+    """
+    prepend existing jsonb value of filtered columns with new jsonb value
+    """
     _prepend: auth_accounts_prepend_input
 
-    """sets the columns of the filtered rows to the given values"""
+    """
+    sets the columns of the filtered rows to the given values
+    """
     _set: auth_accounts_set_input
     pk_columns: auth_accounts_pk_columns_input!
   ): auth_accounts
@@ -2810,10 +3437,14 @@ type mutation_root {
   update data of the table: "auth.providers"
   """
   update_auth_providers(
-    """sets the columns of the filtered rows to the given values"""
+    """
+    sets the columns of the filtered rows to the given values
+    """
     _set: auth_providers_set_input
 
-    """filter the rows which have to be updated"""
+    """
+    filter the rows which have to be updated
+    """
     where: auth_providers_bool_exp!
   ): auth_providers_mutation_response
 
@@ -2821,7 +3452,9 @@ type mutation_root {
   update single row of the table: "auth.providers"
   """
   update_auth_providers_by_pk(
-    """sets the columns of the filtered rows to the given values"""
+    """
+    sets the columns of the filtered rows to the given values
+    """
     _set: auth_providers_set_input
     pk_columns: auth_providers_pk_columns_input!
   ): auth_providers
@@ -2830,10 +3463,14 @@ type mutation_root {
   update data of the table: "auth.refresh_tokens"
   """
   update_auth_refresh_tokens(
-    """sets the columns of the filtered rows to the given values"""
+    """
+    sets the columns of the filtered rows to the given values
+    """
     _set: auth_refresh_tokens_set_input
 
-    """filter the rows which have to be updated"""
+    """
+    filter the rows which have to be updated
+    """
     where: auth_refresh_tokens_bool_exp!
   ): auth_refresh_tokens_mutation_response
 
@@ -2841,7 +3478,9 @@ type mutation_root {
   update single row of the table: "auth.refresh_tokens"
   """
   update_auth_refresh_tokens_by_pk(
-    """sets the columns of the filtered rows to the given values"""
+    """
+    sets the columns of the filtered rows to the given values
+    """
     _set: auth_refresh_tokens_set_input
     pk_columns: auth_refresh_tokens_pk_columns_input!
   ): auth_refresh_tokens
@@ -2850,10 +3489,14 @@ type mutation_root {
   update data of the table: "auth.roles"
   """
   update_auth_roles(
-    """sets the columns of the filtered rows to the given values"""
+    """
+    sets the columns of the filtered rows to the given values
+    """
     _set: auth_roles_set_input
 
-    """filter the rows which have to be updated"""
+    """
+    filter the rows which have to be updated
+    """
     where: auth_roles_bool_exp!
   ): auth_roles_mutation_response
 
@@ -2861,7 +3504,9 @@ type mutation_root {
   update single row of the table: "auth.roles"
   """
   update_auth_roles_by_pk(
-    """sets the columns of the filtered rows to the given values"""
+    """
+    sets the columns of the filtered rows to the given values
+    """
     _set: auth_roles_set_input
     pk_columns: auth_roles_pk_columns_input!
   ): auth_roles
@@ -2870,10 +3515,14 @@ type mutation_root {
   update data of the table: "users"
   """
   update_users(
-    """sets the columns of the filtered rows to the given values"""
+    """
+    sets the columns of the filtered rows to the given values
+    """
     _set: users_set_input
 
-    """filter the rows which have to be updated"""
+    """
+    filter the rows which have to be updated
+    """
     where: users_bool_exp!
   ): users_mutation_response
 
@@ -2881,34 +3530,52 @@ type mutation_root {
   update single row of the table: "users"
   """
   update_users_by_pk(
-    """sets the columns of the filtered rows to the given values"""
+    """
+    sets the columns of the filtered rows to the given values
+    """
     _set: users_set_input
     pk_columns: users_pk_columns_input!
   ): users
 }
 
-"""column ordering options"""
+"""
+column ordering options
+"""
 enum order_by {
-  """in the ascending order, nulls last"""
+  """
+  in the ascending order, nulls last
+  """
   asc
 
-  """in the ascending order, nulls first"""
+  """
+  in the ascending order, nulls first
+  """
   asc_nulls_first
 
-  """in the ascending order, nulls last"""
+  """
+  in the ascending order, nulls last
+  """
   asc_nulls_last
 
-  """in the descending order, nulls first"""
+  """
+  in the descending order, nulls first
+  """
   desc
 
-  """in the descending order, nulls first"""
+  """
+  in the descending order, nulls first
+  """
   desc_nulls_first
 
-  """in the descending order, nulls last"""
+  """
+  in the descending order, nulls last
+  """
   desc_nulls_last
 }
 
-"""query root"""
+"""
+query root
+"""
 type query_root {
   """
   fetch data from the table: "area_of_interest" using primary key columns
@@ -2919,19 +3586,29 @@ type query_root {
   fetch aggregated fields from the table: "area_of_interest"
   """
   areaOfInterestAggregate(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [area_of_interest_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [area_of_interest_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: area_of_interest_bool_exp
   ): area_of_interest_aggregate!
 
@@ -2939,19 +3616,29 @@ type query_root {
   fetch data from the table: "area_of_interest"
   """
   areasOfInterest(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [area_of_interest_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [area_of_interest_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: area_of_interest_bool_exp
   ): [area_of_interest!]!
 
@@ -2959,19 +3646,29 @@ type query_root {
   fetch data from the table: "auth.account_providers"
   """
   auth_account_providers(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_account_providers_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_account_providers_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_account_providers_bool_exp
   ): [auth_account_providers!]!
 
@@ -2979,19 +3676,29 @@ type query_root {
   fetch aggregated fields from the table: "auth.account_providers"
   """
   auth_account_providers_aggregate(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_account_providers_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_account_providers_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_account_providers_bool_exp
   ): auth_account_providers_aggregate!
 
@@ -3004,19 +3711,29 @@ type query_root {
   fetch data from the table: "auth.account_roles"
   """
   auth_account_roles(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_account_roles_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_account_roles_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_account_roles_bool_exp
   ): [auth_account_roles!]!
 
@@ -3024,19 +3741,29 @@ type query_root {
   fetch aggregated fields from the table: "auth.account_roles"
   """
   auth_account_roles_aggregate(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_account_roles_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_account_roles_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_account_roles_bool_exp
   ): auth_account_roles_aggregate!
 
@@ -3049,19 +3776,29 @@ type query_root {
   fetch data from the table: "auth.accounts"
   """
   auth_accounts(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_accounts_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_accounts_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_accounts_bool_exp
   ): [auth_accounts!]!
 
@@ -3069,42 +3806,64 @@ type query_root {
   fetch aggregated fields from the table: "auth.accounts"
   """
   auth_accounts_aggregate(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_accounts_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_accounts_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_accounts_bool_exp
   ): auth_accounts_aggregate!
 
-  """fetch data from the table: "auth.accounts" using primary key columns"""
+  """
+  fetch data from the table: "auth.accounts" using primary key columns
+  """
   auth_accounts_by_pk(id: uuid!): auth_accounts
 
   """
   fetch data from the table: "auth.providers"
   """
   auth_providers(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_providers_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_providers_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_providers_bool_exp
   ): [auth_providers!]!
 
@@ -3112,42 +3871,64 @@ type query_root {
   fetch aggregated fields from the table: "auth.providers"
   """
   auth_providers_aggregate(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_providers_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_providers_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_providers_bool_exp
   ): auth_providers_aggregate!
 
-  """fetch data from the table: "auth.providers" using primary key columns"""
+  """
+  fetch data from the table: "auth.providers" using primary key columns
+  """
   auth_providers_by_pk(provider: String!): auth_providers
 
   """
   fetch data from the table: "auth.refresh_tokens"
   """
   auth_refresh_tokens(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_refresh_tokens_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_refresh_tokens_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_refresh_tokens_bool_exp
   ): [auth_refresh_tokens!]!
 
@@ -3155,19 +3936,29 @@ type query_root {
   fetch aggregated fields from the table: "auth.refresh_tokens"
   """
   auth_refresh_tokens_aggregate(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_refresh_tokens_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_refresh_tokens_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_refresh_tokens_bool_exp
   ): auth_refresh_tokens_aggregate!
 
@@ -3180,19 +3971,29 @@ type query_root {
   fetch data from the table: "auth.roles"
   """
   auth_roles(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_roles_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_roles_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_roles_bool_exp
   ): [auth_roles!]!
 
@@ -3200,45 +4001,69 @@ type query_root {
   fetch aggregated fields from the table: "auth.roles"
   """
   auth_roles_aggregate(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_roles_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_roles_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_roles_bool_exp
   ): auth_roles_aggregate!
 
-  """fetch data from the table: "auth.roles" using primary key columns"""
+  """
+  fetch data from the table: "auth.roles" using primary key columns
+  """
   auth_roles_by_pk(role: String!): auth_roles
 
-  """fetch data from the table: "tile_provider" using primary key columns"""
+  """
+  fetch data from the table: "tile_provider" using primary key columns
+  """
   tileProvider(id: uuid!): tile_provider
 
   """
   fetch aggregated fields from the table: "tile_provider"
   """
   tileProviderAggregate(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [tile_provider_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [tile_provider_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: tile_provider_bool_exp
   ): tile_provider_aggregate!
 
@@ -3246,42 +4071,64 @@ type query_root {
   fetch data from the table: "tile_provider"
   """
   tileProviders(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [tile_provider_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [tile_provider_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: tile_provider_bool_exp
   ): [tile_provider!]!
 
-  """fetch data from the table: "tile_set" using primary key columns"""
+  """
+  fetch data from the table: "tile_set" using primary key columns
+  """
   tileSet(id: uuid!): tile_set
 
   """
   fetch aggregated fields from the table: "tile_set"
   """
   tileSetAggregate(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [tile_set_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [tile_set_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: tile_set_bool_exp
   ): tile_set_aggregate!
 
@@ -3289,19 +4136,29 @@ type query_root {
   fetch data from the table: "tile_set"
   """
   tileSets(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [tile_set_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [tile_set_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: tile_set_bool_exp
   ): [tile_set!]!
 
@@ -3309,19 +4166,29 @@ type query_root {
   fetch data from the table: "users"
   """
   users(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [users_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [users_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: users_bool_exp
   ): [users!]!
 
@@ -3329,23 +4196,35 @@ type query_root {
   fetch aggregated fields from the table: "users"
   """
   users_aggregate(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [users_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [users_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: users_bool_exp
   ): users_aggregate!
 
-  """fetch data from the table: "users" using primary key columns"""
+  """
+  fetch data from the table: "users" using primary key columns
+  """
   users_by_pk(id: uuid!): users
 }
 
@@ -3366,7 +4245,9 @@ input smallint_comparison_exp {
   _nin: [smallint!]
 }
 
-"""subscription root"""
+"""
+subscription root
+"""
 type subscription_root {
   """
   fetch data from the table: "area_of_interest" using primary key columns
@@ -3377,19 +4258,29 @@ type subscription_root {
   fetch aggregated fields from the table: "area_of_interest"
   """
   areaOfInterestAggregate(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [area_of_interest_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [area_of_interest_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: area_of_interest_bool_exp
   ): area_of_interest_aggregate!
 
@@ -3397,19 +4288,29 @@ type subscription_root {
   fetch data from the table: "area_of_interest"
   """
   areasOfInterest(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [area_of_interest_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [area_of_interest_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: area_of_interest_bool_exp
   ): [area_of_interest!]!
 
@@ -3417,19 +4318,29 @@ type subscription_root {
   fetch data from the table: "auth.account_providers"
   """
   auth_account_providers(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_account_providers_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_account_providers_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_account_providers_bool_exp
   ): [auth_account_providers!]!
 
@@ -3437,19 +4348,29 @@ type subscription_root {
   fetch aggregated fields from the table: "auth.account_providers"
   """
   auth_account_providers_aggregate(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_account_providers_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_account_providers_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_account_providers_bool_exp
   ): auth_account_providers_aggregate!
 
@@ -3462,19 +4383,29 @@ type subscription_root {
   fetch data from the table: "auth.account_roles"
   """
   auth_account_roles(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_account_roles_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_account_roles_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_account_roles_bool_exp
   ): [auth_account_roles!]!
 
@@ -3482,19 +4413,29 @@ type subscription_root {
   fetch aggregated fields from the table: "auth.account_roles"
   """
   auth_account_roles_aggregate(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_account_roles_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_account_roles_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_account_roles_bool_exp
   ): auth_account_roles_aggregate!
 
@@ -3507,19 +4448,29 @@ type subscription_root {
   fetch data from the table: "auth.accounts"
   """
   auth_accounts(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_accounts_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_accounts_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_accounts_bool_exp
   ): [auth_accounts!]!
 
@@ -3527,42 +4478,64 @@ type subscription_root {
   fetch aggregated fields from the table: "auth.accounts"
   """
   auth_accounts_aggregate(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_accounts_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_accounts_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_accounts_bool_exp
   ): auth_accounts_aggregate!
 
-  """fetch data from the table: "auth.accounts" using primary key columns"""
+  """
+  fetch data from the table: "auth.accounts" using primary key columns
+  """
   auth_accounts_by_pk(id: uuid!): auth_accounts
 
   """
   fetch data from the table: "auth.providers"
   """
   auth_providers(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_providers_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_providers_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_providers_bool_exp
   ): [auth_providers!]!
 
@@ -3570,42 +4543,64 @@ type subscription_root {
   fetch aggregated fields from the table: "auth.providers"
   """
   auth_providers_aggregate(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_providers_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_providers_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_providers_bool_exp
   ): auth_providers_aggregate!
 
-  """fetch data from the table: "auth.providers" using primary key columns"""
+  """
+  fetch data from the table: "auth.providers" using primary key columns
+  """
   auth_providers_by_pk(provider: String!): auth_providers
 
   """
   fetch data from the table: "auth.refresh_tokens"
   """
   auth_refresh_tokens(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_refresh_tokens_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_refresh_tokens_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_refresh_tokens_bool_exp
   ): [auth_refresh_tokens!]!
 
@@ -3613,19 +4608,29 @@ type subscription_root {
   fetch aggregated fields from the table: "auth.refresh_tokens"
   """
   auth_refresh_tokens_aggregate(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_refresh_tokens_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_refresh_tokens_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_refresh_tokens_bool_exp
   ): auth_refresh_tokens_aggregate!
 
@@ -3638,19 +4643,29 @@ type subscription_root {
   fetch data from the table: "auth.roles"
   """
   auth_roles(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_roles_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_roles_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_roles_bool_exp
   ): [auth_roles!]!
 
@@ -3658,45 +4673,69 @@ type subscription_root {
   fetch aggregated fields from the table: "auth.roles"
   """
   auth_roles_aggregate(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [auth_roles_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [auth_roles_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: auth_roles_bool_exp
   ): auth_roles_aggregate!
 
-  """fetch data from the table: "auth.roles" using primary key columns"""
+  """
+  fetch data from the table: "auth.roles" using primary key columns
+  """
   auth_roles_by_pk(role: String!): auth_roles
 
-  """fetch data from the table: "tile_provider" using primary key columns"""
+  """
+  fetch data from the table: "tile_provider" using primary key columns
+  """
   tileProvider(id: uuid!): tile_provider
 
   """
   fetch aggregated fields from the table: "tile_provider"
   """
   tileProviderAggregate(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [tile_provider_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [tile_provider_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: tile_provider_bool_exp
   ): tile_provider_aggregate!
 
@@ -3704,42 +4743,64 @@ type subscription_root {
   fetch data from the table: "tile_provider"
   """
   tileProviders(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [tile_provider_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [tile_provider_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: tile_provider_bool_exp
   ): [tile_provider!]!
 
-  """fetch data from the table: "tile_set" using primary key columns"""
+  """
+  fetch data from the table: "tile_set" using primary key columns
+  """
   tileSet(id: uuid!): tile_set
 
   """
   fetch aggregated fields from the table: "tile_set"
   """
   tileSetAggregate(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [tile_set_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [tile_set_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: tile_set_bool_exp
   ): tile_set_aggregate!
 
@@ -3747,19 +4808,29 @@ type subscription_root {
   fetch data from the table: "tile_set"
   """
   tileSets(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [tile_set_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [tile_set_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: tile_set_bool_exp
   ): [tile_set!]!
 
@@ -3767,19 +4838,29 @@ type subscription_root {
   fetch data from the table: "users"
   """
   users(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [users_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [users_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: users_bool_exp
   ): [users!]!
 
@@ -3787,23 +4868,35 @@ type subscription_root {
   fetch aggregated fields from the table: "users"
   """
   users_aggregate(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [users_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [users_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: users_bool_exp
   ): users_aggregate!
 
-  """fetch data from the table: "users" using primary key columns"""
+  """
+  fetch data from the table: "users" using primary key columns
+  """
   users_by_pk(id: uuid!): users
 }
 
@@ -3815,39 +4908,63 @@ type tile_provider {
   name: String!
   slug: String!
 
-  """An array relationship"""
+  """
+  An array relationship
+  """
   tileSets(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [tile_set_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [tile_set_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: tile_set_bool_exp
   ): [tile_set!]!
 
-  """An aggregated array relationship"""
+  """
+  An aggregated array relationship
+  """
   tileSets_aggregate(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [tile_set_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [tile_set_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: tile_set_bool_exp
   ): tile_set_aggregate!
   url: String!
@@ -3905,13 +5022,19 @@ input tile_provider_bool_exp {
 unique or primary key constraints on table "tile_provider"
 """
 enum tile_provider_constraint {
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint
+  """
   tile_provider_name_key
 
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint
+  """
   tile_provider_pkey
 
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint
+  """
   tile_provider_slug_key
 }
 
@@ -3926,7 +5049,9 @@ input tile_provider_insert_input {
   url: String
 }
 
-"""aggregate max on columns"""
+"""
+aggregate max on columns
+"""
 type tile_provider_max_fields {
   id: uuid
   name: String
@@ -3944,7 +5069,9 @@ input tile_provider_max_order_by {
   url: order_by
 }
 
-"""aggregate min on columns"""
+"""
+aggregate min on columns
+"""
 type tile_provider_min_fields {
   id: uuid
   name: String
@@ -3966,10 +5093,14 @@ input tile_provider_min_order_by {
 response of any mutation on the table "tile_provider"
 """
 type tile_provider_mutation_response {
-  """number of affected rows by the mutation"""
+  """
+  number of affected rows by the mutation
+  """
   affected_rows: Int!
 
-  """data of the affected rows by the mutation"""
+  """
+  data of the affected rows by the mutation
+  """
   returning: [tile_provider!]!
 }
 
@@ -4012,16 +5143,24 @@ input tile_provider_pk_columns_input {
 select columns of table "tile_provider"
 """
 enum tile_provider_select_column {
-  """column name"""
+  """
+  column name
+  """
   id
 
-  """column name"""
+  """
+  column name
+  """
   name
 
-  """column name"""
+  """
+  column name
+  """
   slug
 
-  """column name"""
+  """
+  column name
+  """
   url
 }
 
@@ -4039,16 +5178,24 @@ input tile_provider_set_input {
 update columns of table "tile_provider"
 """
 enum tile_provider_update_column {
-  """column name"""
+  """
+  column name
+  """
   id
 
-  """column name"""
+  """
+  column name
+  """
   name
 
-  """column name"""
+  """
+  column name
+  """
   slug
 
-  """column name"""
+  """
+  column name
+  """
   url
 }
 
@@ -4056,7 +5203,9 @@ enum tile_provider_update_column {
 columns and relationships of "tile_set"
 """
 type tile_set {
-  """An object relationship"""
+  """
+  An object relationship
+  """
   areaOfInterest: area_of_interest!
   areaOfInterestId: uuid!
   format: String!
@@ -4065,7 +5214,9 @@ type tile_set {
   quality: smallint
   size: Int
 
-  """An object relationship"""
+  """
+  An object relationship
+  """
   tileProvider: tile_provider!
   tileProviderId: uuid!
 }
@@ -4120,7 +5271,9 @@ input tile_set_arr_rel_insert_input {
   on_conflict: tile_set_on_conflict
 }
 
-"""aggregate avg on columns"""
+"""
+aggregate avg on columns
+"""
 type tile_set_avg_fields {
   progress: Float
   quality: Float
@@ -4158,7 +5311,9 @@ input tile_set_bool_exp {
 unique or primary key constraints on table "tile_set"
 """
 enum tile_set_constraint {
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint
+  """
   tile_set_pkey
 }
 
@@ -4186,7 +5341,9 @@ input tile_set_insert_input {
   tileProviderId: uuid
 }
 
-"""aggregate max on columns"""
+"""
+aggregate max on columns
+"""
 type tile_set_max_fields {
   areaOfInterestId: uuid
   format: String
@@ -4210,7 +5367,9 @@ input tile_set_max_order_by {
   tileProviderId: order_by
 }
 
-"""aggregate min on columns"""
+"""
+aggregate min on columns
+"""
 type tile_set_min_fields {
   areaOfInterestId: uuid
   format: String
@@ -4238,10 +5397,14 @@ input tile_set_min_order_by {
 response of any mutation on the table "tile_set"
 """
 type tile_set_mutation_response {
-  """number of affected rows by the mutation"""
+  """
+  number of affected rows by the mutation
+  """
   affected_rows: Int!
 
-  """data of the affected rows by the mutation"""
+  """
+  data of the affected rows by the mutation
+  """
   returning: [tile_set!]!
 }
 
@@ -4288,25 +5451,39 @@ input tile_set_pk_columns_input {
 select columns of table "tile_set"
 """
 enum tile_set_select_column {
-  """column name"""
+  """
+  column name
+  """
   areaOfInterestId
 
-  """column name"""
+  """
+  column name
+  """
   format
 
-  """column name"""
+  """
+  column name
+  """
   id
 
-  """column name"""
+  """
+  column name
+  """
   progress
 
-  """column name"""
+  """
+  column name
+  """
   quality
 
-  """column name"""
+  """
+  column name
+  """
   size
 
-  """column name"""
+  """
+  column name
+  """
   tileProviderId
 }
 
@@ -4323,7 +5500,9 @@ input tile_set_set_input {
   tileProviderId: uuid
 }
 
-"""aggregate stddev on columns"""
+"""
+aggregate stddev on columns
+"""
 type tile_set_stddev_fields {
   progress: Float
   quality: Float
@@ -4339,7 +5518,9 @@ input tile_set_stddev_order_by {
   size: order_by
 }
 
-"""aggregate stddev_pop on columns"""
+"""
+aggregate stddev_pop on columns
+"""
 type tile_set_stddev_pop_fields {
   progress: Float
   quality: Float
@@ -4355,7 +5536,9 @@ input tile_set_stddev_pop_order_by {
   size: order_by
 }
 
-"""aggregate stddev_samp on columns"""
+"""
+aggregate stddev_samp on columns
+"""
 type tile_set_stddev_samp_fields {
   progress: Float
   quality: Float
@@ -4371,7 +5554,9 @@ input tile_set_stddev_samp_order_by {
   size: order_by
 }
 
-"""aggregate sum on columns"""
+"""
+aggregate sum on columns
+"""
 type tile_set_sum_fields {
   progress: Float
   quality: smallint
@@ -4391,29 +5576,45 @@ input tile_set_sum_order_by {
 update columns of table "tile_set"
 """
 enum tile_set_update_column {
-  """column name"""
+  """
+  column name
+  """
   areaOfInterestId
 
-  """column name"""
+  """
+  column name
+  """
   format
 
-  """column name"""
+  """
+  column name
+  """
   id
 
-  """column name"""
+  """
+  column name
+  """
   progress
 
-  """column name"""
+  """
+  column name
+  """
   quality
 
-  """column name"""
+  """
+  column name
+  """
   size
 
-  """column name"""
+  """
+  column name
+  """
   tileProviderId
 }
 
-"""aggregate var_pop on columns"""
+"""
+aggregate var_pop on columns
+"""
 type tile_set_var_pop_fields {
   progress: Float
   quality: Float
@@ -4429,7 +5630,9 @@ input tile_set_var_pop_order_by {
   size: order_by
 }
 
-"""aggregate var_samp on columns"""
+"""
+aggregate var_samp on columns
+"""
 type tile_set_var_samp_fields {
   progress: Float
   quality: Float
@@ -4445,7 +5648,9 @@ input tile_set_var_samp_order_by {
   size: order_by
 }
 
-"""aggregate variance on columns"""
+"""
+aggregate variance on columns
+"""
 type tile_set_variance_fields {
   progress: Float
   quality: Float
@@ -4482,42 +5687,68 @@ input timestamptz_comparison_exp {
 columns and relationships of "users"
 """
 type users {
-  """An object relationship"""
+  """
+  An object relationship
+  """
   account: auth_accounts
 
-  """An array relationship"""
+  """
+  An array relationship
+  """
   area_of_interests(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [area_of_interest_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [area_of_interest_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: area_of_interest_bool_exp
   ): [area_of_interest!]!
 
-  """An aggregated array relationship"""
+  """
+  An aggregated array relationship
+  """
   area_of_interests_aggregate(
-    """distinct select on columns"""
+    """
+    distinct select on columns
+    """
     distinct_on: [area_of_interest_select_column!]
 
-    """limit the number of rows returned"""
+    """
+    limit the number of rows returned
+    """
     limit: Int
 
-    """skip the first n rows. Use only with order_by"""
+    """
+    skip the first n rows. Use only with order_by
+    """
     offset: Int
 
-    """sort the rows by one or more columns"""
+    """
+    sort the rows by one or more columns
+    """
     order_by: [area_of_interest_order_by!]
 
-    """filter the rows returned"""
+    """
+    filter the rows returned
+    """
     where: area_of_interest_bool_exp
   ): area_of_interest_aggregate!
   avatar_url: String
@@ -4581,7 +5812,9 @@ input users_bool_exp {
 unique or primary key constraints on table "users"
 """
 enum users_constraint {
-  """unique or primary key constraint"""
+  """
+  unique or primary key constraint
+  """
   users_pkey
 }
 
@@ -4598,7 +5831,9 @@ input users_insert_input {
   updated_at: timestamptz
 }
 
-"""aggregate max on columns"""
+"""
+aggregate max on columns
+"""
 type users_max_fields {
   avatar_url: String
   created_at: timestamptz
@@ -4618,7 +5853,9 @@ input users_max_order_by {
   updated_at: order_by
 }
 
-"""aggregate min on columns"""
+"""
+aggregate min on columns
+"""
 type users_min_fields {
   avatar_url: String
   created_at: timestamptz
@@ -4642,10 +5879,14 @@ input users_min_order_by {
 response of any mutation on the table "users"
 """
 type users_mutation_response {
-  """number of affected rows by the mutation"""
+  """
+  number of affected rows by the mutation
+  """
   affected_rows: Int!
 
-  """data of the affected rows by the mutation"""
+  """
+  data of the affected rows by the mutation
+  """
   returning: [users!]!
 }
 
@@ -4690,19 +5931,29 @@ input users_pk_columns_input {
 select columns of table "users"
 """
 enum users_select_column {
-  """column name"""
+  """
+  column name
+  """
   avatar_url
 
-  """column name"""
+  """
+  column name
+  """
   created_at
 
-  """column name"""
+  """
+  column name
+  """
   display_name
 
-  """column name"""
+  """
+  column name
+  """
   id
 
-  """column name"""
+  """
+  column name
+  """
   updated_at
 }
 
@@ -4721,19 +5972,29 @@ input users_set_input {
 update columns of table "users"
 """
 enum users_update_column {
-  """column name"""
+  """
+  column name
+  """
   avatar_url
 
-  """column name"""
+  """
+  column name
+  """
   created_at
 
-  """column name"""
+  """
+  column name
+  """
   display_name
 
-  """column name"""
+  """
+  column name
+  """
   id
 
-  """column name"""
+  """
+  column name
+  """
   updated_at
 }
 

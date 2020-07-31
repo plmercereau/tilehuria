@@ -61,8 +61,11 @@ import { defineComponent, ref, computed } from '@vue/composition-api'
 import PItemTileSet from 'components/ItemTileSet.vue'
 import PLeafletDraw from 'components/LeafletDraw.vue'
 import { TileSet } from '../generated'
-import { AREA_OF_INTEREST_CONFIG } from 'src/graphql'
-import { DEFAULT_TILE_LAYER, HBP_ENDPOINT } from 'src/config'
+import {
+  DEFAULT_TILE_LAYER,
+  AREA_OF_INTEREST_CONFIG,
+  HBP_ENDPOINT
+} from 'src/config'
 import { useSingleItem } from 'src/composables'
 import { nbTilesEstimation } from 'src/utils'
 
