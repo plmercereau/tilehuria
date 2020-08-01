@@ -1,21 +1,32 @@
 import { Ref, watch, ref, computed } from '@vue/composition-api'
-import { PropType } from 'src/utils'
+import { FieldDefinition } from 'src/utils'
 
-export const useFormFragment = <T, U extends keyof T = keyof T>(
+declare type Refs<Data> = {
+  [K in keyof Data]: Data[K] extends Ref<infer V> ? Ref<V> : Ref<Data[K]>
+}
+
+export const useFormFragment = <
+  T extends Record<string, unknown>,
+  U = Record<keyof T, FieldDefinition>,
+  TVariables = Record<keyof T, unknown>
+>(
   source: Ref<T | undefined>,
   editing: Readonly<Ref<boolean>>,
-  properties: ReadonlyArray<U> = Object.keys(source) as Array<U>
+  definitions: U
 ) => {
-  const fields = properties.reduce(
-    (previous, current: U) => (
+  const fields = Object.keys(definitions).reduce<{
+    [key: string]: Ref<unknown>
+  }>(
+    (previous, current) => (
       (previous[current] = ref(source.value?.[current])), previous
     ),
-    {} as Required<{ [key in U]: Ref<PropType<T, key> | undefined> }>
-  )
+    {}
+  ) as Refs<TVariables>
 
   const reset = () => {
-    properties.forEach(
-      fieldName => (fields[fieldName].value = source.value?.[fieldName])
+    const fieldRefs = fields as Record<string, Ref<unknown>>
+    Object.keys(definitions).forEach(
+      fieldName => (fieldRefs[fieldName].value = source.value?.[fieldName])
     )
   }
 
@@ -27,13 +38,14 @@ export const useFormFragment = <T, U extends keyof T = keyof T>(
   )
 
   const values = computed(() => {
-    const newValues = properties.reduce(
-      (previous, current: U) => (
-        (previous[current] = fields[current].value), previous
+    const fieldRefs = fields as Record<string, Ref<unknown>>
+    const fieldValues = Object.keys(fieldRefs).reduce<Record<string, unknown>>(
+      (previous, current) => (
+        (previous[current] = fieldRefs[current].value), previous
       ),
-      {} as Required<{ [key in U]: PropType<T, key> | undefined }>
+      {}
     )
-    return { ...source.value, ...newValues }
+    return { ...source.value, fieldValues } as T
   })
 
   return { fields, reset, values }

@@ -1,8 +1,11 @@
-export * from './config'
+import { TypedDocumentNode } from '@graphql-typed-document-node/core'
 
-// TODO as parameter
-import intro from 'src/schema.graphql'
-import { ObjectTypeDefinitionNode, TypeNode } from 'graphql'
+import {
+  TypeNode,
+  VariableDefinitionNode,
+  OperationDefinitionNode,
+  FieldDefinitionNode
+} from 'graphql'
 
 export const SCALARS = {
   ID: 'string',
@@ -17,46 +20,38 @@ export const SCALARS = {
   uuid: 'string'
 }
 
-const getDefinition = (name: string) =>
-  intro.definitions.find(
-    definition =>
-      definition.kind === 'ObjectTypeDefinition' &&
-      definition.name.value === name
-  ) as ObjectTypeDefinitionNode | undefined
-
-type FieldDefinition = {
+export type FieldDefinition = {
   required: boolean
   multiple: boolean
   type: string
   // definition: FieldDefinitionNode
 }
 
-const getType = (type: TypeNode): string => {
+const getType = (type: TypeNode | VariableDefinitionNode): string => {
   if (type.kind === 'NamedType') return type.name.value
   // else if (type.kind === 'ListType') return JSON.stringify(type.type)
   else return getType(type.type)
 }
-const getFields = (name?: string | ObjectTypeDefinitionNode) => {
-  if (typeof name === 'string') {
-    name = getDefinition(name)
-  }
-  if (name) {
-    return name.fields?.reduce<{ [key: string]: FieldDefinition }>(
-      (previous, current) => (
-        (previous[current.name.value] = {
-          required: current.type.kind === 'NonNullType',
-          multiple: current.type.kind === 'ListType',
-          type: getType(current.type)
-          // definition: current
-        }),
-        previous
-      ),
-      {}
-    )
-  }
-}
-const set = getFields('area_of_interest')
 
-console.log(set)
-const inte = getFields('Int')
-console.log(inte)
+const getFieldDefinition = (
+  fieldDefinition: FieldDefinitionNode | VariableDefinitionNode
+) => ({
+  required: fieldDefinition.type.kind === 'NonNullType',
+  multiple: fieldDefinition.type.kind === 'ListType',
+  type: getType(fieldDefinition.type)
+})
+
+export const getFields = <TData, TVariables>(
+  document?: TypedDocumentNode<TData, TVariables>
+) => {
+  const definitions = document?.definitions.find(
+    definition => definition.kind === 'OperationDefinition'
+  ) as OperationDefinitionNode
+  return definitions.variableDefinitions?.reduce(
+    (previous, current) => (
+      (previous[current.variable.name.value] = getFieldDefinition(current)),
+      previous
+    ),
+    {} as Record<string, FieldDefinition>
+  ) as Record<keyof TVariables, FieldDefinition>
+}
