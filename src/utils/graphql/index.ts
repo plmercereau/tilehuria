@@ -4,7 +4,8 @@ import {
   TypeNode,
   VariableDefinitionNode,
   OperationDefinitionNode,
-  FieldDefinitionNode
+  FieldDefinitionNode,
+  DocumentNode
 } from 'graphql'
 
 export const SCALARS = {
@@ -54,4 +55,47 @@ export const getFields = <TData, TVariables>(
     ),
     {} as Record<string, FieldDefinition>
   ) as Record<keyof TVariables, FieldDefinition>
+}
+
+export const getFieldNames = <TData, TVariables>(
+  document?: TypedDocumentNode<TData, TVariables>
+) => {
+  const definitions = document?.definitions.find(
+    definition => definition.kind === 'OperationDefinition'
+  ) as OperationDefinitionNode
+  return definitions.variableDefinitions?.map(
+    variable => variable.variable.name.value
+  ) as (keyof TVariables)[]
+}
+
+const getSelectionKey = (document: DocumentNode) => {
+  const definition = document.definitions.find(
+    definition => definition.kind === 'OperationDefinition'
+  ) as OperationDefinitionNode | undefined
+  if (!definition || !definition.name)
+    throw Error('Operation has no definition or name')
+  const selection = definition.selectionSet.selections[0]
+  if (selection.kind !== 'Field')
+    throw Error(
+      `Invalid selection kind in ${definition.name.value} : ${selection.kind}`
+    )
+  return selection.name.value
+}
+
+export const fold = <TResult extends Record<string, T>, T>(
+  document: TypedDocumentNode<TResult, unknown>,
+  item: T
+): TResult => {
+  const key = getSelectionKey(document)
+  return {
+    [key]: item
+  } as TResult
+}
+
+export const unfold = <TResult extends Record<string, T>, T>(
+  document: TypedDocumentNode<TResult, unknown>,
+  result: TResult
+): T => {
+  const key = getSelectionKey(document)
+  return result[key]
 }

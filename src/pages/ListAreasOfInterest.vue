@@ -19,7 +19,7 @@ export default defineComponent({
     PItemArea
   },
   setup() {
-    const { list, loading } = useItemList(GRAPHQL_CONFIG.area_of_interest)
+    const { list, loading } = useItemList(GRAPHQL_CONFIG.area_of_interest.list)
 
     return { list, loading }
   }

@@ -1,14 +1,8 @@
 import { ref, Ref } from '@vue/composition-api'
 import { useFormFragment } from './form-fragment'
-import { FieldDefinition } from 'src/utils'
 
-export const useFormEditor = <
-  T extends Record<string, unknown>,
-  U = Record<keyof T, FieldDefinition>,
-  V = Record<keyof T, unknown>
->(
+export const useFormEditor = <T extends Record<string, unknown>>(
   source: Readonly<Ref<Readonly<T> | undefined>>,
-  definitions: U,
   {
     save
   }: {
@@ -17,11 +11,7 @@ export const useFormEditor = <
 ) => {
   const editing = ref(false)
 
-  const { fields, reset, values } = useFormFragment<T, U, V>(
-    source,
-    editing,
-    definitions
-  )
+  const { variables, reset } = useFormFragment<T>(source, editing)
 
   const edit = () => {
     editing.value = true
@@ -29,7 +19,7 @@ export const useFormEditor = <
 
   const _save = async () => {
     try {
-      await Promise.resolve(save(values.value))
+      variables.value && (await Promise.resolve(save(variables.value)))
     } catch (error) {
       console.log('Save failed', error)
     }
@@ -40,5 +30,5 @@ export const useFormEditor = <
     editing.value = false
   }
 
-  return { editing, edit, save: _save, cancel, values, fields, reset }
+  return { editing, edit, save: _save, cancel, variables, reset }
 }

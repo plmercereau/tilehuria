@@ -14,7 +14,7 @@ q-card(style='width: 300px')
           v-slot='{ errors, touched, invalid }'
         )
           q-input(
-            v-model='name',
+            v-model='variables.name',
             label='Name',
             autofocus,
             :error='touched && invalid',
@@ -26,7 +26,7 @@ q-card(style='width: 300px')
           v-slot='{ errors, touched, invalid }'
         )
           q-input(
-            v-model='slug',
+            v-model='variables.slug',
             label='Slug',
             :error='touched && invalid',
             :error-message='errors[0]'
@@ -37,7 +37,7 @@ q-card(style='width: 300px')
           v-slot='{ errors, touched, invalid }'
         )
           q-input(
-            v-model='url',
+            v-model='variables.url',
             label='Url',
             :error='touched && invalid',
             :error-message='errors[0]'
@@ -78,27 +78,21 @@ extend('url', {
 
 export default defineComponent({
   name: 'ItemAreaOfInterest',
-  setup(_, ctx) {
-    const {
-      fields: { name, url, slug },
-      save,
-      onSaveError,
-      onSaved,
-      reset: resetForm
-    } = useSingleItem(GRAPHQL_CONFIG.tile_provider)
+  setup() {
+    const { variables, save, reset: resetForm } = useSingleItem(
+      GRAPHQL_CONFIG.tile_provider
+    )
 
     const error = ref('')
-    onSaveError(err => {
-      error.value = JSON.stringify(err)
-    })
 
-    onSaved(res => {
-      console.log('On saved')
-      if (res?.data?.insertTileProvider?.id) ctx.emit('done')
-      else error.value = 'Error in retreiving the object id'
-    })
+    // onSaved(() => {
+    //   console.log('On saved')
+    //   console.warn('TODO clean this mess')
+    //   // if (res?.data?.insertTileProvider?.id) ctx.emit('done')
+    //   // else error.value = 'Error in retreiving the object id'
+    // })
 
-    return { name, url, slug, error, resetForm, save }
+    return { variables, error, resetForm, save }
   }
 })
 </script>

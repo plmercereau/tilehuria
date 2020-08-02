@@ -28,17 +28,9 @@ export default defineComponent({
     PNewProvider
   },
   setup() {
-    const { list, loading, remove } = useItemList(
-      GRAPHQL_CONFIG.tile_provider,
-      {
-        defaults: ref({
-          name: '',
-          url: '',
-          slug: ''
-        })
-      }
-    )
-
+    const remove = () => console.warn('TODO')
+    const { list, loading } = useItemList(GRAPHQL_CONFIG.tile_provider.list)
+    // TODO new item
     const newProviderDialog = ref(false)
 
     return { list, loading, remove, newProviderDialog }

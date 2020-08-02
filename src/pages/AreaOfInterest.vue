@@ -10,7 +10,7 @@
               q-icon( name="label")
             q-item-section
               q-item-label
-                q-input(v-model="name" :readonly="!editing" :borderless="!editing" placeholder="Name" autofocus)
+                q-input(v-model="variables.name" :readonly="!editing" :borderless="!editing" placeholder="Name" autofocus)
             q-item-section(side)
               q-item-label(:lines="2")
                 q-btn(v-if="!editing" size='12px' flat dense round icon="edit" @click="edit")
@@ -52,7 +52,7 @@
             :editing="editing")
       div.col-12.col-sm-6.col-md-8.q-px-xs
         l-map(:options="{ zoomSnap: 0.5 }" style="height: 100%" :zoom="2")
-          p-leaflet-draw(v-model="source" :readonly="!editing")
+          p-leaflet-draw(v-model="variables.source" :readonly="!editing")
           l-tile-layer(:url="url")
           l-tile-layer(v-if="selection" :url="selectionUrl" :options="{errorTileUrl: 'empty-tile.png'}") 
 </template>
@@ -80,24 +80,18 @@ export default defineComponent({
   setup(props) {
     const {
       item,
-      onLoadError,
+      // onLoadError,
       loading,
-      onSaveError,
+      // onSaveError,
       editing,
       edit,
       cancel,
       save,
-      fields: { minZoom, maxZoom, source, name, tileSets }
-    } = useSingleItem(GRAPHQL_CONFIG.area_of_interest, {
-      id: () => props.id,
-      defaults: ref({
-        name: '',
-        tileSets: [],
-        tilesCount: 0,
-        minZoom: 1,
-        maxZoom: 20
-      })
-    })
+      variables
+    } = useSingleItem(GRAPHQL_CONFIG.area_of_interest, { id: props.id })
+
+    // TODO
+    const tileSets = ref([])
 
     const selection = ref<TileSet>()
     const select = (tileSet?: TileSet) => {
@@ -110,24 +104,27 @@ export default defineComponent({
     )
     const url = DEFAULT_TILE_LAYER
 
-    onLoadError(err => console.warn(err))
-    onSaveError(error => console.log('save error', error))
+    // onLoadError(err => console.warn(err))
+    // onSaveError(error => console.log('save error', error))
 
     const zoomRange = computed({
-      get: () => ({ min: minZoom.value, max: maxZoom.value }),
+      get: () => ({
+        min: variables.value.minZoom,
+        max: variables.value.maxZoom
+      }),
       set: val => {
-        minZoom.value = val.min
-        maxZoom.value = val.max
+        variables.value.minZoom = val.min
+        variables.value.maxZoom = val.max
       }
     })
 
     const tilesCountEstimate = computed(() => {
-      if (source.value) {
+      if (variables.value.source) {
         return (
           nbTilesEstimation(
-            source.value as GeoJSON.GeoJSON,
-            minZoom.value,
-            maxZoom.value
+            variables.value.source as GeoJSON.GeoJSON,
+            variables.value.minZoom,
+            variables.value.maxZoom
           ) || 0
         )
       } else return 0
@@ -145,10 +142,9 @@ export default defineComponent({
       edit,
       cancel,
       save,
-      name,
-      source,
       zoomRange,
-      tileSets
+      tileSets,
+      variables
     }
   }
 })

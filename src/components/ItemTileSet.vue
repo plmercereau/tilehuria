@@ -18,18 +18,18 @@ q-expansion-item(
       v-if='!expanded && source.progress == 1 && source.size'
     )
       q-badge {{ source.size | prettyBytes }}
-  template(#default)
+  template(#default, v-if='variables')
     q-item
       q-item-section(top)
         q-item-label(overline) Format
         q-item-label
-          q-badge {{ format }}
+          q-badge {{ variables.format }}
       q-item-section(top)
         q-item-label(overline) Quality
         q-item-label(overline) &nbsp;
         q-item-label 
           q-slider(
-            v-model='quality',
+            v-model='variables.quality',
             :min='0',
             :max='100',
             :label-always='!editing',
@@ -78,16 +78,10 @@ export default defineComponent({
   setup(props, ctx) {
     const expanded = ref(false)
     const { source, editing } = toRefs(props)
-    const {
-      fields: { format, quality },
-      values: formValue
-    } = useFormFragment<TileSet, 'format' | 'quality'>(source, editing, [
-      'format',
-      'quality'
-    ])
+    const { variables } = useFormFragment(source, editing)
 
     const change = () => {
-      ctx.emit('input', formValue.value)
+      ctx.emit('input', variables.value)
     }
 
     const label = computed(() => source.value.areaOfInterest?.name)
@@ -103,7 +97,7 @@ export default defineComponent({
       }
     })
 
-    return { label, format, quality, downloadLink, expanded, change }
+    return { label, downloadLink, variables, expanded, change }
   }
 })
 </script>
