@@ -1,25 +1,21 @@
 import {
   SelectOneProviderDocument,
-  InsertOneTileSetDocument,
+  InsertProviderDocument,
   ListAllTileProvidersDocument,
   RemoveOneTileProviderDocument,
   ProviderFragmentFragment
 } from 'src/generated'
+import { compareByFields } from 'src/utils'
 
 export const tile_provider = {
   subscription: SelectOneProviderDocument,
-  insert: InsertOneTileSetDocument,
+  insert: InsertProviderDocument,
   list: ListAllTileProvidersDocument,
   remove: RemoveOneTileProviderDocument,
   defaults: {
     name: '',
     url: '',
     slug: ''
-  } as ProviderFragmentFragment
-  // sort: (a, b) =>
-  //   a.name.toLowerCase() > b.name.toLowerCase()
-  //     ? 1
-  //     : a.name.toLowerCase() === b.name.toLowerCase()
-  //     ? 0
-  //     : -1
+  } as ProviderFragmentFragment,
+  sort: compareByFields(['name'])
 }

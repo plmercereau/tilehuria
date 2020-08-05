@@ -20,7 +20,13 @@ export const useItemSubscription = <
     return (variables && pick(variables.value, fields)) || {}
   })
   // ? probably not the best way to define isNew
-  const isNew = computed(() => variables && !variables.value)
+  // ? deepequals defaults?
+  const isNew = computed(() => {
+    if (variables?.value) {
+      const obj = (variables.value as unknown) as Record<string, unknown>
+      return !obj.id
+    } else return true
+  })
 
   const query = document && buildQueryFromSelectionSet(document)
   const operation = useQuery<TResult>(query, pickedVariables.value, () => ({

@@ -34,3 +34,37 @@ export const arrayChanges = <T extends Record<string, unknown>>(
     (a, b) => hasSameId(a, b) && !deepEqual(a, b)
   )
 })
+
+type CompareOptions = { caseSensitive: boolean }
+// ! only works for non null, string fields
+export const compareBy = <T extends Record<string, unknown>>(
+  a: T,
+  b: T,
+  fields: (keyof T)[],
+  options?: CompareOptions
+): number => {
+  const caseSensitive = options?.caseSensitive ?? true // TODO test
+  // TODO multiple fields
+  const [field, ...nextFields] = fields
+  if (field) {
+    if (typeof a[field] === 'string' && typeof b[field] === 'string') {
+      let fa = a[field] as string
+      let fb = b[field] as string
+      if (caseSensitive) {
+        fa = fa.toLowerCase()
+        fb = fb.toLowerCase()
+      }
+      if (fa > fb) return 1
+      else if (fa < fb) return -1
+      else {
+        if (nextFields) return compareBy(a, b, nextFields, options)
+        else return 0
+      }
+    } else return 0
+  } else return 0
+}
+
+export const compareByFields = <T extends Record<string, unknown>>(
+  fields: (keyof T)[],
+  options?: CompareOptions
+) => (a: T, b: T) => compareBy(a, b, fields, options)

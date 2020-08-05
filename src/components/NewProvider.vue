@@ -78,20 +78,22 @@ extend('url', {
 
 export default defineComponent({
   name: 'ItemAreaOfInterest',
-  setup() {
-    const { values, save, reset: resetForm } = useSingleItem(
+  setup(_, ctx) {
+    const { values, save, reset: resetForm, onSaved, onError } = useSingleItem(
       GRAPHQL_CONFIG.tile_provider
     )
 
     const error = ref('')
 
-    // onSaved(() => {
-    //   console.log('On saved')
-    //   console.warn('TODO clean this mess')
-    //   // if (res?.data?.insertTileProvider?.id) ctx.emit('done')
-    //   // else error.value = 'Error in retreiving the object id'
-    // })
+    onSaved(res => {
+      if (res?.data?.insertTileProvider?.id) ctx.emit('done')
+      else error.value = 'Error in retreiving the object id'
+    })
 
+    onError(err => {
+      console.warn(err)
+      error.value = err?.name || ''
+    })
     return { values, error, resetForm, save }
   }
 })

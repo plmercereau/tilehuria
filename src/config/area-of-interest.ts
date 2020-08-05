@@ -3,9 +3,9 @@ import {
   InsertAoiDocument,
   UpdateAoiDocument,
   ListAllAreasOfInterestDocument,
-  AreaOfInterestFragmentFragment
+  AreaOfInterestFragmentFragment as AoiFragment
 } from 'src/generated'
-import { difference } from 'src/utils'
+import { difference, compareByFields } from 'src/utils'
 
 export const area_of_interest = {
   subscription: SelectOneAreaOfInterestDocument,
@@ -20,30 +20,28 @@ export const area_of_interest = {
     minZoom: 1,
     maxZoom: 20,
     tileSets: []
-  } as AreaOfInterestFragmentFragment,
+  } as AoiFragment,
   dataToVariables: (
-    {
-      id,
-      name,
-      maxZoom,
-      minZoom,
-      source,
-      tileSets
-    }: AreaOfInterestFragmentFragment,
-    { tileSets: initialTileSets }: AreaOfInterestFragmentFragment
+    { id, name, maxZoom, minZoom, source, tileSets }: AoiFragment,
+    oldItem?: AoiFragment
   ) => {
     // ! For the moment, every tileset that changed is deleted then added again
-    const tileSetsRemoveIds = difference(initialTileSets, tileSets).map(
-      ts => ts.id
-    )
+    const tileSetsRemoveIds = oldItem
+      ? difference(oldItem.tileSets, tileSets).map(ts => ts.id)
+      : []
     // ! We need to filter the values sent to the graphql mutation (some columns can't be inserted!)
-    const tileSetsAdd = difference(tileSets, initialTileSets).map(
+    const tileSetsAdd = (oldItem
+      ? difference(tileSets, oldItem.tileSets)
+      : tileSets
+    ).map(
       ({ id: tsId, areaOfInterestId, format, quality, tileProviderId }) => ({
         id: tsId,
         areaOfInterestId,
-        tileProviderId: tileProviderId as string,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        tileProviderId,
         format,
-        quality: quality as number
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        quality
       })
     )
     return {
@@ -55,5 +53,6 @@ export const area_of_interest = {
       tileSetsAdd,
       tileSetsRemoveIds
     }
-  }
+  },
+  sort: compareByFields(['name'])
 }

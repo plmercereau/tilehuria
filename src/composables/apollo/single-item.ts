@@ -2,14 +2,15 @@ import { TypedDocumentNode } from '@graphql-typed-document-node/core'
 import { ref, computed, Ref } from '@vue/composition-api'
 import { useFormEditor, useItemSubscription } from 'src/composables'
 import { useItemMutation } from './item-mutation'
+import { FetchResult } from 'apollo-link'
 
-export type ObjectToVariablesFunction<T, U> = (object: T, initialObject: T) => U
-
-export const copyObject = <T extends Record<string, unknown>, U>(
+export type ObjectToVariablesFunction<T, U> = (
   object: T,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  _: T
-) => ({ ...object } as U)
+  initialObject: T | undefined
+) => U
+
+export const copyObject = <T extends Record<string, unknown>, U>(object: T) =>
+  ({ ...object } as U)
 
 interface ItemOptions<
   T,
@@ -54,8 +55,9 @@ export const useSingleItem = <
     subscription,
     insert,
     update,
+    list,
     defaults,
-    // sort = () => 0
+    sort = () => 0,
     dataToVariables = copyObject
   }: ItemOptions<
     T,
@@ -78,7 +80,8 @@ export const useSingleItem = <
 
   const isNew = computed(
     // TODO not ideal - won't likely work e.g. when updating after the id has just been added from an insert
-    () => !(formDefaults && Object.keys(formDefaults).length > 0)
+    // ? deepequals defauls?
+    () => !(formDefaults?.id && Object.keys(formDefaults).length > 0)
   )
 
   const { editing, save, edit, cancel, reset, values } = useFormEditor<T>(
@@ -100,12 +103,33 @@ export const useSingleItem = <
       computed(() => dataToVariables(mergedDefaults, mergedDefaults))
     )
   const insertOp =
-    insert && useItemMutation(insert, values, item, dataToVariables)
+    insert &&
+    useItemMutation(insert, 'insert', values, list, sort, item, dataToVariables)
   const updateOp =
-    update && useItemMutation(update, values, item, dataToVariables)
+    update &&
+    useItemMutation(update, 'update', values, list, sort, item, dataToVariables)
   const loading = computed<boolean>(
     () => !!subscriptionOp?.loading.value || !item.value
   )
+
+  const onSaved = (
+    fn: (
+      param?: FetchResult<
+        RInsert | RUpdate,
+        Record<string, unknown>,
+        Record<string, unknown>
+      >
+    ) => void
+  ) => {
+    insertOp?.onDone(fn)
+    updateOp?.onDone(fn)
+  }
+
+  const onError = (fn: (param?: Error) => void) => {
+    subscriptionOp?.onError(fn)
+    insertOp?.onError(fn)
+    updateOp?.onError(fn)
+  }
 
   return {
     item,
@@ -115,6 +139,8 @@ export const useSingleItem = <
     save,
     edit,
     cancel,
-    reset
+    reset,
+    onSaved,
+    onError
   }
 }

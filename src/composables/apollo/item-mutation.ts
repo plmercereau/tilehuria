@@ -1,17 +1,22 @@
 import { TypedDocumentNode } from '@graphql-typed-document-node/core'
 import { Ref } from '@vue/composition-api'
 import { useMutation } from '@vue/apollo-composable'
-import { pick, getFieldNames, unfold } from 'src/utils'
+import { pick, getFieldNames, unfold, fold } from 'src/utils'
 import { ObjectToVariablesFunction, copyObject } from '.'
 
 export const useItemMutation = <
   T extends Record<string, unknown>,
   TResult extends Record<string, T>,
-  TVariables
+  TVariables,
+  RList extends Record<string, T[]>,
+  VList
 >(
   document: TypedDocumentNode<TResult, TVariables>,
+  type: 'insert' | 'update' | 'delete',
   item: Ref<T>,
-  initialItem: Ref<T>,
+  list?: TypedDocumentNode<RList, VList>,
+  sort: (a: T, b: T) => number = () => 0,
+  initialItem?: Ref<T>,
   dataToVariables: ObjectToVariablesFunction<T, TVariables> = copyObject
 ) => {
   const fields = getFieldNames(document)
@@ -19,25 +24,37 @@ export const useItemMutation = <
     // variables: variables.value,
     update: (cache, { data }) => {
       // TODO cache one single element
-
       if (data) {
-        // const cacheQuery = cache.readQuery<TResult>({
-        //   query: list
-        // })
-        // if (cacheQuery) {
-        console.warn('TODO implement again')
-        // const key = Object.keys(cacheQuery)[0]
-        // const cachedList = cacheQuery[key]
-        // if (cachedList) {
-        //   cachedList.push(item)
-        //   cache.writeQuery({
-        //     query: list,
-        //     data: { [key]: cachedList.sort(sort) }
-        //   })
-        // }
-        // }
+        const result = unfold<TResult, T>(document, data)
+        if (list) {
+          const cachedQuery = cache.readQuery<RList>({
+            query: list
+          })
+          if (cachedQuery) {
+            const cachedList = unfold<RList, T[]>(list, cachedQuery)
+            if (cachedList) {
+              let newList = [...cachedList]
+              if (type === 'insert') {
+                newList.push(result)
+                newList = newList.sort(sort)
+              } else if (type === 'update') {
+                // TODO custom id key(s)
+                newList = newList.map(cursor =>
+                  cursor.id === result.id ? result : cursor
+                )
+              } else if (type === 'delete') {
+                // TODO custom id key(s)
+                newList = newList.filter(cursor => cursor.id !== result.id)
+              }
+              cache.writeQuery({
+                query: list,
+                data: fold(list, newList.sort(sort))
+              })
+            }
+          }
+        }
+        return result
       }
-      //   return item
     }
   }))
   mutation?.onDone(res => {
@@ -47,10 +64,7 @@ export const useItemMutation = <
     }
   })
   const mutate = async () => {
-    console.log('BEFORE MUTATE')
-    console.log(item.value.name, initialItem.value.name)
-    console.log(item.value.tileSets, initialItem.value.tileSets)
-    const variables = dataToVariables(item.value, initialItem.value)
+    const variables = dataToVariables(item.value, initialItem?.value)
     return await mutation.mutate(pick(variables, fields))
   }
   return { ...mutation, mutate, fields }
