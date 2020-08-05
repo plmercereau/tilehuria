@@ -133,11 +133,13 @@ export default defineComponent({
     })
 
     const newTileSetDialog = ref(false)
-    const add = (payload: TileSet) => {
+    const add = (payload?: TileSet) => {
       newTileSetDialog.value = false
-      payload.areaOfInterestId = values.value.id
-      values.value.tileSets.push(payload)
-      select(payload)
+      if (payload) {
+        payload.areaOfInterestId = values.value.id
+        values.value.tileSets.push(payload)
+        select(payload)
+      }
     }
 
     return {
