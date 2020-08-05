@@ -77,7 +77,7 @@ export default defineComponent({
     PItemTileSet,
     PLeafletDraw
   },
-  setup(props) {
+  setup(props, ctx) {
     const {
       item,
       // onLoadError,
@@ -85,14 +85,12 @@ export default defineComponent({
       // onSaveError,
       editing,
       edit,
-      cancel,
-      save: saveAreaOfInterest,
+      cancel: cancelEdit,
+      isNew,
+      save,
       values
     } = useSingleItem(GRAPHQL_CONFIG.area_of_interest, { id: props.id })
 
-    const save = async () => {
-      await saveAreaOfInterest()
-    }
     const selection = ref<TileSet>()
     const select = (tileSet?: TileSet) => {
       selection.value = tileSet
@@ -106,6 +104,11 @@ export default defineComponent({
 
     // onLoadError(err => console.warn(err))
     // onSaveError(error => console.log('save error', error))
+
+    const cancel = () => {
+      cancelEdit()
+      if (isNew.value) ctx.root.$router.go(-1)
+    }
 
     const zoomRange = computed({
       get: () => ({

@@ -87,6 +87,7 @@ export const useSingleItem = <
   const { editing, save, edit, cancel, reset, values } = useFormEditor<T>(
     item,
     {
+      edit: isNew.value,
       save: async () => {
         if (isNew.value) await insertOp?.mutate()
         else await updateOp?.mutate()
@@ -133,6 +134,7 @@ export const useSingleItem = <
 
   return {
     item,
+    isNew,
     values,
     loading,
     editing,

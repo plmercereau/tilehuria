@@ -4,16 +4,18 @@ import { useFormFragment } from './form-fragment'
 export const useFormEditor = <T extends Record<string, unknown>>(
   source: Readonly<Ref<Readonly<T | undefined>>> | Ref<Readonly<T>>,
   {
-    save
+    save,
+    edit = false
   }: {
     save: (value: T) => Promise<unknown> | unknown
+    edit: boolean
   }
 ) => {
-  const editing = ref(false)
+  const editing = ref(edit)
 
   const { values, reset } = useFormFragment<T>(source, editing)
 
-  const edit = () => {
+  const editAction = () => {
     editing.value = true
   }
 
@@ -30,5 +32,5 @@ export const useFormEditor = <T extends Record<string, unknown>>(
     editing.value = false
   }
 
-  return { editing, edit, save: _save, cancel, values, reset }
+  return { editing, edit: editAction, save: _save, cancel, values, reset }
 }
