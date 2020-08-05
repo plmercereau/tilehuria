@@ -9,6 +9,7 @@ export type Scalars = {
   Float: number
   citext: string
   jsonb: { [key: string]: any }
+  numeric: number
   smallint: number
   timestamptz: Date
   uuid: string
@@ -97,7 +98,7 @@ export type AreaOfInterest = {
   tileSets: Array<TileSet>
   /** An aggregated array relationship */
   tileSets_aggregate: TileSetAggregate
-  tilesCount: Scalars['Int']
+  tilesCount?: Maybe<Scalars['numeric']>
   /** An object relationship */
   user?: Maybe<Users>
   userId?: Maybe<Scalars['uuid']>
@@ -214,7 +215,7 @@ export type AreaOfInterestBoolExp = {
   name?: Maybe<StringComparisonExp>
   source?: Maybe<JsonbComparisonExp>
   tileSets?: Maybe<TileSetBoolExp>
-  tilesCount?: Maybe<IntComparisonExp>
+  tilesCount?: Maybe<NumericComparisonExp>
   user?: Maybe<UsersBoolExp>
   userId?: Maybe<UuidComparisonExp>
   xyzCoordinates?: Maybe<JsonbComparisonExp>
@@ -248,7 +249,7 @@ export type AreaOfInterestDeleteKeyInput = {
 export type AreaOfInterestIncInput = {
   maxZoom?: Maybe<Scalars['Int']>
   minZoom?: Maybe<Scalars['Int']>
-  tilesCount?: Maybe<Scalars['Int']>
+  tilesCount?: Maybe<Scalars['numeric']>
 }
 
 /** input type for inserting data into table "area_of_interest" */
@@ -259,7 +260,7 @@ export type AreaOfInterestInsertInput = {
   name?: Maybe<Scalars['String']>
   source?: Maybe<Scalars['jsonb']>
   tileSets?: Maybe<TileSetArrRelInsertInput>
-  tilesCount?: Maybe<Scalars['Int']>
+  tilesCount?: Maybe<Scalars['numeric']>
   user?: Maybe<UsersObjRelInsertInput>
   userId?: Maybe<Scalars['uuid']>
   xyzCoordinates?: Maybe<Scalars['jsonb']>
@@ -272,7 +273,7 @@ export type AreaOfInterestMaxFields = {
   maxZoom?: Maybe<Scalars['Int']>
   minZoom?: Maybe<Scalars['Int']>
   name?: Maybe<Scalars['String']>
-  tilesCount?: Maybe<Scalars['Int']>
+  tilesCount?: Maybe<Scalars['numeric']>
   userId?: Maybe<Scalars['uuid']>
 }
 
@@ -293,7 +294,7 @@ export type AreaOfInterestMinFields = {
   maxZoom?: Maybe<Scalars['Int']>
   minZoom?: Maybe<Scalars['Int']>
   name?: Maybe<Scalars['String']>
-  tilesCount?: Maybe<Scalars['Int']>
+  tilesCount?: Maybe<Scalars['numeric']>
   userId?: Maybe<Scalars['uuid']>
 }
 
@@ -381,7 +382,7 @@ export type AreaOfInterestSetInput = {
   minZoom?: Maybe<Scalars['Int']>
   name?: Maybe<Scalars['String']>
   source?: Maybe<Scalars['jsonb']>
-  tilesCount?: Maybe<Scalars['Int']>
+  tilesCount?: Maybe<Scalars['numeric']>
   userId?: Maybe<Scalars['uuid']>
   xyzCoordinates?: Maybe<Scalars['jsonb']>
 }
@@ -436,7 +437,7 @@ export type AreaOfInterestSumFields = {
   __typename?: 'area_of_interest_sum_fields'
   maxZoom?: Maybe<Scalars['Int']>
   minZoom?: Maybe<Scalars['Int']>
-  tilesCount?: Maybe<Scalars['Int']>
+  tilesCount?: Maybe<Scalars['numeric']>
 }
 
 /** order by sum() on columns of table "area_of_interest" */
@@ -2356,6 +2357,19 @@ export type MutationRootUpdateUsersArgs = {
 export type MutationRootUpdateUsersByPkArgs = {
   _set?: Maybe<UsersSetInput>
   pk_columns: UsersPkColumnsInput
+}
+
+/** expression to compare columns of type numeric. All fields are combined with logical 'AND'. */
+export type NumericComparisonExp = {
+  _eq?: Maybe<Scalars['numeric']>
+  _gt?: Maybe<Scalars['numeric']>
+  _gte?: Maybe<Scalars['numeric']>
+  _in?: Maybe<Array<Scalars['numeric']>>
+  _is_null?: Maybe<Scalars['Boolean']>
+  _lt?: Maybe<Scalars['numeric']>
+  _lte?: Maybe<Scalars['numeric']>
+  _neq?: Maybe<Scalars['numeric']>
+  _nin?: Maybe<Array<Scalars['numeric']>>
 }
 
 /** column ordering options */

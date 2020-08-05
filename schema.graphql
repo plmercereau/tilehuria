@@ -155,7 +155,7 @@ type area_of_interest {
     """
     where: tile_set_bool_exp
   ): tile_set_aggregate!
-  tilesCount: Int!
+  tilesCount: numeric
 
   """
   An object relationship
@@ -259,7 +259,7 @@ input area_of_interest_bool_exp {
   name: String_comparison_exp
   source: jsonb_comparison_exp
   tileSets: tile_set_bool_exp
-  tilesCount: Int_comparison_exp
+  tilesCount: numeric_comparison_exp
   user: users_bool_exp
   userId: uuid_comparison_exp
   xyzCoordinates: jsonb_comparison_exp
@@ -305,7 +305,7 @@ input type for incrementing integer column in table "area_of_interest"
 input area_of_interest_inc_input {
   maxZoom: Int
   minZoom: Int
-  tilesCount: Int
+  tilesCount: numeric
 }
 
 """
@@ -318,7 +318,7 @@ input area_of_interest_insert_input {
   name: String
   source: jsonb
   tileSets: tile_set_arr_rel_insert_input
-  tilesCount: Int
+  tilesCount: numeric
   user: users_obj_rel_insert_input
   userId: uuid
   xyzCoordinates: jsonb
@@ -332,7 +332,7 @@ type area_of_interest_max_fields {
   maxZoom: Int
   minZoom: Int
   name: String
-  tilesCount: Int
+  tilesCount: numeric
   userId: uuid
 }
 
@@ -356,7 +356,7 @@ type area_of_interest_min_fields {
   maxZoom: Int
   minZoom: Int
   name: String
-  tilesCount: Int
+  tilesCount: numeric
   userId: uuid
 }
 
@@ -489,7 +489,7 @@ input area_of_interest_set_input {
   minZoom: Int
   name: String
   source: jsonb
-  tilesCount: Int
+  tilesCount: numeric
   userId: uuid
   xyzCoordinates: jsonb
 }
@@ -554,7 +554,7 @@ aggregate sum on columns
 type area_of_interest_sum_fields {
   maxZoom: Int
   minZoom: Int
-  tilesCount: Int
+  tilesCount: numeric
 }
 
 """
@@ -3536,6 +3536,23 @@ type mutation_root {
     _set: users_set_input
     pk_columns: users_pk_columns_input!
   ): users
+}
+
+scalar numeric
+
+"""
+expression to compare columns of type numeric. All fields are combined with logical 'AND'.
+"""
+input numeric_comparison_exp {
+  _eq: numeric
+  _gt: numeric
+  _gte: numeric
+  _in: [numeric!]
+  _is_null: Boolean
+  _lt: numeric
+  _lte: numeric
+  _neq: numeric
+  _nin: [numeric!]
 }
 
 """
