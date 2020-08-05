@@ -4,9 +4,11 @@ export const useFormFragment = <T extends Record<string, unknown>>(
   source: Ref<T | undefined>,
   editing: Readonly<Ref<boolean>>
 ) => {
-  const variables = ref<T>(source.value || {}) as Ref<T>
+  const values = ref<T>(source.value || {}) as Ref<T>
   const reset = () => {
-    if (source.value) variables.value = { ...source.value }
+    if (source.value) {
+      values.value = JSON.parse(JSON.stringify(source.value)) as T
+    }
   }
 
   watch(() => editing.value, reset)
@@ -17,5 +19,5 @@ export const useFormFragment = <T extends Record<string, unknown>>(
     () => !editing.value && reset()
   )
 
-  return { variables, reset }
+  return { values, reset }
 }

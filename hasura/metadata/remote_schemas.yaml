@@ -1,5 +1,1 @@
-- name: HOOKS
-  definition:
-    url_from_env: HOOKS_REMOTE_SCHEMA
-    timeout_seconds: 60
-    forward_client_headers: true
+[]

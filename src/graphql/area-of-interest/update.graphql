@@ -5,6 +5,8 @@ mutation updateAoi(
   $source: jsonb!
   $minZoom: Int!
   $maxZoom: Int!
+  $tileSetsRemoveIds: [uuid!]!
+  $tileSetsAdd: [tile_set_insert_input!]!
 ) {
   updateAreaOfInterest(
     pk_columns: { id: $id }
@@ -12,5 +14,11 @@ mutation updateAoi(
   ) {
     # ? Optional, as optimisticResponse and subscribeToMore update the cache already
     ...areaOfInterestFragment
+  }
+  deleteTileSets(where: { id: { _in: $tileSetsRemoveIds } }) {
+    affected_rows
+  }
+  insertTileSets(objects: $tileSetsAdd) {
+    affected_rows
   }
 }

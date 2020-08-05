@@ -1,1 +1,2 @@
-export * from './pick'
+export * from './objects'
+export * from './arrays'

@@ -10,7 +10,7 @@
               q-icon( name="label")
             q-item-section
               q-item-label
-                q-input(v-model="variables.name" :readonly="!editing" :borderless="!editing" placeholder="Name" autofocus)
+                q-input(v-model="values.name" :readonly="!editing" :borderless="!editing" placeholder="Name" autofocus)
             q-item-section(side)
               q-item-label(:lines="2")
                 q-btn(v-if="!editing" size='12px' flat dense round icon="edit" @click="edit")
@@ -42,17 +42,17 @@
             q-item-section(side)
               q-item-label(:lines="2")
                 q-btn(size='12px' flat dense round icon="add")
-          p-item-tile-set(v-for="set, key of item.tileSets"
+          p-item-tile-set(v-for="set, key of values.tileSets"
             :key="'item'+set.id"
             :source="set"
-            v-model="tileSets[key]"
+            v-model="values.tileSets[key]"
             @show="select(set)"
             @hide="select(null)"
             :active="selection === set"
             :editing="editing")
       div.col-12.col-sm-6.col-md-8.q-px-xs
         l-map(:options="{ zoomSnap: 0.5 }" style="height: 100%" :zoom="2")
-          p-leaflet-draw(v-model="variables.source" :readonly="!editing")
+          p-leaflet-draw(v-model="values.source" :readonly="!editing")
           l-tile-layer(:url="url")
           l-tile-layer(v-if="selection" :url="selectionUrl" :options="{errorTileUrl: 'empty-tile.png'}") 
 </template>
@@ -86,13 +86,13 @@ export default defineComponent({
       editing,
       edit,
       cancel,
-      save,
-      variables
+      save: saveAreaOfInterest,
+      values
     } = useSingleItem(GRAPHQL_CONFIG.area_of_interest, { id: props.id })
 
-    // TODO
-    const tileSets = ref([])
-
+    const save = async () => {
+      await saveAreaOfInterest()
+    }
     const selection = ref<TileSet>()
     const select = (tileSet?: TileSet) => {
       selection.value = tileSet
@@ -109,22 +109,22 @@ export default defineComponent({
 
     const zoomRange = computed({
       get: () => ({
-        min: variables.value.minZoom,
-        max: variables.value.maxZoom
+        min: values.value.minZoom,
+        max: values.value.maxZoom
       }),
       set: val => {
-        variables.value.minZoom = val.min
-        variables.value.maxZoom = val.max
+        values.value.minZoom = val.min
+        values.value.maxZoom = val.max
       }
     })
 
     const tilesCountEstimate = computed(() => {
-      if (variables.value.source) {
+      if (values.value.source) {
         return (
           nbTilesEstimation(
-            variables.value.source as GeoJSON.GeoJSON,
-            variables.value.minZoom,
-            variables.value.maxZoom
+            values.value.source as GeoJSON.GeoJSON,
+            values.value.minZoom,
+            values.value.maxZoom
           ) || 0
         )
       } else return 0
@@ -143,8 +143,7 @@ export default defineComponent({
       cancel,
       save,
       zoomRange,
-      tileSets,
-      variables
+      values
     }
   }
 })

@@ -3,8 +3,13 @@ import { ref, computed, Ref } from '@vue/composition-api'
 import { useFormEditor, useItemSubscription } from 'src/composables'
 import { useItemMutation } from './item-mutation'
 
-const copyObject = <T extends Record<string, unknown>, U>(origin: T) =>
-  ({ ...origin } as U)
+export type ObjectToVariablesFunction<T, U> = (object: T, initialObject: T) => U
+
+export const copyObject = <T extends Record<string, unknown>, U>(
+  object: T,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _: T
+) => ({ ...object } as U)
 
 interface ItemOptions<
   T,
@@ -24,7 +29,10 @@ interface ItemOptions<
   update?: TypedDocumentNode<RUpdate, VUpdate>
   list?: TypedDocumentNode<RList, VList>
   remove?: TypedDocumentNode<RRemove, VRemove>
-  dataToVariables?: (data: T) => VQuery | VInsert | VUpdate | VList | VRemove
+  dataToVariables?: ObjectToVariablesFunction<
+    T,
+    VQuery | VInsert | VUpdate | VList | VRemove
+  >
   sort?: (a: T, b: T) => number
   defaults: T
 }
@@ -64,41 +72,44 @@ export const useSingleItem = <
   >,
   formDefaults?: Partial<T>
 ) => {
-  type TVariables = VQuery & VInsert & VUpdate & VList & VRemove
+  // type TVariables = VQuery & VInsert & VUpdate & VList & VRemove
   const mergedDefaults = { ...defaults, ...formDefaults } as T
   const item = ref<T>(mergedDefaults) as Ref<T>
 
   const isNew = computed(
-    // TODO not ideal
+    // TODO not ideal - won't likely work e.g. when updating after the id has just been added from an insert
     () => !(formDefaults && Object.keys(formDefaults).length > 0)
   )
 
-  const formProxy = computed<TVariables>({
-    get: () => dataToVariables(item.value) as TVariables,
-    set: (val: TVariables) => (variables.value = val)
-  })
-
-  const { editing, save, edit, cancel, reset, variables } = useFormEditor<
-    TVariables
-  >(formProxy, {
-    save: async () => {
-      if (isNew.value) await insertOp?.mutate()
-      else await updateOp?.mutate()
+  const { editing, save, edit, cancel, reset, values } = useFormEditor<T>(
+    item,
+    {
+      save: async () => {
+        if (isNew.value) await insertOp?.mutate()
+        else await updateOp?.mutate()
+      }
     }
-  })
+  )
 
   const subscriptionOp =
     subscription &&
-    useItemSubscription(subscription, item, mergedDefaults, variables)
-  const insertOp = insert && useItemMutation(insert, variables, item)
-  const updateOp = update && useItemMutation(update, variables, item)
+    useItemSubscription(
+      subscription,
+      item,
+      mergedDefaults,
+      computed(() => dataToVariables(mergedDefaults, mergedDefaults))
+    )
+  const insertOp =
+    insert && useItemMutation(insert, values, item, dataToVariables)
+  const updateOp =
+    update && useItemMutation(update, values, item, dataToVariables)
   const loading = computed<boolean>(
     () => !!subscriptionOp?.loading.value || !item.value
   )
 
   return {
     item,
-    variables,
+    values,
     loading,
     editing,
     save,

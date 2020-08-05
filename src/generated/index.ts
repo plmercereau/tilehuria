@@ -11,7 +11,7 @@ export type Scalars = {
   Float: number
   citext: string
   jsonb: { [key: string]: any }
-  smallint: any
+  smallint: number
   timestamptz: Date
   uuid: string
 }
@@ -43,7 +43,7 @@ export type FloatComparisonExp = {
 }
 
 export type InsertAreaOfInterestActionOutput = {
-  __typename: 'InsertAreaOfInterestActionOutput'
+  __typename?: 'InsertAreaOfInterestActionOutput'
   areaOfInterest?: Maybe<AreaOfInterest>
   areaOfInterestId: Scalars['uuid']
 }
@@ -81,7 +81,7 @@ export type StringComparisonExp = {
 }
 
 export type TileSetInfoOutput = {
-  __typename: 'TileSetInfoOutput'
+  __typename?: 'TileSetInfoOutput'
   size?: Maybe<Scalars['Int']>
   tileSet?: Maybe<TileSet>
   tileSetId: Scalars['ID']
@@ -89,7 +89,7 @@ export type TileSetInfoOutput = {
 
 /** columns and relationships of "area_of_interest" */
 export type AreaOfInterest = {
-  __typename: 'area_of_interest'
+  __typename?: 'area_of_interest'
   id: Scalars['uuid']
   maxZoom?: Maybe<Scalars['Int']>
   minZoom?: Maybe<Scalars['Int']>
@@ -136,14 +136,14 @@ export type AreaOfInterestXyzCoordinatesArgs = {
 
 /** aggregated selection of "area_of_interest" */
 export type AreaOfInterestAggregate = {
-  __typename: 'area_of_interest_aggregate'
+  __typename?: 'area_of_interest_aggregate'
   aggregate?: Maybe<AreaOfInterestAggregateFields>
   nodes: Array<AreaOfInterest>
 }
 
 /** aggregate fields of "area_of_interest" */
 export type AreaOfInterestAggregateFields = {
-  __typename: 'area_of_interest_aggregate_fields'
+  __typename?: 'area_of_interest_aggregate_fields'
   avg?: Maybe<AreaOfInterestAvgFields>
   count?: Maybe<Scalars['Int']>
   max?: Maybe<AreaOfInterestMaxFields>
@@ -192,7 +192,7 @@ export type AreaOfInterestArrRelInsertInput = {
 
 /** aggregate avg on columns */
 export type AreaOfInterestAvgFields = {
-  __typename: 'area_of_interest_avg_fields'
+  __typename?: 'area_of_interest_avg_fields'
   maxZoom?: Maybe<Scalars['Float']>
   minZoom?: Maybe<Scalars['Float']>
   tilesCount?: Maybe<Scalars['Float']>
@@ -269,7 +269,7 @@ export type AreaOfInterestInsertInput = {
 
 /** aggregate max on columns */
 export type AreaOfInterestMaxFields = {
-  __typename: 'area_of_interest_max_fields'
+  __typename?: 'area_of_interest_max_fields'
   id?: Maybe<Scalars['uuid']>
   maxZoom?: Maybe<Scalars['Int']>
   minZoom?: Maybe<Scalars['Int']>
@@ -290,7 +290,7 @@ export type AreaOfInterestMaxOrderBy = {
 
 /** aggregate min on columns */
 export type AreaOfInterestMinFields = {
-  __typename: 'area_of_interest_min_fields'
+  __typename?: 'area_of_interest_min_fields'
   id?: Maybe<Scalars['uuid']>
   maxZoom?: Maybe<Scalars['Int']>
   minZoom?: Maybe<Scalars['Int']>
@@ -311,7 +311,7 @@ export type AreaOfInterestMinOrderBy = {
 
 /** response of any mutation on the table "area_of_interest" */
 export type AreaOfInterestMutationResponse = {
-  __typename: 'area_of_interest_mutation_response'
+  __typename?: 'area_of_interest_mutation_response'
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int']
   /** data of the affected rows by the mutation */
@@ -390,7 +390,7 @@ export type AreaOfInterestSetInput = {
 
 /** aggregate stddev on columns */
 export type AreaOfInterestStddevFields = {
-  __typename: 'area_of_interest_stddev_fields'
+  __typename?: 'area_of_interest_stddev_fields'
   maxZoom?: Maybe<Scalars['Float']>
   minZoom?: Maybe<Scalars['Float']>
   tilesCount?: Maybe<Scalars['Float']>
@@ -405,7 +405,7 @@ export type AreaOfInterestStddevOrderBy = {
 
 /** aggregate stddev_pop on columns */
 export type AreaOfInterestStddevPopFields = {
-  __typename: 'area_of_interest_stddev_pop_fields'
+  __typename?: 'area_of_interest_stddev_pop_fields'
   maxZoom?: Maybe<Scalars['Float']>
   minZoom?: Maybe<Scalars['Float']>
   tilesCount?: Maybe<Scalars['Float']>
@@ -420,7 +420,7 @@ export type AreaOfInterestStddevPopOrderBy = {
 
 /** aggregate stddev_samp on columns */
 export type AreaOfInterestStddevSampFields = {
-  __typename: 'area_of_interest_stddev_samp_fields'
+  __typename?: 'area_of_interest_stddev_samp_fields'
   maxZoom?: Maybe<Scalars['Float']>
   minZoom?: Maybe<Scalars['Float']>
   tilesCount?: Maybe<Scalars['Float']>
@@ -435,7 +435,7 @@ export type AreaOfInterestStddevSampOrderBy = {
 
 /** aggregate sum on columns */
 export type AreaOfInterestSumFields = {
-  __typename: 'area_of_interest_sum_fields'
+  __typename?: 'area_of_interest_sum_fields'
   maxZoom?: Maybe<Scalars['Int']>
   minZoom?: Maybe<Scalars['Int']>
   tilesCount?: Maybe<Scalars['Int']>
@@ -470,7 +470,7 @@ export enum AreaOfInterestUpdateColumn {
 
 /** aggregate var_pop on columns */
 export type AreaOfInterestVarPopFields = {
-  __typename: 'area_of_interest_var_pop_fields'
+  __typename?: 'area_of_interest_var_pop_fields'
   maxZoom?: Maybe<Scalars['Float']>
   minZoom?: Maybe<Scalars['Float']>
   tilesCount?: Maybe<Scalars['Float']>
@@ -485,7 +485,7 @@ export type AreaOfInterestVarPopOrderBy = {
 
 /** aggregate var_samp on columns */
 export type AreaOfInterestVarSampFields = {
-  __typename: 'area_of_interest_var_samp_fields'
+  __typename?: 'area_of_interest_var_samp_fields'
   maxZoom?: Maybe<Scalars['Float']>
   minZoom?: Maybe<Scalars['Float']>
   tilesCount?: Maybe<Scalars['Float']>
@@ -500,7 +500,7 @@ export type AreaOfInterestVarSampOrderBy = {
 
 /** aggregate variance on columns */
 export type AreaOfInterestVarianceFields = {
-  __typename: 'area_of_interest_variance_fields'
+  __typename?: 'area_of_interest_variance_fields'
   maxZoom?: Maybe<Scalars['Float']>
   minZoom?: Maybe<Scalars['Float']>
   tilesCount?: Maybe<Scalars['Float']>
@@ -515,7 +515,7 @@ export type AreaOfInterestVarianceOrderBy = {
 
 /** columns and relationships of "auth.account_providers" */
 export type AuthAccountProviders = {
-  __typename: 'auth_account_providers'
+  __typename?: 'auth_account_providers'
   /** An object relationship */
   account: AuthAccounts
   account_id: Scalars['uuid']
@@ -530,14 +530,14 @@ export type AuthAccountProviders = {
 
 /** aggregated selection of "auth.account_providers" */
 export type AuthAccountProvidersAggregate = {
-  __typename: 'auth_account_providers_aggregate'
+  __typename?: 'auth_account_providers_aggregate'
   aggregate?: Maybe<AuthAccountProvidersAggregateFields>
   nodes: Array<AuthAccountProviders>
 }
 
 /** aggregate fields of "auth.account_providers" */
 export type AuthAccountProvidersAggregateFields = {
-  __typename: 'auth_account_providers_aggregate_fields'
+  __typename?: 'auth_account_providers_aggregate_fields'
   count?: Maybe<Scalars['Int']>
   max?: Maybe<AuthAccountProvidersMaxFields>
   min?: Maybe<AuthAccountProvidersMinFields>
@@ -601,7 +601,7 @@ export type AuthAccountProvidersInsertInput = {
 
 /** aggregate max on columns */
 export type AuthAccountProvidersMaxFields = {
-  __typename: 'auth_account_providers_max_fields'
+  __typename?: 'auth_account_providers_max_fields'
   account_id?: Maybe<Scalars['uuid']>
   auth_provider?: Maybe<Scalars['String']>
   auth_provider_unique_id?: Maybe<Scalars['String']>
@@ -622,7 +622,7 @@ export type AuthAccountProvidersMaxOrderBy = {
 
 /** aggregate min on columns */
 export type AuthAccountProvidersMinFields = {
-  __typename: 'auth_account_providers_min_fields'
+  __typename?: 'auth_account_providers_min_fields'
   account_id?: Maybe<Scalars['uuid']>
   auth_provider?: Maybe<Scalars['String']>
   auth_provider_unique_id?: Maybe<Scalars['String']>
@@ -643,7 +643,7 @@ export type AuthAccountProvidersMinOrderBy = {
 
 /** response of any mutation on the table "auth.account_providers" */
 export type AuthAccountProvidersMutationResponse = {
-  __typename: 'auth_account_providers_mutation_response'
+  __typename?: 'auth_account_providers_mutation_response'
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int']
   /** data of the affected rows by the mutation */
@@ -724,7 +724,7 @@ export enum AuthAccountProvidersUpdateColumn {
 
 /** columns and relationships of "auth.account_roles" */
 export type AuthAccountRoles = {
-  __typename: 'auth_account_roles'
+  __typename?: 'auth_account_roles'
   /** An object relationship */
   account: AuthAccounts
   account_id: Scalars['uuid']
@@ -737,14 +737,14 @@ export type AuthAccountRoles = {
 
 /** aggregated selection of "auth.account_roles" */
 export type AuthAccountRolesAggregate = {
-  __typename: 'auth_account_roles_aggregate'
+  __typename?: 'auth_account_roles_aggregate'
   aggregate?: Maybe<AuthAccountRolesAggregateFields>
   nodes: Array<AuthAccountRoles>
 }
 
 /** aggregate fields of "auth.account_roles" */
 export type AuthAccountRolesAggregateFields = {
-  __typename: 'auth_account_roles_aggregate_fields'
+  __typename?: 'auth_account_roles_aggregate_fields'
   count?: Maybe<Scalars['Int']>
   max?: Maybe<AuthAccountRolesMaxFields>
   min?: Maybe<AuthAccountRolesMinFields>
@@ -802,7 +802,7 @@ export type AuthAccountRolesInsertInput = {
 
 /** aggregate max on columns */
 export type AuthAccountRolesMaxFields = {
-  __typename: 'auth_account_roles_max_fields'
+  __typename?: 'auth_account_roles_max_fields'
   account_id?: Maybe<Scalars['uuid']>
   created_at?: Maybe<Scalars['timestamptz']>
   id?: Maybe<Scalars['uuid']>
@@ -819,7 +819,7 @@ export type AuthAccountRolesMaxOrderBy = {
 
 /** aggregate min on columns */
 export type AuthAccountRolesMinFields = {
-  __typename: 'auth_account_roles_min_fields'
+  __typename?: 'auth_account_roles_min_fields'
   account_id?: Maybe<Scalars['uuid']>
   created_at?: Maybe<Scalars['timestamptz']>
   id?: Maybe<Scalars['uuid']>
@@ -836,7 +836,7 @@ export type AuthAccountRolesMinOrderBy = {
 
 /** response of any mutation on the table "auth.account_roles" */
 export type AuthAccountRolesMutationResponse = {
-  __typename: 'auth_account_roles_mutation_response'
+  __typename?: 'auth_account_roles_mutation_response'
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int']
   /** data of the affected rows by the mutation */
@@ -905,7 +905,7 @@ export enum AuthAccountRolesUpdateColumn {
 
 /** columns and relationships of "auth.accounts" */
 export type AuthAccounts = {
-  __typename: 'auth_accounts'
+  __typename?: 'auth_accounts'
   /** An array relationship */
   account_providers: Array<AuthAccountProviders>
   /** An aggregated array relationship */
@@ -1000,14 +1000,14 @@ export type AuthAccountsRefreshTokensAggregateArgs = {
 
 /** aggregated selection of "auth.accounts" */
 export type AuthAccountsAggregate = {
-  __typename: 'auth_accounts_aggregate'
+  __typename?: 'auth_accounts_aggregate'
   aggregate?: Maybe<AuthAccountsAggregateFields>
   nodes: Array<AuthAccounts>
 }
 
 /** aggregate fields of "auth.accounts" */
 export type AuthAccountsAggregateFields = {
-  __typename: 'auth_accounts_aggregate_fields'
+  __typename?: 'auth_accounts_aggregate_fields'
   count?: Maybe<Scalars['Int']>
   max?: Maybe<AuthAccountsMaxFields>
   min?: Maybe<AuthAccountsMinFields>
@@ -1117,7 +1117,7 @@ export type AuthAccountsInsertInput = {
 
 /** aggregate max on columns */
 export type AuthAccountsMaxFields = {
-  __typename: 'auth_accounts_max_fields'
+  __typename?: 'auth_accounts_max_fields'
   created_at?: Maybe<Scalars['timestamptz']>
   default_role?: Maybe<Scalars['String']>
   email?: Maybe<Scalars['citext']>
@@ -1148,7 +1148,7 @@ export type AuthAccountsMaxOrderBy = {
 
 /** aggregate min on columns */
 export type AuthAccountsMinFields = {
-  __typename: 'auth_accounts_min_fields'
+  __typename?: 'auth_accounts_min_fields'
   created_at?: Maybe<Scalars['timestamptz']>
   default_role?: Maybe<Scalars['String']>
   email?: Maybe<Scalars['citext']>
@@ -1179,7 +1179,7 @@ export type AuthAccountsMinOrderBy = {
 
 /** response of any mutation on the table "auth.accounts" */
 export type AuthAccountsMutationResponse = {
-  __typename: 'auth_accounts_mutation_response'
+  __typename?: 'auth_accounts_mutation_response'
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int']
   /** data of the affected rows by the mutation */
@@ -1322,7 +1322,7 @@ export enum AuthAccountsUpdateColumn {
 
 /** columns and relationships of "auth.providers" */
 export type AuthProviders = {
-  __typename: 'auth_providers'
+  __typename?: 'auth_providers'
   /** An array relationship */
   account_providers: Array<AuthAccountProviders>
   /** An aggregated array relationship */
@@ -1350,14 +1350,14 @@ export type AuthProvidersAccountProvidersAggregateArgs = {
 
 /** aggregated selection of "auth.providers" */
 export type AuthProvidersAggregate = {
-  __typename: 'auth_providers_aggregate'
+  __typename?: 'auth_providers_aggregate'
   aggregate?: Maybe<AuthProvidersAggregateFields>
   nodes: Array<AuthProviders>
 }
 
 /** aggregate fields of "auth.providers" */
 export type AuthProvidersAggregateFields = {
-  __typename: 'auth_providers_aggregate_fields'
+  __typename?: 'auth_providers_aggregate_fields'
   count?: Maybe<Scalars['Int']>
   max?: Maybe<AuthProvidersMaxFields>
   min?: Maybe<AuthProvidersMinFields>
@@ -1405,7 +1405,7 @@ export type AuthProvidersInsertInput = {
 
 /** aggregate max on columns */
 export type AuthProvidersMaxFields = {
-  __typename: 'auth_providers_max_fields'
+  __typename?: 'auth_providers_max_fields'
   provider?: Maybe<Scalars['String']>
 }
 
@@ -1416,7 +1416,7 @@ export type AuthProvidersMaxOrderBy = {
 
 /** aggregate min on columns */
 export type AuthProvidersMinFields = {
-  __typename: 'auth_providers_min_fields'
+  __typename?: 'auth_providers_min_fields'
   provider?: Maybe<Scalars['String']>
 }
 
@@ -1427,7 +1427,7 @@ export type AuthProvidersMinOrderBy = {
 
 /** response of any mutation on the table "auth.providers" */
 export type AuthProvidersMutationResponse = {
-  __typename: 'auth_providers_mutation_response'
+  __typename?: 'auth_providers_mutation_response'
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int']
   /** data of the affected rows by the mutation */
@@ -1477,7 +1477,7 @@ export enum AuthProvidersUpdateColumn {
 
 /** columns and relationships of "auth.refresh_tokens" */
 export type AuthRefreshTokens = {
-  __typename: 'auth_refresh_tokens'
+  __typename?: 'auth_refresh_tokens'
   /** An object relationship */
   account: AuthAccounts
   account_id: Scalars['uuid']
@@ -1488,14 +1488,14 @@ export type AuthRefreshTokens = {
 
 /** aggregated selection of "auth.refresh_tokens" */
 export type AuthRefreshTokensAggregate = {
-  __typename: 'auth_refresh_tokens_aggregate'
+  __typename?: 'auth_refresh_tokens_aggregate'
   aggregate?: Maybe<AuthRefreshTokensAggregateFields>
   nodes: Array<AuthRefreshTokens>
 }
 
 /** aggregate fields of "auth.refresh_tokens" */
 export type AuthRefreshTokensAggregateFields = {
-  __typename: 'auth_refresh_tokens_aggregate_fields'
+  __typename?: 'auth_refresh_tokens_aggregate_fields'
   count?: Maybe<Scalars['Int']>
   max?: Maybe<AuthRefreshTokensMaxFields>
   min?: Maybe<AuthRefreshTokensMinFields>
@@ -1549,7 +1549,7 @@ export type AuthRefreshTokensInsertInput = {
 
 /** aggregate max on columns */
 export type AuthRefreshTokensMaxFields = {
-  __typename: 'auth_refresh_tokens_max_fields'
+  __typename?: 'auth_refresh_tokens_max_fields'
   account_id?: Maybe<Scalars['uuid']>
   created_at?: Maybe<Scalars['timestamptz']>
   expires_at?: Maybe<Scalars['timestamptz']>
@@ -1566,7 +1566,7 @@ export type AuthRefreshTokensMaxOrderBy = {
 
 /** aggregate min on columns */
 export type AuthRefreshTokensMinFields = {
-  __typename: 'auth_refresh_tokens_min_fields'
+  __typename?: 'auth_refresh_tokens_min_fields'
   account_id?: Maybe<Scalars['uuid']>
   created_at?: Maybe<Scalars['timestamptz']>
   expires_at?: Maybe<Scalars['timestamptz']>
@@ -1583,7 +1583,7 @@ export type AuthRefreshTokensMinOrderBy = {
 
 /** response of any mutation on the table "auth.refresh_tokens" */
 export type AuthRefreshTokensMutationResponse = {
-  __typename: 'auth_refresh_tokens_mutation_response'
+  __typename?: 'auth_refresh_tokens_mutation_response'
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int']
   /** data of the affected rows by the mutation */
@@ -1651,7 +1651,7 @@ export enum AuthRefreshTokensUpdateColumn {
 
 /** columns and relationships of "auth.roles" */
 export type AuthRoles = {
-  __typename: 'auth_roles'
+  __typename?: 'auth_roles'
   /** An array relationship */
   account_roles: Array<AuthAccountRoles>
   /** An aggregated array relationship */
@@ -1701,14 +1701,14 @@ export type AuthRolesAccountsAggregateArgs = {
 
 /** aggregated selection of "auth.roles" */
 export type AuthRolesAggregate = {
-  __typename: 'auth_roles_aggregate'
+  __typename?: 'auth_roles_aggregate'
   aggregate?: Maybe<AuthRolesAggregateFields>
   nodes: Array<AuthRoles>
 }
 
 /** aggregate fields of "auth.roles" */
 export type AuthRolesAggregateFields = {
-  __typename: 'auth_roles_aggregate_fields'
+  __typename?: 'auth_roles_aggregate_fields'
   count?: Maybe<Scalars['Int']>
   max?: Maybe<AuthRolesMaxFields>
   min?: Maybe<AuthRolesMinFields>
@@ -1758,7 +1758,7 @@ export type AuthRolesInsertInput = {
 
 /** aggregate max on columns */
 export type AuthRolesMaxFields = {
-  __typename: 'auth_roles_max_fields'
+  __typename?: 'auth_roles_max_fields'
   role?: Maybe<Scalars['String']>
 }
 
@@ -1769,7 +1769,7 @@ export type AuthRolesMaxOrderBy = {
 
 /** aggregate min on columns */
 export type AuthRolesMinFields = {
-  __typename: 'auth_roles_min_fields'
+  __typename?: 'auth_roles_min_fields'
   role?: Maybe<Scalars['String']>
 }
 
@@ -1780,7 +1780,7 @@ export type AuthRolesMinOrderBy = {
 
 /** response of any mutation on the table "auth.roles" */
 export type AuthRolesMutationResponse = {
-  __typename: 'auth_roles_mutation_response'
+  __typename?: 'auth_roles_mutation_response'
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int']
   /** data of the affected rows by the mutation */
@@ -1873,7 +1873,7 @@ export type JsonbComparisonExp = {
 
 /** mutation root */
 export type MutationRoot = {
-  __typename: 'mutation_root'
+  __typename?: 'mutation_root'
   /** delete single row from the table: "area_of_interest" */
   deleteAreaOfInterest?: Maybe<AreaOfInterest>
   /** delete data from the table: "area_of_interest" */
@@ -2378,7 +2378,7 @@ export enum OrderBy {
 
 /** query root */
 export type QueryRoot = {
-  __typename: 'query_root'
+  __typename?: 'query_root'
   /** fetch data from the table: "area_of_interest" using primary key columns */
   areaOfInterest?: Maybe<AreaOfInterest>
   /** fetch aggregated fields from the table: "area_of_interest" */
@@ -2686,7 +2686,7 @@ export type SmallintComparisonExp = {
 
 /** subscription root */
 export type SubscriptionRoot = {
-  __typename: 'subscription_root'
+  __typename?: 'subscription_root'
   /** fetch data from the table: "area_of_interest" using primary key columns */
   areaOfInterest?: Maybe<AreaOfInterest>
   /** fetch aggregated fields from the table: "area_of_interest" */
@@ -2981,7 +2981,7 @@ export type SubscriptionRootUsersByPkArgs = {
 
 /** columns and relationships of "tile_provider" */
 export type TileProvider = {
-  __typename: 'tile_provider'
+  __typename?: 'tile_provider'
   id: Scalars['uuid']
   name: Scalars['String']
   slug: Scalars['String']
@@ -3012,14 +3012,14 @@ export type TileProviderTileSetsAggregateArgs = {
 
 /** aggregated selection of "tile_provider" */
 export type TileProviderAggregate = {
-  __typename: 'tile_provider_aggregate'
+  __typename?: 'tile_provider_aggregate'
   aggregate?: Maybe<TileProviderAggregateFields>
   nodes: Array<TileProvider>
 }
 
 /** aggregate fields of "tile_provider" */
 export type TileProviderAggregateFields = {
-  __typename: 'tile_provider_aggregate_fields'
+  __typename?: 'tile_provider_aggregate_fields'
   count?: Maybe<Scalars['Int']>
   max?: Maybe<TileProviderMaxFields>
   min?: Maybe<TileProviderMinFields>
@@ -3077,7 +3077,7 @@ export type TileProviderInsertInput = {
 
 /** aggregate max on columns */
 export type TileProviderMaxFields = {
-  __typename: 'tile_provider_max_fields'
+  __typename?: 'tile_provider_max_fields'
   id?: Maybe<Scalars['uuid']>
   name?: Maybe<Scalars['String']>
   slug?: Maybe<Scalars['String']>
@@ -3094,7 +3094,7 @@ export type TileProviderMaxOrderBy = {
 
 /** aggregate min on columns */
 export type TileProviderMinFields = {
-  __typename: 'tile_provider_min_fields'
+  __typename?: 'tile_provider_min_fields'
   id?: Maybe<Scalars['uuid']>
   name?: Maybe<Scalars['String']>
   slug?: Maybe<Scalars['String']>
@@ -3111,7 +3111,7 @@ export type TileProviderMinOrderBy = {
 
 /** response of any mutation on the table "tile_provider" */
 export type TileProviderMutationResponse = {
-  __typename: 'tile_provider_mutation_response'
+  __typename?: 'tile_provider_mutation_response'
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int']
   /** data of the affected rows by the mutation */
@@ -3179,7 +3179,7 @@ export enum TileProviderUpdateColumn {
 
 /** columns and relationships of "tile_set" */
 export type TileSet = {
-  __typename: 'tile_set'
+  __typename?: 'tile_set'
   /** An object relationship */
   areaOfInterest: AreaOfInterest
   areaOfInterestId: Scalars['uuid']
@@ -3195,14 +3195,14 @@ export type TileSet = {
 
 /** aggregated selection of "tile_set" */
 export type TileSetAggregate = {
-  __typename: 'tile_set_aggregate'
+  __typename?: 'tile_set_aggregate'
   aggregate?: Maybe<TileSetAggregateFields>
   nodes: Array<TileSet>
 }
 
 /** aggregate fields of "tile_set" */
 export type TileSetAggregateFields = {
-  __typename: 'tile_set_aggregate_fields'
+  __typename?: 'tile_set_aggregate_fields'
   avg?: Maybe<TileSetAvgFields>
   count?: Maybe<Scalars['Int']>
   max?: Maybe<TileSetMaxFields>
@@ -3245,7 +3245,7 @@ export type TileSetArrRelInsertInput = {
 
 /** aggregate avg on columns */
 export type TileSetAvgFields = {
-  __typename: 'tile_set_avg_fields'
+  __typename?: 'tile_set_avg_fields'
   progress?: Maybe<Scalars['Float']>
   quality?: Maybe<Scalars['Float']>
   size?: Maybe<Scalars['Float']>
@@ -3302,7 +3302,7 @@ export type TileSetInsertInput = {
 
 /** aggregate max on columns */
 export type TileSetMaxFields = {
-  __typename: 'tile_set_max_fields'
+  __typename?: 'tile_set_max_fields'
   areaOfInterestId?: Maybe<Scalars['uuid']>
   format?: Maybe<Scalars['String']>
   id?: Maybe<Scalars['uuid']>
@@ -3325,7 +3325,7 @@ export type TileSetMaxOrderBy = {
 
 /** aggregate min on columns */
 export type TileSetMinFields = {
-  __typename: 'tile_set_min_fields'
+  __typename?: 'tile_set_min_fields'
   areaOfInterestId?: Maybe<Scalars['uuid']>
   format?: Maybe<Scalars['String']>
   id?: Maybe<Scalars['uuid']>
@@ -3348,7 +3348,7 @@ export type TileSetMinOrderBy = {
 
 /** response of any mutation on the table "tile_set" */
 export type TileSetMutationResponse = {
-  __typename: 'tile_set_mutation_response'
+  __typename?: 'tile_set_mutation_response'
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int']
   /** data of the affected rows by the mutation */
@@ -3417,7 +3417,7 @@ export type TileSetSetInput = {
 
 /** aggregate stddev on columns */
 export type TileSetStddevFields = {
-  __typename: 'tile_set_stddev_fields'
+  __typename?: 'tile_set_stddev_fields'
   progress?: Maybe<Scalars['Float']>
   quality?: Maybe<Scalars['Float']>
   size?: Maybe<Scalars['Float']>
@@ -3432,7 +3432,7 @@ export type TileSetStddevOrderBy = {
 
 /** aggregate stddev_pop on columns */
 export type TileSetStddevPopFields = {
-  __typename: 'tile_set_stddev_pop_fields'
+  __typename?: 'tile_set_stddev_pop_fields'
   progress?: Maybe<Scalars['Float']>
   quality?: Maybe<Scalars['Float']>
   size?: Maybe<Scalars['Float']>
@@ -3447,7 +3447,7 @@ export type TileSetStddevPopOrderBy = {
 
 /** aggregate stddev_samp on columns */
 export type TileSetStddevSampFields = {
-  __typename: 'tile_set_stddev_samp_fields'
+  __typename?: 'tile_set_stddev_samp_fields'
   progress?: Maybe<Scalars['Float']>
   quality?: Maybe<Scalars['Float']>
   size?: Maybe<Scalars['Float']>
@@ -3462,7 +3462,7 @@ export type TileSetStddevSampOrderBy = {
 
 /** aggregate sum on columns */
 export type TileSetSumFields = {
-  __typename: 'tile_set_sum_fields'
+  __typename?: 'tile_set_sum_fields'
   progress?: Maybe<Scalars['Float']>
   quality?: Maybe<Scalars['smallint']>
   size?: Maybe<Scalars['Int']>
@@ -3495,7 +3495,7 @@ export enum TileSetUpdateColumn {
 
 /** aggregate var_pop on columns */
 export type TileSetVarPopFields = {
-  __typename: 'tile_set_var_pop_fields'
+  __typename?: 'tile_set_var_pop_fields'
   progress?: Maybe<Scalars['Float']>
   quality?: Maybe<Scalars['Float']>
   size?: Maybe<Scalars['Float']>
@@ -3510,7 +3510,7 @@ export type TileSetVarPopOrderBy = {
 
 /** aggregate var_samp on columns */
 export type TileSetVarSampFields = {
-  __typename: 'tile_set_var_samp_fields'
+  __typename?: 'tile_set_var_samp_fields'
   progress?: Maybe<Scalars['Float']>
   quality?: Maybe<Scalars['Float']>
   size?: Maybe<Scalars['Float']>
@@ -3525,7 +3525,7 @@ export type TileSetVarSampOrderBy = {
 
 /** aggregate variance on columns */
 export type TileSetVarianceFields = {
-  __typename: 'tile_set_variance_fields'
+  __typename?: 'tile_set_variance_fields'
   progress?: Maybe<Scalars['Float']>
   quality?: Maybe<Scalars['Float']>
   size?: Maybe<Scalars['Float']>
@@ -3553,7 +3553,7 @@ export type TimestamptzComparisonExp = {
 
 /** columns and relationships of "users" */
 export type Users = {
-  __typename: 'users'
+  __typename?: 'users'
   /** An object relationship */
   account?: Maybe<AuthAccounts>
   /** An array relationship */
@@ -3587,14 +3587,14 @@ export type UsersAreaOfInterestsAggregateArgs = {
 
 /** aggregated selection of "users" */
 export type UsersAggregate = {
-  __typename: 'users_aggregate'
+  __typename?: 'users_aggregate'
   aggregate?: Maybe<UsersAggregateFields>
   nodes: Array<Users>
 }
 
 /** aggregate fields of "users" */
 export type UsersAggregateFields = {
-  __typename: 'users_aggregate_fields'
+  __typename?: 'users_aggregate_fields'
   count?: Maybe<Scalars['Int']>
   max?: Maybe<UsersMaxFields>
   min?: Maybe<UsersMinFields>
@@ -3652,7 +3652,7 @@ export type UsersInsertInput = {
 
 /** aggregate max on columns */
 export type UsersMaxFields = {
-  __typename: 'users_max_fields'
+  __typename?: 'users_max_fields'
   avatar_url?: Maybe<Scalars['String']>
   created_at?: Maybe<Scalars['timestamptz']>
   display_name?: Maybe<Scalars['String']>
@@ -3671,7 +3671,7 @@ export type UsersMaxOrderBy = {
 
 /** aggregate min on columns */
 export type UsersMinFields = {
-  __typename: 'users_min_fields'
+  __typename?: 'users_min_fields'
   avatar_url?: Maybe<Scalars['String']>
   created_at?: Maybe<Scalars['timestamptz']>
   display_name?: Maybe<Scalars['String']>
@@ -3690,7 +3690,7 @@ export type UsersMinOrderBy = {
 
 /** response of any mutation on the table "users" */
 export type UsersMutationResponse = {
-  __typename: 'users_mutation_response'
+  __typename?: 'users_mutation_response'
   /** number of affected rows by the mutation */
   affected_rows: Scalars['Int']
   /** data of the affected rows by the mutation */
@@ -3777,21 +3777,27 @@ export type UuidComparisonExp = {
 }
 
 export type AreaOfInterestFragmentFragment = {
-  __typename: 'area_of_interest'
+  __typename?: 'area_of_interest'
 } & Pick<
   AreaOfInterest,
   'id' | 'name' | 'source' | 'minZoom' | 'maxZoom' | 'tilesCount'
 > & {
     tileSets: Array<
-      { __typename: 'tile_set' } & Pick<
+      { __typename?: 'tile_set' } & Pick<
         TileSet,
-        'id' | 'progress' | 'size' | 'format' | 'quality' | 'areaOfInterestId'
+        | 'id'
+        | 'progress'
+        | 'size'
+        | 'format'
+        | 'quality'
+        | 'tileProviderId'
+        | 'areaOfInterestId'
       > & {
-          tileProvider: { __typename: 'tile_provider' } & Pick<
+          tileProvider: { __typename?: 'tile_provider' } & Pick<
             TileProvider,
             'id' | 'name' | 'slug' | 'url'
           >
-          areaOfInterest: { __typename: 'area_of_interest' } & Pick<
+          areaOfInterest: { __typename?: 'area_of_interest' } & Pick<
             AreaOfInterest,
             'name' | 'userId'
           >
@@ -3804,11 +3810,12 @@ export type InsertAoiMutationVariables = Exact<{
   source: Scalars['jsonb']
   minZoom: Scalars['Int']
   maxZoom: Scalars['Int']
+  tileSetsAdd: Array<TileSetInsertInput>
 }>
 
-export type InsertAoiMutation = { __typename: 'mutation_root' } & {
+export type InsertAoiMutation = { __typename?: 'mutation_root' } & {
   insertAreaOfInterest?: Maybe<
-    { __typename: 'area_of_interest' } & AreaOfInterestFragmentFragment
+    { __typename?: 'area_of_interest' } & AreaOfInterestFragmentFragment
   >
 }
 
@@ -3816,9 +3823,9 @@ export type ListAllAreasOfInterestQueryVariables = Exact<{
   [key: string]: never
 }>
 
-export type ListAllAreasOfInterestQuery = { __typename: 'query_root' } & {
+export type ListAllAreasOfInterestQuery = { __typename?: 'query_root' } & {
   areasOfInterest: Array<
-    { __typename: 'area_of_interest' } & Pick<
+    { __typename?: 'area_of_interest' } & Pick<
       AreaOfInterest,
       'id' | 'name' | 'tilesCount'
     >
@@ -3830,10 +3837,10 @@ export type SelectOneAreaOfInterestSubscriptionVariables = Exact<{
 }>
 
 export type SelectOneAreaOfInterestSubscription = {
-  __typename: 'subscription_root'
+  __typename?: 'subscription_root'
 } & {
   areaOfInterest?: Maybe<
-    { __typename: 'area_of_interest' } & AreaOfInterestFragmentFragment
+    { __typename?: 'area_of_interest' } & AreaOfInterestFragmentFragment
   >
 }
 
@@ -3843,21 +3850,35 @@ export type UpdateAoiMutationVariables = Exact<{
   source: Scalars['jsonb']
   minZoom: Scalars['Int']
   maxZoom: Scalars['Int']
+  tileSetsRemoveIds: Array<Scalars['uuid']>
+  tileSetsAdd: Array<TileSetInsertInput>
 }>
 
-export type UpdateAoiMutation = { __typename: 'mutation_root' } & {
+export type UpdateAoiMutation = { __typename?: 'mutation_root' } & {
   updateAreaOfInterest?: Maybe<
-    { __typename: 'area_of_interest' } & AreaOfInterestFragmentFragment
+    { __typename?: 'area_of_interest' } & AreaOfInterestFragmentFragment
+  >
+  deleteTileSets?: Maybe<
+    { __typename?: 'tile_set_mutation_response' } & Pick<
+      TileSetMutationResponse,
+      'affected_rows'
+    >
+  >
+  insertTileSets?: Maybe<
+    { __typename?: 'tile_set_mutation_response' } & Pick<
+      TileSetMutationResponse,
+      'affected_rows'
+    >
   >
 }
 
-export type ProviderFragmentFragment = { __typename: 'tile_provider' } & Pick<
+export type ProviderFragmentFragment = { __typename?: 'tile_provider' } & Pick<
   TileProvider,
   'id' | 'name' | 'slug' | 'url'
 > & {
-    tileSets_aggregate: { __typename: 'tile_set_aggregate' } & {
+    tileSets_aggregate: { __typename?: 'tile_set_aggregate' } & {
       aggregate?: Maybe<
-        { __typename: 'tile_set_aggregate_fields' } & Pick<
+        { __typename?: 'tile_set_aggregate_fields' } & Pick<
           TileSetAggregateFields,
           'count'
         >
@@ -3871,17 +3892,17 @@ export type InsertProviderMutationVariables = Exact<{
   url: Scalars['String']
 }>
 
-export type InsertProviderMutation = { __typename: 'mutation_root' } & {
+export type InsertProviderMutation = { __typename?: 'mutation_root' } & {
   insertTileProvider?: Maybe<
-    { __typename: 'tile_provider' } & ProviderFragmentFragment
+    { __typename?: 'tile_provider' } & ProviderFragmentFragment
   >
 }
 
 export type ListAllTileProvidersQueryVariables = Exact<{ [key: string]: never }>
 
-export type ListAllTileProvidersQuery = { __typename: 'query_root' } & {
+export type ListAllTileProvidersQuery = { __typename?: 'query_root' } & {
   tileProviders: Array<
-    { __typename: 'tile_provider' } & ProviderFragmentFragment
+    { __typename?: 'tile_provider' } & ProviderFragmentFragment
   >
 }
 
@@ -3889,9 +3910,9 @@ export type RemoveOneTileProviderMutationVariables = Exact<{
   id: Scalars['uuid']
 }>
 
-export type RemoveOneTileProviderMutation = { __typename: 'mutation_root' } & {
+export type RemoveOneTileProviderMutation = { __typename?: 'mutation_root' } & {
   deleteTileProvider?: Maybe<
-    { __typename: 'tile_provider' } & Pick<TileProvider, 'id'>
+    { __typename?: 'tile_provider' } & Pick<TileProvider, 'id'>
   >
 }
 
@@ -3900,22 +3921,22 @@ export type SelectOneProviderSubscriptionVariables = Exact<{
 }>
 
 export type SelectOneProviderSubscription = {
-  __typename: 'subscription_root'
+  __typename?: 'subscription_root'
 } & {
   tileProvider?: Maybe<
-    { __typename: 'tile_provider' } & ProviderFragmentFragment
+    { __typename?: 'tile_provider' } & ProviderFragmentFragment
   >
 }
 
-export type TileSetFragmentFragment = { __typename: 'tile_set' } & Pick<
+export type TileSetFragmentFragment = { __typename?: 'tile_set' } & Pick<
   TileSet,
   'id' | 'progress' | 'size' | 'format' | 'quality'
 > & {
-    tileProvider: { __typename: 'tile_provider' } & Pick<
+    tileProvider: { __typename?: 'tile_provider' } & Pick<
       TileProvider,
       'id' | 'name' | 'slug' | 'url'
     >
-    areaOfInterest: { __typename: 'area_of_interest' } & Pick<
+    areaOfInterest: { __typename?: 'area_of_interest' } & Pick<
       AreaOfInterest,
       'name' | 'userId'
     >
@@ -3927,8 +3948,8 @@ export type InsertOneTileSetMutationVariables = Exact<{
   areaOfInterestId: Scalars['uuid']
 }>
 
-export type InsertOneTileSetMutation = { __typename: 'mutation_root' } & {
-  insertTileSet?: Maybe<{ __typename: 'tile_set' } & TileSetFragmentFragment>
+export type InsertOneTileSetMutation = { __typename?: 'mutation_root' } & {
+  insertTileSet?: Maybe<{ __typename?: 'tile_set' } & TileSetFragmentFragment>
 }
 
 export type UpdateOneTileSetMutationVariables = Exact<{
@@ -3937,8 +3958,8 @@ export type UpdateOneTileSetMutationVariables = Exact<{
   quality: Scalars['smallint']
 }>
 
-export type UpdateOneTileSetMutation = { __typename: 'mutation_root' } & {
-  updateTileSet?: Maybe<{ __typename: 'tile_set' } & TileSetFragmentFragment>
+export type UpdateOneTileSetMutation = { __typename?: 'mutation_root' } & {
+  updateTileSet?: Maybe<{ __typename?: 'tile_set' } & TileSetFragmentFragment>
 }
 
 export const AreaOfInterestFragmentFragmentDoc: DocumentNode = {
@@ -4026,6 +4047,12 @@ export const AreaOfInterestFragmentFragmentDoc: DocumentNode = {
                 {
                   kind: 'Field',
                   name: { kind: 'Name', value: 'quality' },
+                  arguments: [],
+                  directives: []
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'tileProviderId' },
                   arguments: [],
                   directives: []
                 },
@@ -4334,6 +4361,27 @@ export const InsertAoiDocument: TypedDocumentNode<
             type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } }
           },
           directives: []
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'tileSetsAdd' }
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'ListType',
+              type: {
+                kind: 'NonNullType',
+                type: {
+                  kind: 'NamedType',
+                  name: { kind: 'Name', value: 'tile_set_insert_input' }
+                }
+              }
+            }
+          },
+          directives: []
         }
       ],
       directives: [],
@@ -4364,6 +4412,39 @@ export const InsertAoiDocument: TypedDocumentNode<
                       value: {
                         kind: 'Variable',
                         name: { kind: 'Name', value: 'source' }
+                      }
+                    },
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'minZoom' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'minZoom' }
+                      }
+                    },
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'maxZoom' },
+                      value: {
+                        kind: 'Variable',
+                        name: { kind: 'Name', value: 'maxZoom' }
+                      }
+                    },
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'tileSets' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: 'data' },
+                            value: {
+                              kind: 'Variable',
+                              name: { kind: 'Name', value: 'tileSetsAdd' }
+                            }
+                          }
+                        ]
                       }
                     }
                   ]
@@ -4569,6 +4650,48 @@ export const UpdateAoiDocument: TypedDocumentNode<
             type: { kind: 'NamedType', name: { kind: 'Name', value: 'Int' } }
           },
           directives: []
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'tileSetsRemoveIds' }
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'ListType',
+              type: {
+                kind: 'NonNullType',
+                type: {
+                  kind: 'NamedType',
+                  name: { kind: 'Name', value: 'uuid' }
+                }
+              }
+            }
+          },
+          directives: []
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: {
+            kind: 'Variable',
+            name: { kind: 'Name', value: 'tileSetsAdd' }
+          },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'ListType',
+              type: {
+                kind: 'NonNullType',
+                type: {
+                  kind: 'NamedType',
+                  name: { kind: 'Name', value: 'tile_set_insert_input' }
+                }
+              }
+            }
+          },
+          directives: []
         }
       ],
       directives: [],
@@ -4645,6 +4768,76 @@ export const UpdateAoiDocument: TypedDocumentNode<
                 {
                   kind: 'FragmentSpread',
                   name: { kind: 'Name', value: 'areaOfInterestFragment' },
+                  directives: []
+                }
+              ]
+            }
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'deleteTileSets' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'where' },
+                value: {
+                  kind: 'ObjectValue',
+                  fields: [
+                    {
+                      kind: 'ObjectField',
+                      name: { kind: 'Name', value: 'id' },
+                      value: {
+                        kind: 'ObjectValue',
+                        fields: [
+                          {
+                            kind: 'ObjectField',
+                            name: { kind: 'Name', value: '_in' },
+                            value: {
+                              kind: 'Variable',
+                              name: { kind: 'Name', value: 'tileSetsRemoveIds' }
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ],
+            directives: [],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'affected_rows' },
+                  arguments: [],
+                  directives: []
+                }
+              ]
+            }
+          },
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'insertTileSets' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'objects' },
+                value: {
+                  kind: 'Variable',
+                  name: { kind: 'Name', value: 'tileSetsAdd' }
+                }
+              }
+            ],
+            directives: [],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'affected_rows' },
+                  arguments: [],
                   directives: []
                 }
               ]

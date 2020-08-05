@@ -14,7 +14,7 @@ q-card(style='width: 300px')
           v-slot='{ errors, touched, invalid }'
         )
           q-input(
-            v-model='variables.name',
+            v-model='values.name',
             label='Name',
             autofocus,
             :error='touched && invalid',
@@ -26,7 +26,7 @@ q-card(style='width: 300px')
           v-slot='{ errors, touched, invalid }'
         )
           q-input(
-            v-model='variables.slug',
+            v-model='values.slug',
             label='Slug',
             :error='touched && invalid',
             :error-message='errors[0]'
@@ -37,7 +37,7 @@ q-card(style='width: 300px')
           v-slot='{ errors, touched, invalid }'
         )
           q-input(
-            v-model='variables.url',
+            v-model='values.url',
             label='Url',
             :error='touched && invalid',
             :error-message='errors[0]'
@@ -79,7 +79,7 @@ extend('url', {
 export default defineComponent({
   name: 'ItemAreaOfInterest',
   setup() {
-    const { variables, save, reset: resetForm } = useSingleItem(
+    const { values, save, reset: resetForm } = useSingleItem(
       GRAPHQL_CONFIG.tile_provider
     )
 
@@ -92,7 +92,7 @@ export default defineComponent({
     //   // else error.value = 'Error in retreiving the object id'
     // })
 
-    return { variables, error, resetForm, save }
+    return { values, error, resetForm, save }
   }
 })
 </script>

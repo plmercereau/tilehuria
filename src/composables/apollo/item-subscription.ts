@@ -15,6 +15,7 @@ export const useItemSubscription = <
   variables?: Ref<TVariables>
 ) => {
   const fields = getFieldNames(document)
+
   const pickedVariables = computed(() => {
     return (variables && pick(variables.value, fields)) || {}
   })

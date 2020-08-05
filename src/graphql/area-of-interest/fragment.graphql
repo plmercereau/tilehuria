@@ -11,6 +11,7 @@ fragment areaOfInterestFragment on area_of_interest {
     size
     format
     quality
+    tileProviderId
     tileProvider {
       id
       name

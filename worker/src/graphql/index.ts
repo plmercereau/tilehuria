@@ -9,7 +9,7 @@ const TILE_SET_PROGRESS = gql`
   }
 `
 const TILE_SET_COMPLETE = gql`
-  mutation updateTileSetProgres($id: uuid!, $size: Int!) {
+  mutation completeTileSetProgres($id: uuid!, $size: Int!) {
     updateTileSet(
       pk_columns: { id: $id }
       _set: { progress: 1.0, size: $size }

@@ -1,9 +1,9 @@
 overwrite: true
 schema:
-  - "http://localhost:8080/v1/graphql":
+  - 'http://localhost:8080/v1/graphql':
       headers:
         x-hasura-admin-secret: ${HASURA_GRAPHQL_ADMIN_SECRET}
-documents: "src/graphql/**/*.graphql"
+documents: 'src/graphql/**/*.graphql'
 hooks:
   afterAllFileWrite:
     - prettier --write
@@ -18,7 +18,7 @@ generates:
         citext: string
         uuid: string
         timestamptz: Date
-        jsonb: "{ [key: string]: any }"
+        jsonb: '{ [key: string]: any }'
       namingConvention:
         typeNames: pascal-case#pascalCase
         transformUnderscore: true
@@ -31,7 +31,8 @@ generates:
         citext: string
         uuid: string
         timestamptz: Date
-        jsonb: "{ [key: string]: any }"
+        smallint: number
+        jsonb: '{ [key: string]: any }'
       namingConvention:
         typeNames: pascal-case#pascalCase
         transformUnderscore: true
@@ -47,13 +48,14 @@ generates:
       - typed-document-node
       - named-operations-object
     config:
-      nonOptionalTypename: true
+      # nonOptionalTypename: true
       maybeValue: T | undefined
       scalars:
         citext: string
         uuid: string
         timestamptz: Date
-        jsonb: "{ [key: string]: any }"
+        smallint: number
+        jsonb: '{ [key: string]: any }'
       namingConvention:
         typeNames: pascal-case#pascalCase
         transformUnderscore: true

@@ -9,7 +9,7 @@ export type Scalars = {
   Float: number
   citext: string
   jsonb: { [key: string]: any }
-  smallint: any
+  smallint: number
   timestamptz: Date
   uuid: string
 }
