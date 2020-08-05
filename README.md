@@ -119,7 +119,7 @@ Any change in the schema must be done through the Hasura console, that can be st
     - fullscreen
     - [x] center
 - Tileset
-  - [ ] create new tileset from aoi screen
+  - [x] create new tileset from aoi screen
   - [ ] edit tileset from aoi screen
 - Navigation
   - page titles

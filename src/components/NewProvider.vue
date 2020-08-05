@@ -77,7 +77,7 @@ extend('url', {
 })
 
 export default defineComponent({
-  name: 'ItemAreaOfInterest',
+  name: 'NewProvider',
   setup(_, ctx) {
     const { values, save, reset: resetForm, onSaved, onError } = useSingleItem(
       GRAPHQL_CONFIG.tile_provider

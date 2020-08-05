@@ -69,7 +69,7 @@ extend('url', {
 })
 
 export default defineComponent({
-  name: 'ItemAreaOfInterest',
+  name: 'NewTileSet',
   // props: {
   //   value: {
   //     type: Object as PropType<TileSet>,
