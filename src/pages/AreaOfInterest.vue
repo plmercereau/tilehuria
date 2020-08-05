@@ -33,7 +33,7 @@
           q-item
             q-item-section(avatar)
               q-icon(name="layers")
-            q-item-section(v-if="editing") {{ tilesCountEstimate.toLocaleString() }} tiles (estimation)
+            q-item-section(v-if="editing || !item.tilesCount") {{ tilesCountEstimate.toLocaleString() }} tiles (estimation)
             q-item-section(v-else) {{ item.tilesCount.toLocaleString() }} tiles
           q-separator(spaced)
           q-item.q-pr-none
