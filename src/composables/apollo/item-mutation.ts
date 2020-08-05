@@ -61,6 +61,7 @@ export const useItemMutation = <
     if (res?.data) {
       const unfolded = unfold<TResult, T>(document, res.data)
       item.value = item.value ? { ...item.value, ...unfolded } : { ...unfolded }
+      if (initialItem) initialItem.value = { ...item.value }
     }
   })
   const mutate = async () => {
