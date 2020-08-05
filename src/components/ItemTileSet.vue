@@ -11,7 +11,7 @@ q-expansion-item(
   template(#header)
     q-item-section
       q-item-label(overline) {{ label }}
-      q-item-label(v-if='!expanded && source.progress != 1')
+      q-item-label(v-if='!expanded && source.progress != 1 && !isNew')
         q-linear-progress.q-mt-md(:value='source.progress')
     q-item-section(
       side,
@@ -54,12 +54,14 @@ import {
   PropType,
   computed,
   toRefs,
-  ref
+  ref,
+  onMounted
 } from '@vue/composition-api'
-import { TileSet } from '../generated'
+import { TileSet, ListAllTileProvidersDocument } from '../generated'
 import '../filters/pretty-bytes'
 import { HBP_ENDPOINT } from 'src/config'
 import { useFormFragment } from 'src/composables'
+import { useQuery, useResult } from '@vue/apollo-composable'
 export default defineComponent({
   name: 'ItemTileSet',
   props: {
@@ -84,7 +86,9 @@ export default defineComponent({
       ctx.emit('input', values.value)
     }
 
-    const label = computed(() => source.value.areaOfInterest?.name)
+    const isNew = computed(() => !source.value.id)
+
+    const label = computed(() => source.value.tileProvider?.name)
 
     const downloadLink = computed(() => {
       if (source.value) {
@@ -97,7 +101,7 @@ export default defineComponent({
       }
     })
 
-    return { label, downloadLink, values, expanded, change }
+    return { label, downloadLink, values, expanded, change, isNew }
   }
 })
 </script>

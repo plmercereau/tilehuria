@@ -5,5 +5,9 @@ import {
 
 export const tile_set = {
   insert: InsertOneTileSetDocument,
-  update: UpdateOneTileSetDocument
+  update: UpdateOneTileSetDocument,
+  defaults: {
+    quality: 100,
+    format: 'png'
+  }
 }

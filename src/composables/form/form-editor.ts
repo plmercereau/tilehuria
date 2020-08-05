@@ -23,7 +23,8 @@ export const useFormEditor = <T extends Record<string, unknown>>(
     try {
       values.value && (await Promise.resolve(save(values.value)))
     } catch (error) {
-      console.log('Save failed', error)
+      console.log('Save failed', values.value)
+      console.log(error)
     }
     editing.value = false
   }

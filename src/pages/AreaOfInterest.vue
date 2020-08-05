@@ -41,7 +41,7 @@
               q-item-label(header) Tile sets
             q-item-section(side)
               q-item-label(:lines="2")
-                q-btn(size='12px' flat dense round icon="add")
+                q-btn(v-if="editing" size='12px' flat dense round icon="add" @click="newTileSetDialog = true")
           p-item-tile-set(v-for="set, key of values.tileSets"
             :key="'item'+set.id"
             :source="set"
@@ -50,16 +50,19 @@
             @hide="select(null)"
             :active="selection === set"
             :editing="editing")
+          q-dialog(v-model='newTileSetDialog' persistent transition-show='scale' transition-hide='scale')
+            p-new-tile-set(@done="add")
       div.col-12.col-sm-6.col-md-8.q-px-xs
         l-map(:options="{ zoomSnap: 0.5 }" style="height: 100%" :zoom="2")
           p-leaflet-draw(v-model="values.source" :readonly="!editing")
           l-tile-layer(:url="url")
-          l-tile-layer(v-if="selection" :url="selectionUrl" :options="{errorTileUrl: 'empty-tile.png'}") 
+          l-tile-layer(v-if="selectionUrl" :url="selectionUrl" :options="{errorTileUrl: 'empty-tile.png'}") 
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, computed } from '@vue/composition-api'
 import PItemTileSet from 'components/ItemTileSet.vue'
+import PNewTileSet from 'components/NewTileSet.vue'
 import PLeafletDraw from 'components/LeafletDraw.vue'
 import { TileSet } from '../generated'
 import { DEFAULT_TILE_LAYER, GRAPHQL_CONFIG, HBP_ENDPOINT } from 'src/config'
@@ -75,14 +78,13 @@ export default defineComponent({
   },
   components: {
     PItemTileSet,
+    PNewTileSet,
     PLeafletDraw
   },
   setup(props, ctx) {
     const {
       item,
-      // onLoadError,
       loading,
-      // onSaveError,
       editing,
       edit,
       cancel: cancelEdit,
@@ -97,13 +99,10 @@ export default defineComponent({
     }
     const selectionUrl = computed(
       () =>
-        selection.value &&
+        selection.value?.tileProvider?.slug &&
         `${HBP_ENDPOINT}/storage/o/tile/${selection.value.tileProvider.slug}/{z}/{x}/{y}.png`
     )
     const url = DEFAULT_TILE_LAYER
-
-    // onLoadError(err => console.warn(err))
-    // onSaveError(error => console.log('save error', error))
 
     const cancel = () => {
       cancelEdit()
@@ -133,6 +132,14 @@ export default defineComponent({
       } else return 0
     })
 
+    const newTileSetDialog = ref(false)
+    const add = (payload: TileSet) => {
+      newTileSetDialog.value = false
+      payload.areaOfInterestId = values.value.id
+      values.value.tileSets.push(payload)
+      select(payload)
+    }
+
     return {
       select,
       selection,
@@ -146,7 +153,9 @@ export default defineComponent({
       cancel,
       save,
       zoomRange,
-      values
+      values,
+      newTileSetDialog,
+      add
     }
   }
 })
