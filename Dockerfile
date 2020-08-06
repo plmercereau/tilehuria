@@ -2,6 +2,7 @@ FROM node:14-alpine AS builder
 ARG HOSTNAME=tilehuria.platyplus.io
 WORKDIR /app
 COPY package.json yarn.lock ./
+RUN yarn config set registry https://registry.npmjs.org
 RUN yarn install
 COPY . .
 RUN yarn build
