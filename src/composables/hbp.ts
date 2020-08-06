@@ -16,12 +16,14 @@ const config = {
 }
 
 nhost.initializeApp(config)
+let auth: Auth | undefined
 
 const AuthSymbol: InjectionKey<Auth> = Symbol()
 const StorageSymbol: InjectionKey<Storage> = Symbol()
 
 export function provideAuth() {
-  provide(AuthSymbol, nhost.auth())
+  if (!auth) auth = nhost.auth()
+  provide(AuthSymbol, auth)
 }
 
 export function provideStorage() {
@@ -29,8 +31,7 @@ export function provideStorage() {
 }
 
 export const useAuth = () => {
-  const auth = inject(AuthSymbol)
-  return auth ? auth : undefined
+  return inject(AuthSymbol) || undefined
 }
 
 export const useStorage = () => {
@@ -45,4 +46,10 @@ export const useConnectionStatus = () => {
     status.value = !!auth.isAuthenticated()
   })
   return computed(() => status.value)
+}
+
+// ! Only used with Vue router. When vue router is not called outside of
+export const getAuth = () => {
+  if (!auth) auth = nhost.auth()
+  return auth
 }

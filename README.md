@@ -125,13 +125,14 @@ Any change in the schema must be done through the Hasura console, that can be st
   - page titles
   - [ ] fix the login/refresh token bug
   - confirm when logout
-  - [ ] navigation guards
+  - [x] navigation guards
   - [ ] home page
     - unauthenticated
     - authenticated -> redirect to aoi list?
 - Tile Providers
   - [x] delete (only if it has no tileset)
-  - [ ] "copy" link of the local server
+  - [x] "copy" link of the local server
+  - [x] list providers as cards
   - to be considered: when changing the slug, change the object keys and the mbtile files
   - change name
   - change url (only if it has no tileset?)
@@ -150,7 +151,7 @@ Any change in the schema must be done through the Hasura console, that can be st
 - rename event hooks
 - [ ] Lerna package to use "@platyplus" packages e.g. gis etc
 - remove unused Hasura actions in hooks
-- remove components and pages that are not used anymore (e.g. new aoi, new tileset etc)
+- [x] remove components and pages that are not used anymore (e.g. new aoi, new tileset etc)
 - GH action: build/deploy only when changes in the service
 - move the frontend app to a dedicated directory
 

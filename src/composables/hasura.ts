@@ -100,10 +100,8 @@ export const createApolloClient = (httpUri: string, auth: Auth | undefined) => {
   )
 
   auth?.onAuthStateChanged(() => {
-    console.log('auth state changed!!!')
-    console.log(wsClient.status)
+    console.log('auth state changed')
     wsClient.close(false)
-    console.log(wsClient.status)
   })
 
   const apolloClient = new ApolloClient({

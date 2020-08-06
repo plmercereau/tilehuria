@@ -22,3 +22,5 @@ export const HASURA_HTTP_ENDPOINT = process.env.PROD
 
 export const DEFAULT_TILE_LAYER =
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+
+export const ANONYMOUS_ROLE = 'anonymous'
