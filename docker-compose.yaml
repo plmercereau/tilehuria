@@ -43,7 +43,7 @@ services:
       HIBP_ENABLE: 'false' # * default
       JWT_CUSTOM_FIELDS: '' # * default
     volumes:
-      - './storage-rules.yaml:/app/custom/storage-rules/rules.yaml'
+      - './hasura-backend-plus/storage-rules.yaml:/app/custom/storage-rules/rules.yaml'
   worker:
     restart: always
     # build:

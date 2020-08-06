@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Build and publish frontend to Docker Hub
+      - name: Frontend
         # ? Kind of optional if static deployment
         uses: docker/build-push-action@v1
         with:
@@ -26,7 +26,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           tag_with_ref: true
           tag_with_sha: true
-      - name: Build and publish Hasura to Docker Hub
+      - name: Hasura
         uses: docker/build-push-action@v1
         with:
           path: ./hasura
@@ -35,7 +35,16 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           tag_with_ref: true
           tag_with_sha: true
-      - name: Build and publish Worker to Docker Hub
+      - name: Hasura Backend Plus
+        uses: docker/build-push-action@v1
+        with:
+          path: ./hasura-backend-plus
+          repository: platyplus/tilehuria-hbp
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          tag_with_ref: true
+          tag_with_sha: true
+      - name: Worker
         uses: docker/build-push-action@v1
         with:
           path: ./worker
@@ -44,7 +53,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           tag_with_ref: true
           tag_with_sha: true
-      - name: Build and publish Hooks to Docker Hub
+      - name: Hooks
         uses: docker/build-push-action@v1
         with:
           path: ./hooks
