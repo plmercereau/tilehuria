@@ -85,10 +85,10 @@ jobs:
                   password: ${{ secrets.MINIO_ACCESS_KEY }}
                 secretKey:
                   password: ${{ secrets.MINIO_SECRET_KEY }}
-            hasura:
-              postgresql:
-                postgresqlPassword: ${{ secrets.POSTGRES_PASSWORD }}
-              adminSecret: ${{ secrets.HASURA_ADMIN_SECRET }}
+              hasura:
+                postgresql:
+                  postgresqlPassword: ${{ secrets.POSTGRES_PASSWORD }}
+                adminSecret: ${{ secrets.HASURA_ADMIN_SECRET }}
             rabbitmq:
               auth:
                 password: ${{ secrets.RABBITMQ_PASSWORD }}
