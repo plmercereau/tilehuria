@@ -9,7 +9,7 @@ q-card(style='width: 300px')
         .text-h6 New tile provider
       q-card-section
         validation-provider(
-          rules='required|min:6',
+          rules='required|min:4',
           name='name',
           v-slot='{ errors, touched, invalid }'
         )
@@ -67,9 +67,11 @@ extend('required', {
 extend('url', {
   validate(value: string | null | undefined): boolean {
     if (value) {
-      return /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/.test(
-        value
-      )
+      // TODO test "tile provider" urls
+      return true
+      // return /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/.test(
+      //   value
+      // )
     }
     return false
   },

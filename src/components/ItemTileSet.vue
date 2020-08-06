@@ -54,14 +54,12 @@ import {
   PropType,
   computed,
   toRefs,
-  ref,
-  onMounted
+  ref
 } from '@vue/composition-api'
-import { TileSet, ListAllTileProvidersDocument } from '../generated'
+import { TileSet } from '../generated'
 import '../filters/pretty-bytes'
 import { HBP_ENDPOINT } from 'src/config'
 import { useFormFragment } from 'src/composables'
-import { useQuery, useResult } from '@vue/apollo-composable'
 export default defineComponent({
   name: 'ItemTileSet',
   props: {

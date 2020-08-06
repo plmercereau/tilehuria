@@ -43,11 +43,9 @@ q-card(style='width: 300px')
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, PropType } from '@vue/composition-api'
-import { useSingleItem } from 'src/composables'
-import { GRAPHQL_CONFIG } from 'src/config'
+import { defineComponent, ref } from '@vue/composition-api'
 import { extend } from 'vee-validate'
-import { required, min } from 'vee-validate/dist/rules'
+import { required } from 'vee-validate/dist/rules'
 import { TileSet, ListAllTileProvidersDocument } from 'src/generated'
 import { useQuery, useResult } from '@vue/apollo-composable'
 extend('required', {
@@ -70,12 +68,6 @@ extend('url', {
 
 export default defineComponent({
   name: 'NewTileSet',
-  // props: {
-  //   value: {
-  //     type: Object as PropType<TileSet>,
-  //     default: []
-  //   }
-  // },
   setup(_, ctx) {
     const tileProvider = ref<TileSet>(null)
     const quality = ref(100)
@@ -101,8 +93,7 @@ export default defineComponent({
         format: format.value
       })
     }
-    return { tileProvider, quality, format, providers, resetForm, save }
-    // return { values, error, resetForm, save }
+    return { tileProvider, quality, format, providers, resetForm, save, done }
   }
 })
 </script>

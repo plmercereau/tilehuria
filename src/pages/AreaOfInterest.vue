@@ -65,9 +65,10 @@ import PItemTileSet from 'components/ItemTileSet.vue'
 import PNewTileSet from 'components/NewTileSet.vue'
 import PLeafletDraw from 'components/LeafletDraw.vue'
 import { TileSet } from '../generated'
-import { DEFAULT_TILE_LAYER, GRAPHQL_CONFIG, HBP_ENDPOINT } from 'src/config'
+import { DEFAULT_TILE_LAYER, GRAPHQL_CONFIG } from 'src/config'
 import { useSingleItem } from 'src/composables'
 import { nbTilesEstimation } from 'src/utils'
+import { tileProviderUrl } from 'src/config/tile-provider'
 
 export default defineComponent({
   name: 'AreaOfInterest',
@@ -97,10 +98,8 @@ export default defineComponent({
     const select = (tileSet?: TileSet) => {
       selection.value = tileSet
     }
-    const selectionUrl = computed(
-      () =>
-        selection.value?.tileProvider?.slug &&
-        `${HBP_ENDPOINT}/storage/o/tile/${selection.value.tileProvider.slug}/{z}/{x}/{y}.png`
+    const selectionUrl = computed(() =>
+      tileProviderUrl(selection.value?.tileProvider)
     )
     const url = DEFAULT_TILE_LAYER
 
