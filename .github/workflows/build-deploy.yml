@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Build and publish frontend to Docker Hub
         # ? Kind of optional if static deployment
-        uses: docker/build-push-action@v1
+        uses: docker/build-push-action@v1.1.0
         with:
           repository: platyplus/tilehuria
           build_args: HOSTNAME=${{ secrets.HOSTNAME }}
