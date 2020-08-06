@@ -1,7 +1,8 @@
 FROM node:14-alpine AS builder
 ARG HOSTNAME=tilehuria.platyplus.io
 WORKDIR /app
-COPY package.json yarn.lock ./
+# COPY package.json yarn.lock ./
+COPY package.json ./
 RUN yarn install
 COPY . .
 RUN yarn build
