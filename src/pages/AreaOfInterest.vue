@@ -56,7 +56,8 @@
         l-map(:options="{ zoomSnap: 0.5 }" style="height: 100%" :zoom="2")
           p-leaflet-draw(v-model="values.source" :readonly="!editing")
           l-tile-layer(:url="url")
-          l-tile-layer(v-if="selectionUrl" :url="selectionUrl" :options="{errorTileUrl: 'empty-tile.png'}") 
+          //- l-tile-layer(v-if="selectionUrl" :url="selectionUrl" :options="{errorTileUrl: 'empty-tile.png'}") 
+          l-tile-layer(v-if="selectionUrl" :url="selectionUrl") 
 </template>
 
 <script lang="ts">
