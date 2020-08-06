@@ -135,6 +135,8 @@ Any change in the schema must be done through the Hasura console, that can be st
 
 #### Backend
 
+- !!!! Reopen rabbitmq channel when closed!
+- By the way, why is rabbitmq restarted on evey helm upgrade???
 - Selected tiles are not entirely coveing the AOI
 - get one tile per zoom level that found no tile, until reaching the given minZoom
 - get single tile: re-download after a certain period of time?

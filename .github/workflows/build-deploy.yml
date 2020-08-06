@@ -88,6 +88,7 @@ jobs:
             hasura:
               postgresql:
                 postgresqlPassword: ${{ secrets.POSTGRES_PASSWORD }}
+              adminSecret: ${{ secrets.HASURA_ADMIN_SECRET }}
             rabbitmq:
               auth:
                 password: ${{ secrets.RABBITMQ_PASSWORD }}
