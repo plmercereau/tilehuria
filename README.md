@@ -105,62 +105,71 @@ Any change in the schema must be done through the Hasura console, that can be st
 - upload mbtiles. see above
 - set a progress system when generating the aoi's coordinates. To do so:
   - [x] estimate the number of tiles from the aoi boundaries and the zoom levels
-- [x] zoom level 20
 
 #### Frontend
 
 - Area of Interest
+  - import GeoJSON file
+  - [ ] start subscription after creating a new item (1. create 2. subscribe to updates)
   - create new aoi: use the same interface as the 'update' one
   - edit aoi:
-    - [x] zoom levels
     - source: import from file
-    - [x] source: edit with leaflet
   - map buttons:
     - fullscreen
-    - [x] center
+  - nicer list
+  - updated_at + subscribe to more
+  - author
 - Tileset
-  - [x] create new tileset from aoi screen
   - [ ] edit tileset from aoi screen
 - Navigation
   - page titles
-  - [ ] fix the login/refresh token bug
+  - [ ] reproduce/fix the login/refresh token bug
   - confirm when logout
-  - [x] navigation guards
-  - [ ] home page
+  - [ ] fancy home page
     - unauthenticated
     - authenticated -> redirect to aoi list?
 - Tile Providers
-  - [x] delete (only if it has no tileset)
-  - [x] "copy" link of the local server
-  - [x] list providers as cards
   - to be considered: when changing the slug, change the object keys and the mbtile files
-  - change name
-  - change url (only if it has no tileset?)
+  - modify name
+  - modify url (only if it has no tileset?)
 
 #### Backend
 
+- Selected tiles are not entirely coveing the AOI
 - get one tile per zoom level that found no tile, until reaching the given minZoom
 - get single tile: re-download after a certain period of time?
 - get single tile: compare with the existing tile. If the downloaded tile is of better quality, replace the tile.
   - Set a `quality` metadata field when creating the tile (from an mbtile). Then if quality < 100, re-download
   - but what if we want to generate mbtiles without downloading anything more than what's already in the server?
 - ? split aoi source update / tileset update -> when finishing the aoi coordinates calculation from source, save the source, that will trigger an aoi xyz coordinates updates, that will queue tile set updates if some exist
+- Clean yarn cache in every Node image
 
 ### Refactor/performance
 
 - rename event hooks
 - [ ] Lerna package to use "@platyplus" packages e.g. gis etc
 - remove unused Hasura actions in hooks
-- [x] remove components and pages that are not used anymore (e.g. new aoi, new tileset etc)
 - GH action: build/deploy only when changes in the service
 - move the frontend app to a dedicated directory
 
 ### Done
 
+- [x] remove components and pages that are not used anymore (e.g. new aoi, new tileset etc)
+- [x] zoom level 20
 - [x] if format=png and quality=100 then don't run the image transformation when generating the mbtiles file
 - [x] generic single item
 - [x] generic item list
 - [x] review the size limit of events sent to the hook service
+- [x] navigation guards
+- [x] edit aoi: zoom levels
+- [x] center aoi on map
+- [x] edit AOI source with leaflet
+- Tile Sets
+  - [x] create new tileset from aoi screen
+- Tile Providers
+  - [x] delete (only if it has no tileset)
+  - [x] "copy" link of the local server
+  - [x] list providers as cards
 
 ### Next
 

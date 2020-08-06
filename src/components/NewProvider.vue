@@ -32,7 +32,7 @@ q-card(style='width: 300px')
             :error-message='errors[0]'
           )
         validation-provider(
-          rules='required|url',
+          rules='required',
           name='source',
           v-slot='{ errors, touched, invalid }'
         )
