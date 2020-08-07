@@ -2,6 +2,21 @@ import { Channel, connect } from 'amqplib'
 import { RABBITMQ_URL, TILE_SET_QUEUE } from './config'
 let channel: Channel
 
+// TODO duplicated from workers
+export const createChannel = async (url: string) => {
+  const connection = await connect(url)
+  connection.on('error', function(err) {
+    if (err.message !== 'Connection closing') {
+      console.error('[AMQP] connection error', err.message)
+    }
+  })
+  connection.on('close', function() {
+    console.error('[AMQP] reconnecting')
+    return setTimeout(createChannel, 1000)
+  })
+  return await connection.createChannel()
+}
+
 export const createQueue = (queue: string) => {
   console.log(` [*] Created queue ${queue}.`)
   channel.assertQueue(queue, {
@@ -17,7 +32,6 @@ export const sendMessage = (queue: string, message: string) => {
 }
 
 export const connectQueues = async () => {
-  const connection = await connect(RABBITMQ_URL)
-  channel = await connection.createChannel()
+  channel = await createChannel(RABBITMQ_URL)
   createQueue(TILE_SET_QUEUE)
 }

@@ -104,19 +104,17 @@ Any change in the schema must be done through the Hasura console, that can be st
 
 - upload mbtiles. see above
 - set a progress system when generating the aoi's coordinates. To do so:
-  - [x] estimate the number of tiles from the aoi boundaries and the zoom levels
+  - [ ] estimate the number of tiles from the aoi boundaries and the zoom levels
 
 #### Frontend
 
 - Area of Interest
   - import GeoJSON file
   - [ ] start subscription after creating a new item (1. create 2. subscribe to updates)
-  - create new aoi: use the same interface as the 'update' one
-  - edit aoi:
-    - source: import from file
   - map buttons:
     - fullscreen
-  - nicer list
+  - validate the polygon being edited when saving the aoi
+  - nicer list, either with more info, or as cards
   - updated_at + subscribe to more
   - author
 - Tileset
@@ -135,9 +133,8 @@ Any change in the schema must be done through the Hasura console, that can be st
 
 #### Backend
 
-- !!!! Reopen rabbitmq channel when closed!
-- By the way, why is rabbitmq restarted on evey helm upgrade???
-- Selected tiles are not entirely coveing the AOI
+- Why is rabbitmq restarted on evey helm upgrade???
+- Selected tiles don't corver AOI entirely
 - get one tile per zoom level that found no tile, until reaching the given minZoom
 - get single tile: re-download after a certain period of time?
 - get single tile: compare with the existing tile. If the downloaded tile is of better quality, replace the tile.
@@ -156,6 +153,8 @@ Any change in the schema must be done through the Hasura console, that can be st
 
 ### Done
 
+- [x] Reopen rabbitmq channel when closed!
+- [x] create new aoi: use the same interface as the 'update' one
 - [x] remove components and pages that are not used anymore (e.g. new aoi, new tileset etc)
 - [x] zoom level 20
 - [x] if format=png and quality=100 then don't run the image transformation when generating the mbtiles file
