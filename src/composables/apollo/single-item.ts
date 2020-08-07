@@ -74,14 +74,13 @@ export const useSingleItem = <
   >,
   formDefaults?: Partial<T>
 ) => {
-  // type TVariables = VQuery & VInsert & VUpdate & VList & VRemove
   const mergedDefaults = { ...defaults, ...formDefaults } as T
   const item = ref<T>(mergedDefaults) as Ref<T>
 
   const isNew = computed(
     // TODO not ideal - won't likely work e.g. when updating after the id has just been added from an insert
     // ? deepequals defauls?
-    () => !(formDefaults?.id && Object.keys(formDefaults).length > 0)
+    () => !item.value.id
   )
 
   const { editing, save, edit, cancel, reset, values } = useFormEditor<T>(
@@ -109,8 +108,9 @@ export const useSingleItem = <
   const updateOp =
     update &&
     useItemMutation(update, 'update', values, list, sort, item, dataToVariables)
+
   const loading = computed<boolean>(
-    () => !!subscriptionOp?.loading.value || !item.value
+    () => !!subscriptionOp?.loading.value && !item.value
   )
 
   const onSaved = (

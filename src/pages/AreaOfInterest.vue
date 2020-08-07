@@ -91,7 +91,7 @@ export default defineComponent({
       edit,
       cancel: cancelEdit,
       isNew,
-      save,
+      save: saveItem,
       values
     } = useSingleItem(GRAPHQL_CONFIG.area_of_interest, { id: props.id })
 
@@ -103,6 +103,14 @@ export default defineComponent({
       tileProviderUrl(selection.value?.tileProvider)
     )
     const url = DEFAULT_TILE_LAYER
+
+    const save = async () => {
+      const newItem = isNew.value
+      await saveItem()
+      if (newItem) {
+        await ctx.root.$router.replace(`/areas-of-interest/${item.value.id}`)
+      }
+    }
 
     const cancel = () => {
       cancelEdit()
