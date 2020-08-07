@@ -16,9 +16,9 @@ export const useItemSubscription = <
 ) => {
   const fields = getFieldNames(document)
 
-  const pickedVariables = computed(() => {
-    return (variables && pick(variables.value, fields)) || {}
-  })
+  const pickedVariables = computed(
+    () => (variables && pick(variables.value, fields)) || {}
+  )
   // ? probably not the best way to define isNew
   // ? deepequals defaults?
   const isNew = computed(() => {
@@ -29,7 +29,7 @@ export const useItemSubscription = <
   })
 
   const query = document && buildQueryFromSelectionSet(document)
-  const operation = useQuery<TResult>(query, pickedVariables.value, () => ({
+  const operation = useQuery<TResult>(query, pickedVariables, () => ({
     enabled: !isNew.value
   }))
 
@@ -39,7 +39,9 @@ export const useItemSubscription = <
   }))
   operation.onResult(res => {
     if (res) {
-      result.value = unfold<TResult, T>(document, res.data) || defaults
+      if (res?.data) {
+        result.value = unfold<TResult, T>(document, res.data) || defaults
+      } else console.log(res)
     }
   })
   return operation

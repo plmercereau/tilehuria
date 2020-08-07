@@ -101,7 +101,7 @@ export const useSingleItem = <
       subscription,
       item,
       mergedDefaults,
-      computed(() => dataToVariables(mergedDefaults, mergedDefaults))
+      computed(() => dataToVariables(item.value, mergedDefaults))
     )
   const insertOp =
     insert &&
