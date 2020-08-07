@@ -97,13 +97,16 @@ export default defineComponent({
     )
 
     onMounted(() => {
+      const loadChanges = () => ctx.emit('input', drawnItems.value?.toGeoJSON())
+      map.on(L.Draw.Event.EDITSTOP, loadChanges)
+      map.on(L.Draw.Event.EDITVERTEX, loadChanges)
+      map.on(L.Draw.Event.EDITMOVE, loadChanges)
+      map.on(L.Draw.Event.EDITRESIZE, loadChanges)
       map.on(L.Draw.Event.CREATED, event => {
         drawnItems.value?.addLayer(event.layer)
         ctx.emit('input', drawnItems.value?.toGeoJSON())
       })
-      map.on(L.Draw.Event.EDITED, () => {
-        ctx.emit('input', drawnItems.value?.toGeoJSON())
-      })
+      map.on(L.Draw.Event.EDITED, loadChanges)
       map.on(L.Draw.Event.DELETED, event => {
         drawnItems.value?.removeLayer(event.layer)
         ctx.emit('input', drawnItems.value?.toGeoJSON())
