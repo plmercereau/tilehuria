@@ -3842,7 +3842,28 @@ export type ListAllAreasOfInterestQuery = { __typename?: 'query_root' } & {
     { __typename?: 'area_of_interest' } & Pick<
       AreaOfInterest,
       'id' | 'name' | 'tilesCount'
-    >
+    > & {
+        tileSets_aggregate: { __typename?: 'tile_set_aggregate' } & {
+          aggregate?: Maybe<
+            { __typename?: 'tile_set_aggregate_fields' } & Pick<
+              TileSetAggregateFields,
+              'count'
+            >
+          >
+        }
+      }
+  >
+}
+
+export type RemoveOneAreaOfInterestMutationVariables = Exact<{
+  id: Scalars['uuid']
+}>
+
+export type RemoveOneAreaOfInterestMutation = {
+  __typename?: 'mutation_root'
+} & {
+  deleteAreaOfInterest?: Maybe<
+    { __typename?: 'area_of_interest' } & Pick<AreaOfInterest, 'id'>
   >
 }
 
@@ -4536,6 +4557,87 @@ export const ListAllAreasOfInterestDocument: TypedDocumentNode<
                 {
                   kind: 'Field',
                   name: { kind: 'Name', value: 'tilesCount' },
+                  arguments: [],
+                  directives: []
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'tileSets_aggregate' },
+                  arguments: [],
+                  directives: [],
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'aggregate' },
+                        arguments: [],
+                        directives: [],
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'count' },
+                              arguments: [],
+                              directives: []
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+export const RemoveOneAreaOfInterestDocument: TypedDocumentNode<
+  RemoveOneAreaOfInterestMutation,
+  RemoveOneAreaOfInterestMutationVariables
+> = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'removeOneAreaOfInterest' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'id' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'uuid' } }
+          },
+          directives: []
+        }
+      ],
+      directives: [],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'deleteAreaOfInterest' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'id' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'id' } }
+              }
+            ],
+            directives: [],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'id' },
                   arguments: [],
                   directives: []
                 }
@@ -5355,6 +5457,7 @@ export const namedOperations = {
   },
   Mutation: {
     insertAoi: 'insertAoi',
+    removeOneAreaOfInterest: 'removeOneAreaOfInterest',
     updateAoi: 'updateAoi',
     insertProvider: 'insertProvider',
     removeOneTileProvider: 'removeOneTileProvider',

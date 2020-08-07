@@ -112,7 +112,6 @@ Any change in the schema must be done through the Hasura console, that can be st
   - import GeoJSON file
   - map buttons:
     - fullscreen
-  - nicer list, either with more info, or as cards
   - updated_at + subscribe to more
   - author
 - Tileset
@@ -151,6 +150,7 @@ Any change in the schema must be done through the Hasura console, that can be st
 
 ### Done
 
+- [x] nicer AOI list with more info. Delete button when no tile set
 - [x] validate the polygon being edited when saving the aoi
 - [x] start subscription after creating a new item (1. create 2. subscribe to updates)
 - [x] Reopen rabbitmq channel when closed!

@@ -2,26 +2,37 @@
   q-page.row.q-pa-md
     q-spinner(v-if="loading" color="primary" size="3em")
     q-list.col-12(v-else bordered separator)
-      p-item-area(v-for="aoi of list" :key="aoi.id" :aoi="aoi")
+      q-item(v-for="aoi of list" :key="aoi.id" :aoi="aoi" clickable, v-ripple)
+        q-item-section(@click="goto(aoi.id)")
+          q-item-label {{ aoi.name || aoi.id }}
+          q-item-label(caption v-if="aoi.tilesCount")
+            span {{aoi.tilesCount.toLocaleString()}} {{ 'tile' | pluralize(aoi.tilesCount) }}
+            span( v-if="aoi.tileSets_aggregate.aggregate.count") , {{aoi.tileSets_aggregate.aggregate.count}} {{ 'tile set' | pluralize(aoi.tileSets_aggregate.aggregate.count) }}
+        q-item-section(top side)
+          div.text-grey-8.q-gutter-xs
+            q-btn.gt-xs(v-if="!aoi.tileSets_aggregate.aggregate.count" size="12px" flat round dense icon="delete" color="negative" @click="remove(aoi)")
     q-page-sticky(position="bottom-right" :offset="[18, 18]")
       q-btn(fab icon="add" color="primary" to="/areas-of-interest/new")
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
-import PItemArea from 'components/ItemAreaOfInterest.vue'
 import { GRAPHQL_CONFIG } from 'src/config'
 import { useItemList } from 'src/composables'
+import '../filters/pluralize'
 
 export default defineComponent({
   name: 'ListAreasOfInterest',
-  components: {
-    PItemArea
-  },
-  setup() {
-    const { list, loading } = useItemList(GRAPHQL_CONFIG.area_of_interest)
+  setup(_, ctx) {
+    const { list, loading, remove } = useItemList(
+      GRAPHQL_CONFIG.area_of_interest
+    )
 
-    return { list, loading }
+    const goto = async (id: string) => {
+      await ctx.root.$router.push(`/areas-of-interest/${id}`)
+    }
+
+    return { list, loading, remove, goto }
   }
 })
 </script>

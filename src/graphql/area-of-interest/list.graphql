@@ -4,5 +4,10 @@ query listAllAreasOfInterest {
     id
     name
     tilesCount
+    tileSets_aggregate {
+      aggregate {
+        count
+      }
+    }
   }
 }

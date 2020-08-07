@@ -3,7 +3,8 @@ import {
   InsertAoiDocument,
   UpdateAoiDocument,
   ListAllAreasOfInterestDocument,
-  AreaOfInterestFragmentFragment as AoiFragment
+  AreaOfInterestFragmentFragment as AoiFragment,
+  RemoveOneAreaOfInterestDocument
 } from 'src/generated'
 import { difference, compareByFields } from 'src/utils'
 
@@ -12,6 +13,7 @@ export const area_of_interest = {
   insert: InsertAoiDocument,
   update: UpdateAoiDocument,
   list: ListAllAreasOfInterestDocument,
+  remove: RemoveOneAreaOfInterestDocument,
   defaults: {
     id: '',
     source: {},

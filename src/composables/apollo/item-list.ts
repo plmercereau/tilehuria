@@ -45,7 +45,11 @@ export const useItemList = <
 
     const removeAction = async (object: T) => {
       item.value = object
-      await removeItem?.mutate()
+      if (removeItem) {
+        await removeItem.mutate()
+      } else {
+        console.warn('Remove mutation is not defined')
+      }
     }
 
     return {
