@@ -8,9 +8,9 @@
           q-item-label(caption v-if="aoi.tilesCount")
             span {{aoi.tilesCount.toLocaleString()}} {{ 'tile' | pluralize(aoi.tilesCount) }}
             span( v-if="aoi.tileSets_aggregate.aggregate.count") , {{aoi.tileSets_aggregate.aggregate.count}} {{ 'tile set' | pluralize(aoi.tileSets_aggregate.aggregate.count) }}
-        q-item-section(top side)
+        q-item-section(side)
           div.text-grey-8.q-gutter-xs
-            q-btn.gt-xs(v-if="!aoi.tileSets_aggregate.aggregate.count" size="12px" flat round dense icon="delete" color="negative" @click="remove(aoi)")
+            q-btn(v-if="!aoi.tileSets_aggregate.aggregate.count" size="12px" flat round dense icon="delete" color="negative" @click="remove(aoi)")
     q-page-sticky(position="bottom-right" :offset="[18, 18]")
       q-btn(fab icon="add" color="primary" to="/areas-of-interest/new")
 </template>

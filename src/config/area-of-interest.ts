@@ -21,7 +21,12 @@ export const area_of_interest = {
     tilesCount: 0,
     minZoom: 1,
     maxZoom: 20,
-    tileSets: []
+    tileSets: [],
+    tileSets_aggregate: {
+      aggregate: {
+        count: 0
+      }
+    }
   } as AoiFragment,
   dataToVariables: (
     { id, name, maxZoom, minZoom, source, tileSets }: AoiFragment,
